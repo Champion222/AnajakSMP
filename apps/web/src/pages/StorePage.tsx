@@ -5,44 +5,219 @@ import { api } from '../services/api.js';
 import { ProductCard } from '../components/ProductCard.js';
 import { ProductDetailsModal } from '../components/ProductDetailsModal.js';
 import {
-  Crown,
-  Key,
-  Coins,
-  Sparkles,
-  Package,
-  Flame,
   Search,
   SlidersHorizontal,
   ChevronRight,
-  Loader2,
+  PackageOpen,
 } from 'lucide-react';
 
 interface StorePageProps {
   initialCategory?: string;
 }
 
+const FALLBACK_PRODUCTS: Product[] = [
+  {
+    id: 'b0000000-0000-0000-0000-000000000001',
+    slug: 'vip-rank',
+    name: 'VIP Rank',
+    description: 'The premier entry rank for every AnajakSMP survivalist. Includes chat perks, claim fly, and essential survival commands.',
+    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category: { id: 'c1', slug: 'ranks', name: 'Ranks', description: null, icon_name: 'Crown', display_order: 1, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 4.99,
+    sale_price_usd: null,
+    image_url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80',
+    perks: [
+      '[VIP] Golden Chat Tag & Prefix',
+      'Fly ability inside your own claims (/fly)',
+      '3 Extra Home Teleports (/sethome)',
+      'VIP Weekly Kit (Full Diamond Gear)',
+      'Access to /hat and /workbench',
+      'Priority server queue slot',
+    ],
+    delivery_commands: ['lp user {username} parent add vip'],
+    rank_duration: 'Permanent Lifetime',
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 1,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000002',
+    slug: 'mvp-rank',
+    name: 'MVP Rank',
+    description: 'Advanced rank upgrade with quality of life automation, extra land claims, and superior kits.',
+    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category: { id: 'c1', slug: 'ranks', name: 'Ranks', description: null, icon_name: 'Crown', display_order: 1, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 12.99,
+    sale_price_usd: 9.99,
+    image_url: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=500&auto=format&fit=crop&q=80',
+    perks: [
+      'All VIP Rank Perks included',
+      '[MVP] Cyan Diamond Prefix',
+      '6 Extra Home Teleports',
+      'Access to /feed and /condense commands',
+      'MVP Weekly Kit with Netherite Ingots',
+      'Keep Inventory in Wilderness claims',
+      'Double land claim accrual rate',
+    ],
+    delivery_commands: ['lp user {username} parent add mvp'],
+    rank_duration: 'Permanent Lifetime',
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 2,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000003',
+    slug: 'mvp-plus-rank',
+    name: 'MVP+ Rank',
+    description: 'Elite prestige rank with full survival utility, auto-sorting, and monthly key crates.',
+    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category: { id: 'c1', slug: 'ranks', name: 'Ranks', description: null, icon_name: 'Crown', display_order: 1, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 24.99,
+    sale_price_usd: 19.99,
+    image_url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    perks: [
+      'All VIP & MVP perks included',
+      '[MVP+] Emerald Aqua Prefix',
+      '10 Extra Home Teleports',
+      '/heal command (30m cooldown)',
+      '/craft and /enderchest anywhere',
+      'Automatic chest inventory sorting',
+      '1x Free Mythic Spawner Key monthly',
+    ],
+    delivery_commands: ['lp user {username} parent add mvpplus'],
+    rank_duration: 'Permanent Lifetime',
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 3,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000004',
+    slug: 'anajak-titan-rank',
+    name: 'Anajak Titan Rank',
+    description: 'The supreme apex rank of AnajakSMP. Ultimate dominance, exclusive Titan armor skins, and unyielding prestige.',
+    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category: { id: 'c1', slug: 'ranks', name: 'Ranks', description: null, icon_name: 'Crown', display_order: 1, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 49.99,
+    sale_price_usd: 39.99,
+    image_url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=80',
+    perks: [
+      'ALL server rank commands and kits unlocked',
+      'Exclusive [TITAN] Animated Rainbow & Gold Prefix',
+      'Unlimited Home Teleports',
+      'Access to /repair all command',
+      'Golden Angel Wings cosmetic unlocked',
+      'Custom In-game Join and Death Message',
+      'Dedicated Titan Private Discord Channel',
+    ],
+    delivery_commands: ['lp user {username} parent add titan'],
+    rank_duration: 'Permanent Lifetime',
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 4,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000005',
+    slug: 'common-key',
+    name: 'Common Crate Key',
+    description: 'Open the Common Crate at spawn crates. Win iron gear, building materials, and food supplies.',
+    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category: { id: 'c2', slug: 'crate-keys', name: 'Crate Keys', description: null, icon_name: 'Key', display_order: 2, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 1.0,
+    sale_price_usd: null,
+    image_url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80',
+    perks: ['Common survival gear', 'Starter building supplies', 'Instant automated delivery'],
+    delivery_commands: ['crate key give {username} common 1'],
+    rank_duration: null,
+    stock: null,
+    is_featured: false,
+    is_active: true,
+    display_order: 5,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000006',
+    slug: 'rare-key',
+    name: 'Rare Crate Key',
+    description: 'Open the Rare Crate for diamond tools, enchanted books, and economy coin pouches.',
+    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category: { id: 'c2', slug: 'crate-keys', name: 'Crate Keys', description: null, icon_name: 'Key', display_order: 2, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 2.5,
+    sale_price_usd: null,
+    image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    perks: ['Rare diamond gear', 'Enchanted books', 'Higher jackpot chance'],
+    delivery_commands: ['crate key give {username} rare 1'],
+    rank_duration: null,
+    stock: null,
+    is_featured: false,
+    is_active: true,
+    display_order: 6,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000013',
+    slug: 'epic-key',
+    name: 'Epic Crate Key',
+    description: 'Unlock high-tier Netherite gear, custom enchants, and rare spawner vouchers.',
+    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category: { id: 'c2', slug: 'crate-keys', name: 'Crate Keys', description: null, icon_name: 'Key', display_order: 2, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 4.99,
+    sale_price_usd: 3.99,
+    image_url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    perks: ['Netherite tools & armor', 'Rare Mob Spawners', 'Special Particle Effects'],
+    delivery_commands: ['crate key give {username} epic 1'],
+    rank_duration: null,
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 7,
+    created_at: '',
+    updated_at: '',
+  },
+  {
+    id: 'b0000000-0000-0000-0000-000000000014',
+    slug: 'mythic-key',
+    name: 'Mythic Spawner Key',
+    description: 'Supreme spawner crate key. Guaranteed high-tier Blaze, Iron Golem, or Creeper spawner!',
+    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category: { id: 'c2', slug: 'crate-keys', name: 'Crate Keys', description: null, icon_name: 'Key', display_order: 2, is_active: true, created_at: '', updated_at: '' },
+    price_usd: 9.99,
+    sale_price_usd: null,
+    image_url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=80',
+    perks: ['Guaranteed Spawner Drop', 'Exclusive Mythic Ingot', 'Broadcast on Unlock'],
+    delivery_commands: ['crate key give {username} mythic 1'],
+    rank_duration: null,
+    stock: null,
+    is_featured: true,
+    is_active: true,
+    display_order: 8,
+    created_at: '',
+    updated_at: '',
+  },
+];
+
 export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const currentCategory = initialCategory || searchParams.get('category') || 'ranks';
 
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState<'newest' | 'price_asc' | 'price_desc' | 'popular'>('newest');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const cats = await api.getCategories();
-        setCategories(cats);
-      } catch (err) {
-        console.error('Failed to load categories', err);
-      }
-    };
-    loadCategories();
-  }, []);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -53,9 +228,36 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
           search: searchQuery.trim() || undefined,
           sort: sortOption,
         });
-        setProducts(data);
-      } catch (err) {
-        console.error('Failed to load products', err);
+
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          // Use categorized fallback
+          let filtered = FALLBACK_PRODUCTS.filter((p) => {
+            if (currentCategory === 'ranks') return p.slug.includes('rank');
+            if (currentCategory === 'crate-keys') return p.slug.includes('key');
+            return true;
+          });
+          if (searchQuery.trim()) {
+            filtered = filtered.filter((p) =>
+              p.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+          }
+          setProducts(filtered);
+        }
+      } catch {
+        // Fallback on API network error
+        let filtered = FALLBACK_PRODUCTS.filter((p) => {
+          if (currentCategory === 'ranks') return p.slug.includes('rank');
+          if (currentCategory === 'crate-keys') return p.slug.includes('key');
+          return true;
+        });
+        if (searchQuery.trim()) {
+          filtered = filtered.filter((p) =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+        setProducts(filtered);
       } finally {
         setIsLoading(false);
       }
@@ -65,16 +267,11 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
     return () => clearTimeout(debounce);
   }, [currentCategory, searchQuery, sortOption]);
 
-  const handleCategoryChange = (slug: string) => {
-    searchParams.set('category', slug);
-    setSearchParams(searchParams);
-  };
-
   const getCategoryMeta = () => {
     if (currentCategory === 'ranks') {
       return {
         title: 'RANK SHOP',
-        subtitle: 'Unlock exclusive perks and stand out from the crowd!',
+        subtitle: 'Unlock exclusive permanent perks, claims, kits, and chat tags!',
         breadcrumb: 'Ranks',
         bannerImg: '/assets/ranks_banner.jpg',
       };
@@ -82,25 +279,9 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
     if (currentCategory === 'crate-keys') {
       return {
         title: 'CRATE KEY SHOP',
-        subtitle: 'Open crates and get amazing rewards!',
+        subtitle: 'Open spawn crates and win Netherite gear, spawners, and coin pouches!',
         breadcrumb: 'Crate Keys',
         bannerImg: '/assets/hero_warrior.jpg',
-      };
-    }
-    if (currentCategory === 'cosmetics') {
-      return {
-        title: 'COSMETICS SHOP',
-        subtitle: 'Customize your style with wings, particle halos and cloaks!',
-        breadcrumb: 'Cosmetics',
-        bannerImg: '/assets/hero_warrior.jpg',
-      };
-    }
-    if (currentCategory === 'bundles') {
-      return {
-        title: 'BUNDLE SHOP',
-        subtitle: 'High value combo packages with ranks and keys combined!',
-        breadcrumb: 'Bundles',
-        bannerImg: '/assets/ranks_banner.jpg',
       };
     }
     return {
@@ -113,30 +294,11 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
 
   const meta = getCategoryMeta();
 
-  const getCategoryIcon = (slug: string) => {
-    if (slug === 'ranks') return <Crown className="w-4 h-4" />;
-    if (slug === 'crate-keys') return <Key className="w-4 h-4 rotate-45" />;
-    if (slug === 'cosmetics') return <Sparkles className="w-4 h-4" />;
-    if (slug === 'bundles') return <Package className="w-4 h-4" />;
-    if (slug === 'coins-currency') return <Coins className="w-4 h-4" />;
-    return <Sparkles className="w-4 h-4" />;
-  };
-
-  // Main sidebar category list
-  const sidebarCategories = [
-    { slug: 'ranks', label: 'Ranks', icon: Crown },
-    { slug: 'crate-keys', label: 'Crate Keys', icon: Key },
-    { slug: 'cosmetics', label: 'Cosmetics', icon: Sparkles },
-    { slug: 'bundles', label: 'Bundles', icon: Package },
-    { slug: 'coins-currency', label: 'Currency', icon: Coins },
-  ];
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* 1. Category Top Hero Banner matching reference image */}
+      {/* 1. Category Top Hero Banner */}
       <div className="relative rounded-3xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-6 sm:p-10 overflow-hidden shadow-sm flex flex-col md:flex-row items-center justify-between">
         <div className="relative z-10 space-y-2 text-center md:text-left mb-6 md:mb-0">
-          {/* Breadcrumb */}
           <div className="flex items-center justify-center md:justify-start space-x-2 text-xs text-[#5a7184] mb-1">
             <Link to="/" className="hover:text-[#d99a16] transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -151,7 +313,6 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
           </p>
         </div>
 
-        {/* Banner Graphic Thumbnail */}
         <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-[#cbe4f6] shadow-sm shrink-0">
           <img
             src={meta.bannerImg}
@@ -162,42 +323,17 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
         </div>
       </div>
 
-      {/* 2. Main Two-Column Layout (Left Sidebar + Right Product Grid) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Sidebar Category Menu */}
-        <aside className="lg:col-span-3 space-y-4">
-          <div className="rounded-2xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-3 space-y-1.5 shadow-sm">
-            <span className="text-[10px] font-black tracking-widest text-[#7a8a98] uppercase px-3 py-1.5 block">
-              Categories
-            </span>
+      {/* 2. Full-Width Products Section (Sidebar Category Removed) */}
+      <section className="w-full space-y-6">
+        {/* Status & Search Toolbar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/85 backdrop-blur-md border border-[#cbe4f6] rounded-2xl p-4 shadow-sm">
+          <span className="text-xs text-[#5a7184] font-medium">
+            Showing <span className="text-[#1a2530] font-black">{products.length}</span> items
+          </span>
 
-            {sidebarCategories.map((cat) => {
-              const Icon = cat.icon;
-              const isActive = currentCategory === cat.slug;
-
-              return (
-                <button
-                  key={cat.slug}
-                  onClick={() => handleCategoryChange(cat.slug)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
-                    isActive
-                      ? 'bg-[#FFE600] text-[#121216] shadow-sm'
-                      : 'text-[#5a7184] hover:text-[#1a2530] hover:bg-[#ebf5fc]'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#121216]' : 'text-[#d99a16]'}`} />
-                  <span className="tracking-wide">{cat.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Quick Search */}
-          <div className="rounded-2xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-4 space-y-3 shadow-sm">
-            <span className="text-[10px] font-black tracking-widest text-[#7a8a98] uppercase block">
-              Search Products
-            </span>
-            <div className="relative">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            {/* Quick Search */}
+            <div className="relative flex-1 sm:w-64">
               <Search className="w-4 h-4 text-[#7a8a98] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
@@ -207,24 +343,14 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
                 className="w-full pl-9 pr-3 py-2 rounded-xl bg-[#ebf5fc] border border-[#cbe4f6] text-xs text-[#1a2530] placeholder-[#7a8a98] focus:outline-none focus:border-[#d99a16]"
               />
             </div>
-          </div>
-        </aside>
-
-        {/* Right Product Grid Area */}
-        <section className="lg:col-span-9 space-y-6">
-          {/* Status Bar */}
-          <div className="flex items-center justify-between pb-2 border-b border-[#cbe4f6]">
-            <span className="text-xs text-[#5a7184] font-medium">
-              Showing <span className="text-[#1a2530] font-bold">{products.length}</span> items
-            </span>
 
             {/* Sort Dropdown */}
             <div className="flex items-center space-x-2 text-xs">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-gold" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#d99a16]" />
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value as any)}
-                className="bg-[#161622] border border-[#262638] rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-gold"
+                className="bg-white border border-[#cbe4f6] rounded-xl px-3 py-2 text-xs text-[#1a2530] focus:outline-none focus:border-[#d99a16] shadow-sm font-medium"
               >
                 <option value="newest">Featured First</option>
                 <option value="price_asc">Price: Low to High</option>
@@ -232,43 +358,45 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
               </select>
             </div>
           </div>
+        </div>
 
-          {/* Product Cards Grid */}
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl bg-[#14141e] border border-[#232333] p-4 h-80 animate-pulse space-y-4"
-                >
-                  <div className="h-36 bg-[#1e1e2d] rounded-xl" />
-                  <div className="h-4 bg-[#1e1e2d] rounded w-2/3" />
-                  <div className="h-3 bg-[#1e1e2d] rounded w-1/3" />
-                  <div className="h-8 bg-[#1e1e2d] rounded-xl" />
-                </div>
-              ))}
+        {/* Product Cards Grid - Full Width 4-Columns */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-2xl bg-white/80 border border-[#cbe4f6] p-4 h-80 animate-pulse space-y-4"
+              >
+                <div className="h-36 bg-[#ebf5fc] rounded-xl" />
+                <div className="h-4 bg-[#ebf5fc] rounded w-2/3" />
+                <div className="h-3 bg-[#ebf5fc] rounded w-1/3" />
+                <div className="h-8 bg-[#ebf5fc] rounded-xl" />
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelectProduct={setSelectedProduct}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-12 text-center space-y-4 shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-[#ebf5fc] border border-[#cbe4f6] flex items-center justify-center text-[#d99a16] mx-auto shadow-sm">
+              <PackageOpen className="w-8 h-8" />
             </div>
-          ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {products.map((prod) => (
-                <ProductCard
-                  key={prod.id}
-                  product={prod}
-                  onSelectProduct={setSelectedProduct}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="py-16 text-center space-y-3 rounded-2xl bg-[#12121c] border border-[#232333]">
-              <Sparkles className="w-10 h-10 text-gold mx-auto" />
-              <h3 className="text-base font-bold text-white">No items found</h3>
-              <p className="text-xs text-[#8e8ea0]">
-                Try adjusting your search query or selecting a different category from the sidebar.
-              </p>
-            </div>
-          )}
-        </section>
-      </div>
+            <h3 className="text-xl font-black text-[#1a2530]">No items found</h3>
+            <p className="text-xs text-[#5a7184] max-w-sm mx-auto">
+              Try adjusting your search query or check back soon for new inventory!
+            </p>
+          </div>
+        )}
+      </section>
 
       {/* Product Details Modal */}
       {selectedProduct && (
