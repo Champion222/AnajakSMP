@@ -15,6 +15,9 @@ import { CartPage } from './pages/CartPage.js';
 import { PaymentPage } from './pages/PaymentPage.js';
 import { OrderStatusPage } from './pages/OrderStatusPage.js';
 import { SupportPage } from './pages/SupportPage.js';
+import { TeamPage } from './pages/TeamPage.js';
+import { SocialsPage } from './pages/SocialsPage.js';
+import { FunPage } from './pages/FunPage.js';
 import { TermsPage, RefundPolicyPage, PrivacyPolicyPage } from './pages/LegalPages.js';
 
 // Admin Pages
@@ -151,6 +154,34 @@ export const App: React.FC = () => {
               element={
                 <StorefrontLayout>
                   <OrderStatusPage />
+                </StorefrontLayout>
+              }
+            />
+            <Route
+              path="/team"
+              element={
+                <StorefrontLayout>
+                  <TeamPage />
+                </StorefrontLayout>
+              }
+            />
+            <Route
+              path="/socials"
+              element={
+                <StorefrontLayout>
+                  <SocialsPage />
+                </StorefrontLayout>
+              }
+            />
+            <Route
+              path="/social-media"
+              element={<Navigate to="/socials" replace />}
+            />
+            <Route
+              path="/fun"
+              element={
+                <StorefrontLayout>
+                  <FunPage />
                 </StorefrontLayout>
               }
             />

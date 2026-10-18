@@ -35,6 +35,7 @@ export default {
         },
       },
       fontFamily: {
+        minecraft: ['Minecraft', 'Silkscreen', "'Press Start 2P'", 'monospace'],
         sans: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
         heading: ['Outfit', 'sans-serif'],
       },

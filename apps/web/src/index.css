@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Minecraft';
+  src: url('https://cdn.jsdelivr.net/gh/aditkumar08/minecraft-font/Minecraft-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('https://cdn.jsdelivr.net/gh/aditkumar08/minecraft-font/Minecraft-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
 }
@@ -15,6 +31,30 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
+}
+
+.font-minecraft {
+  font-family: 'Minecraft', 'Silkscreen', 'Press Start 2P', monospace;
+  letter-spacing: 0.04em;
+}
+
+.text-minecraft-shadow {
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.9);
+}
+
+.text-minecraft-glow {
+  text-shadow: 0 0 10px rgba(245, 197, 66, 0.6), 2px 2px 0px rgba(0, 0, 0, 0.9);
+}
+
+.minecraft-btn {
+  font-family: 'Minecraft', 'Silkscreen', monospace;
+  box-shadow: inset -2px -4px 0px rgba(0, 0, 0, 0.4), inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.85);
+}
+
+.minecraft-btn:active {
+  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.6);
+  transform: translateY(2px);
 }
 
 /* Custom Gold Scrollbar */

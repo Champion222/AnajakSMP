@@ -28,10 +28,13 @@ export const Footer: React.FC = () => {
           </Link>
 
           {/* Navigation Links */}
-          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-[#a8a8ba]">
+          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-[#a8a8ba] font-minecraft">
             <Link to="/" className="hover:text-gold transition-colors">Home</Link>
             <Link to="/ranks" className="hover:text-gold transition-colors">Ranks</Link>
             <Link to="/crate-keys" className="hover:text-gold transition-colors">Crate Keys</Link>
+            <Link to="/team" className="hover:text-gold transition-colors">Team</Link>
+            <Link to="/socials" className="hover:text-gold transition-colors">Socials</Link>
+            <Link to="/fun" className="hover:text-gold transition-colors text-gold">Fun ✨</Link>
             <Link to="/support" className="hover:text-gold transition-colors">Support</Link>
             <Link to="/terms" className="hover:text-gold transition-colors">Terms</Link>
             <Link to="/privacy-policy" className="hover:text-gold transition-colors">Privacy</Link>
