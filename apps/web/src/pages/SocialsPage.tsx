@@ -4,22 +4,18 @@ import {
   Send,
   Facebook,
   Youtube,
-  Video,
   Copy,
   Check,
   ExternalLink,
-  Gift,
   Sparkles,
-  Users,
-  Bell,
-  Award,
+  Server,
   Vote,
 } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext.js';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
 
 export const SocialsPage: React.FC = () => {
-  const { settings, serverStatus, copyServerIp, copiedIp } = useSettings();
+  const { settings, copyServerIp, copiedIp } = useSettings();
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
 
   const discordUrl = settings?.discord_url || 'https://discord.gg/anajaksmp';
@@ -39,8 +35,6 @@ export const SocialsPage: React.FC = () => {
       name: 'Discord Community',
       subtitle: 'Primary Voice & Chat Headquarters',
       icon: MessageSquare,
-      color: 'from-[#5865F2]/20 via-[#1c1c30] to-[#12121e]',
-      borderColor: 'border-[#5865F2]/40 hover:border-[#5865F2]',
       accentBg: 'bg-[#5865F2]',
       members: '2,500+ Members',
       description: 'The beating heart of AnajakSMP. Join voice channels with friends, trade items in player markets, submit support tickets, and enter weekly rank giveaways.',
@@ -53,8 +47,6 @@ export const SocialsPage: React.FC = () => {
       name: 'Telegram Alerts',
       subtitle: 'Instant Updates & KHQR Direct Desk',
       icon: Send,
-      color: 'from-[#229ED9]/20 via-[#161c28] to-[#12121e]',
-      borderColor: 'border-[#229ED9]/40 hover:border-[#229ED9]',
       accentBg: 'bg-[#229ED9]',
       members: '1,200+ Subscribers',
       description: 'Get immediate push notifications when server updates go live, maintenance restarts, and access 1-on-1 payment assistance for ABA PayWay and Bakong KHQR.',
@@ -67,8 +59,6 @@ export const SocialsPage: React.FC = () => {
       name: 'Facebook Community',
       subtitle: 'Official Page & Cambodian Players Group',
       icon: Facebook,
-      color: 'from-[#1877F2]/20 via-[#161928] to-[#12121e]',
-      borderColor: 'border-[#1877F2]/40 hover:border-[#1877F2]',
       accentBg: 'bg-[#1877F2]',
       members: '5,000+ Followers',
       description: 'Connect with the wider Cambodian Minecraft player base. Share your majestic Angkor builds, survival timelapses, and keep up with seasonal events.',
@@ -81,8 +71,6 @@ export const SocialsPage: React.FC = () => {
       name: 'YouTube & TikTok',
       subtitle: 'Montages, Guides & Server Trailers',
       icon: Youtube,
-      color: 'from-[#FF0000]/20 via-[#1c161a] to-[#12121e]',
-      borderColor: 'border-[#FF0000]/40 hover:border-[#FF0000]',
       accentBg: 'bg-[#FF0000]',
       members: '10K+ Views',
       description: 'Watch cinematic server trailers, tutorial guides on custom plugins, auto-farming walkthroughs, and epic end-crystal PvP tournaments.',
@@ -94,196 +82,178 @@ export const SocialsPage: React.FC = () => {
 
   const votingSites = [
     {
-      id: 'pmc',
-      name: 'Planet Minecraft',
-      rank: '#1 Minecraft Site',
+      id: 'site-a',
+      name: 'VOTE LINK A',
+      siteName: 'Planet Minecraft',
       reward: '1x Rare Key + 5,000 Coins',
       url: 'https://planetminecraft.com',
     },
     {
-      id: 'mcmp',
-      name: 'Minecraft-MP',
-      rank: 'Global Server List',
+      id: 'site-b',
+      name: 'VOTE LINK B',
+      siteName: 'Minecraft-MP',
       reward: '1x Rare Key + 5,000 Coins',
       url: 'https://minecraft-mp.com',
     },
     {
-      id: 'topg',
-      name: 'TopG Servers',
-      rank: 'Top Rated SMP',
+      id: 'site-c',
+      name: 'VOTE LINK C',
+      siteName: 'TopG Servers',
       reward: '1x Rare Key + 5,000 Coins',
       url: 'https://topg.org',
     },
   ];
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
-      {/* Hero Header */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-heading">
-          <Users className="w-3.5 h-3.5 text-gold" />
-          <span>Official Social Networks & Guilds</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide">
-          JOIN THE <span className="text-gold">ANAJAKSMP COMMUNITY</span>
-        </h1>
-
-        <p className="text-sm sm:text-base text-[#9a9ab0] leading-relaxed">
-          Stay connected with staff and fellow survivalists across all platforms. Get instant server updates, participate in giveaways, and receive direct payment support.
-        </p>
-
-        {/* Server IP quick badge */}
-        <div className="pt-2 flex justify-center">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+      {/* 1. Mazer-Style Top Section: Switch Server + Vote Links */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Switch Server Card (Green Minecraft Button) */}
+        <div className="lg:col-span-4 bg-white/85 backdrop-blur-md border border-[#cbe4f6] rounded-2xl p-5 shadow-sm space-y-3">
           <button
             onClick={copyServerIp}
-            className="flex items-center space-x-2.5 px-4 py-2 rounded-xl bg-[#14141f] border border-[#262638] hover:border-gold/50 transition-all text-xs font-mono text-white group"
+            className="w-full py-4 px-5 rounded-2xl bg-[#48b354] hover:bg-[#3ea149] text-white font-minecraft shadow-[0_5px_0_#2e7d36] active:translate-y-1 active:shadow-[0_1px_0_#2e7d36] transition-all flex flex-col items-center justify-center text-center group"
           >
-            <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
-            <span className="text-[#a0a0b6]">Server Address:</span>
-            <span className="text-gold font-bold">{settings?.server_ip || 'play.anajaksmp.xyz'}</span>
-            <span className="pl-2 border-l border-[#2e2e42] text-[11px] text-[#707086] flex items-center space-x-1 group-hover:text-gold">
-              {copiedIp ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-status-success" />
-                  <span className="text-status-success font-semibold">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>Click to copy</span>
-                </>
-              )}
+            <span className="text-base sm:text-lg font-black tracking-wider flex items-center gap-2">
+              <Server className="w-5 h-5" />
+              <span>SWITCH SERVER</span>
+            </span>
+            <span className="text-[11px] opacity-90 tracking-widest uppercase mt-0.5">
+              CHANGE SERVER
             </span>
           </button>
-        </div>
-      </div>
 
-      {/* Primary Platforms Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {platforms.map((platform) => {
-          const Icon = platform.icon;
-          const isCopied = copiedLink === platform.id;
-          return (
-            <div
-              key={platform.id}
-              className={`rounded-3xl bg-gradient-to-br ${platform.color} border ${platform.borderColor} p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-gold-glow`}
-            >
-              <div className="space-y-5">
-                {/* Platform Header */}
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-14 h-14 rounded-2xl ${platform.accentBg} flex items-center justify-center text-white shadow-lg`}>
-                      <Icon className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-black text-white font-heading">
-                        {platform.name}
-                      </h3>
-                      <p className="text-xs text-[#8e8ea4]">{platform.subtitle}</p>
-                    </div>
-                  </div>
-
-                  <span className="px-3 py-1 rounded-full bg-[#161624] border border-[#2b2b40] text-[11px] font-bold text-white/90 font-mono">
-                    {platform.members}
-                  </span>
-                </div>
-
-                <p className="text-xs sm:text-sm text-[#b0b0c6] leading-relaxed">
-                  {platform.description}
-                </p>
-
-                {/* Feature checklist */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/5">
-                  {platform.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-center space-x-2 text-xs text-[#c4c4d8]">
-                      <Sparkles className="w-3.5 h-3.5 text-gold shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap gap-3 items-center justify-between">
-                <a
-                  href={platform.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={playMinecraftClick}
-                  className={`flex-1 min-w-[200px] text-center py-3 px-4 rounded-xl ${platform.accentBg} text-white font-heading text-xs font-bold hover:brightness-110 transition-all flex items-center justify-center space-x-2 shadow-md`}
-                >
-                  <span>{platform.buttonText}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-
-                <button
-                  onClick={() => copyToClipboard(platform.url, platform.id)}
-                  title="Copy link"
-                  className="px-3.5 py-3 rounded-xl bg-[#141420] border border-[#2c2c40] text-[#9090a8] hover:text-white transition-colors"
-                >
-                  {isCopied ? <Check className="w-4 h-4 text-status-success" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
+          <div className="p-3 bg-[#ebf5fc] rounded-xl border border-[#cbe4f6] text-center space-y-1">
+            <span className="text-[11px] text-[#5a7184] font-medium block">Active Realm:</span>
+            <span className="font-minecraft text-xs font-black text-[#1a2530]">
+              ANAJAK SURVIVAL (SMP-01)
+            </span>
+            <div className="pt-1 flex items-center justify-center gap-1.5 text-xs text-[#5a7184]">
+              <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+              <span className="font-mono">{copiedIp ? 'IP Copied!' : settings?.server_ip || 'play.anajaksmp.xyz'}</span>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Daily Server Voting Section */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#171725] via-[#1a1a2b] to-[#171725] border border-gold/30 p-8 sm:p-10 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-gold/15 text-gold text-xs font-bold font-heading uppercase">
-              <Gift className="w-3.5 h-3.5" />
-              <span>Free In-Game Rewards</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white font-heading">
-              VOTE DAILY FOR <span className="text-gold">FREE CRATE KEYS & COINS</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-[#9e9eb4] max-w-2xl">
-              Help AnajakSMP climb the Minecraft server charts! Vote on each site every 24 hours to receive automatic keys and economy currency in-game.
-            </p>
-          </div>
-
-          <div className="px-4 py-3 rounded-2xl bg-[#11111a] border border-[#28283c] text-xs font-mono text-[#a0a0b8] shrink-0">
-            <span className="text-gold font-bold block mb-1">🎁 How to claim:</span>
-            <span>Type your exact Minecraft username when voting!</span>
           </div>
         </div>
 
-        {/* Voting Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {votingSites.map((site) => (
-            <div
-              key={site.id}
-              className="rounded-2xl bg-[#13131e] border border-[#252538] hover:border-gold/50 p-5 space-y-4 transition-all group"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#7e7e94] uppercase tracking-wider font-mono">
-                  {site.rank}
-                </span>
-                <Vote className="w-4 h-4 text-gold group-hover:scale-110 transition-transform" />
-              </div>
+        {/* Right Column: Vote Links for AnajakSMP (Blue Minecraft Buttons) */}
+        <div className="lg:col-span-8 bg-white/85 backdrop-blur-md border border-[#cbe4f6] rounded-2xl p-6 shadow-sm space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#e2eef8] pb-4">
+            <div>
+              <h2 className="font-minecraft text-lg sm:text-xl font-black text-[#1a2530] tracking-wide">
+                VOTE LINKS FOR ANAJAK-SMP
+              </h2>
+              <p className="text-xs text-[#5a7184] mt-0.5">
+                Vote daily every 24 hours to claim in-game keys, coins, and vote streaks!
+              </p>
+            </div>
+            <div className="px-3 py-1 rounded-xl bg-[#ebf5fc] border border-[#cbe4f6] text-[11px] font-mono text-[#4a6b82] shrink-0">
+              🎁 Type your exact in-game name
+            </div>
+          </div>
 
-              <div>
-                <h4 className="text-base font-black text-white font-heading">{site.name}</h4>
-                <p className="text-xs text-gold font-semibold mt-1 flex items-center space-x-1">
-                  <span>{site.reward}</span>
-                </p>
-              </div>
-
+          {/* Blue Minecraft Action Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            {votingSites.map((site) => (
               <a
+                key={site.id}
                 href={site.url}
                 target="_blank"
                 rel="noreferrer"
                 onClick={playMinecraftClick}
-                className="w-full block text-center py-2 px-3 rounded-xl bg-gold text-brand-bg font-heading text-xs font-black hover:brightness-110 transition-all"
+                className="py-4 px-4 rounded-xl bg-[#0092ff] hover:bg-[#0082ea] text-white font-minecraft shadow-[0_5px_0_#006fc4] active:translate-y-1 active:shadow-[0_1px_0_#006fc4] transition-all flex flex-col items-center justify-center text-center group select-none"
               >
-                VOTE ON {site.name.toUpperCase()}
+                <span className="text-sm font-black tracking-wider flex items-center gap-1.5">
+                  <Vote className="w-4 h-4" />
+                  <span>{site.name}</span>
+                </span>
+                <span className="text-[10px] text-white/80 mt-1 font-mono">
+                  {site.siteName}
+                </span>
               </a>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Official Social Networks & Guilds */}
+      <div className="space-y-6">
+        <div className="text-center space-y-2 max-w-2xl mx-auto">
+          <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#d99a16] block">
+            Official Social Networks & Guilds
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-black text-[#1a2530]">
+            CONNECT WITH OUR COMMUNITY
+          </h2>
+          <p className="text-xs sm:text-sm text-[#5a7184]">
+            Stay connected with staff and fellow players across all official platforms.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {platforms.map((platform) => {
+            const Icon = platform.icon;
+            const isCopied = copiedLink === platform.id;
+            return (
+              <div
+                key={platform.id}
+                className="rounded-2xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-3.5">
+                      <div className={`w-12 h-12 rounded-xl ${platform.accentBg} flex items-center justify-center text-white shadow-md`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-black text-[#1a2530]">
+                          {platform.name}
+                        </h3>
+                        <p className="text-xs text-[#5a7184]">{platform.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#ebf5fc] border border-[#cbe4f6] text-[11px] font-bold text-[#4a6b82] font-mono">
+                      {platform.members}
+                    </span>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-[#5a7184] leading-relaxed">
+                    {platform.description}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-[#e2eef8]">
+                    {platform.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center space-x-2 text-xs text-[#5a7184]">
+                        <Sparkles className="w-3.5 h-3.5 text-[#d99a16] shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-[#e2eef8] flex items-center gap-3">
+                  <a
+                    href={platform.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={playMinecraftClick}
+                    className={`flex-1 py-2.5 px-4 rounded-xl ${platform.accentBg} text-white font-minecraft text-xs font-black hover:brightness-110 transition-all flex items-center justify-center space-x-2 shadow-sm`}
+                  >
+                    <span>{platform.buttonText}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+
+                  <button
+                    onClick={() => copyToClipboard(platform.url, platform.id)}
+                    title="Copy link"
+                    className="p-2.5 rounded-xl bg-[#ebf5fc] border border-[#cbe4f6] text-[#5a7184] hover:text-[#1a2530] transition-colors"
+                  >
+                    {isCopied ? <Check className="w-4 h-4 text-status-success" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

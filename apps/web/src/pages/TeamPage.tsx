@@ -156,34 +156,34 @@ export const TeamPage: React.FC = () => {
   ];
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
       {/* Hero Header */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-heading">
-          <Shield className="w-3.5 h-3.5 text-gold" />
+      <div className="text-center space-y-3 max-w-3xl mx-auto">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#ebf5fc] border border-[#cbe4f6] text-[#d99a16] text-xs font-bold uppercase tracking-widest font-heading">
+          <Shield className="w-3.5 h-3.5 text-[#d99a16]" />
           <span>Server Administration & Guardians</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide">
-          MEET THE <span className="text-gold">ANAJAKSMP TEAM</span>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1a2530] font-heading tracking-wide">
+          MEET THE <span className="text-[#d99a16]">ANAJAKSMP TEAM</span>
         </h1>
 
-        <p className="text-sm sm:text-base text-[#9a9ab0] leading-relaxed">
+        <p className="text-sm sm:text-base text-[#5a7184] leading-relaxed">
           The passionate developers, architects, and community guardians who maintain the server, protect your survival claims, and run events every week.
         </p>
 
         {/* Quick Stats Pill */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs text-[#8c8ca0] font-mono">
-          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-[#14141f] border border-[#232333]">
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs text-[#5a7184] font-mono">
+          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white/80 border border-[#cbe4f6] shadow-sm">
             <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
             <span>7 Dedicated Staff</span>
           </span>
-          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-[#14141f] border border-[#232333]">
-            <Award className="w-3.5 h-3.5 text-gold" />
-            <span>24/7 Moderation & Ticket Support</span>
+          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white/80 border border-[#cbe4f6] shadow-sm">
+            <Award className="w-3.5 h-3.5 text-[#d99a16]" />
+            <span>24/7 Moderation & Support</span>
           </span>
-          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-[#14141f] border border-[#232333]">
-            <HeartHandshake className="w-3.5 h-3.5 text-pink-400" />
+          <span className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white/80 border border-[#cbe4f6] shadow-sm">
+            <HeartHandshake className="w-3.5 h-3.5 text-pink-500" />
             <span>Khmer & English Support</span>
           </span>
         </div>
@@ -203,8 +203,8 @@ export const TeamPage: React.FC = () => {
               }}
               className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 isActive
-                  ? 'bg-gold text-brand-bg shadow-gold-glow scale-105'
-                  : 'bg-[#151522] border border-[#262638] text-[#9a9ab0] hover:text-white hover:border-gold/40'
+                  ? 'bg-[#FFE600] text-[#121216] shadow-sm scale-105'
+                  : 'bg-white/80 border border-[#cbe4f6] text-[#5a7184] hover:text-[#1a2530] hover:border-[#FFE600]'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -219,7 +219,7 @@ export const TeamPage: React.FC = () => {
         {filteredMembers.map((member) => (
           <div
             key={member.id}
-            className="group rounded-2xl bg-gradient-to-b from-[#181826] to-[#12121d] border border-[#28283e] hover:border-gold/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-gold-glow flex flex-col justify-between"
+            className="group rounded-2xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] hover:border-[#FFE600] p-6 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md flex flex-col justify-between"
           >
             <div className="space-y-4">
               {/* Header with Avatar & Status */}
@@ -227,7 +227,7 @@ export const TeamPage: React.FC = () => {
                 <div className="flex items-center space-x-4">
                   {/* Avatar Frame with Minecraft Head */}
                   <div className="relative">
-                    <div className="w-16 h-16 rounded-xl bg-[#232335] p-1 border border-[#3b3b55] group-hover:border-gold transition-colors overflow-hidden">
+                    <div className="w-16 h-16 rounded-xl bg-[#ebf5fc] p-1 border border-[#cbe4f6] group-hover:border-[#FFE600] transition-colors overflow-hidden shadow-sm">
                       <img
                         src={`https://mc-heads.net/avatar/${member.skinUsername}/128`}
                         alt={member.ign}
@@ -241,19 +241,19 @@ export const TeamPage: React.FC = () => {
                     {/* Online Dot */}
                     <span
                       title={member.isOnline ? 'Online in-game / Discord' : 'Away'}
-                      className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#12121d] ${
-                        member.isOnline ? 'bg-status-success' : 'bg-[#555566]'
+                      className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
+                        member.isOnline ? 'bg-status-success' : 'bg-gray-400'
                       }`}
                     />
                   </div>
 
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="text-lg font-black text-white font-heading group-hover:text-gold transition-colors">
+                      <h3 className="text-lg font-black text-[#1a2530] font-heading group-hover:text-[#b8860b] transition-colors">
                         {member.ign}
                       </h3>
                     </div>
-                    <p className="text-xs text-[#8c8ca0] font-mono">aka &quot;{member.nickname}&quot;</p>
+                    <p className="text-xs text-[#5a7184] font-mono">aka &quot;{member.nickname}&quot;</p>
                     <span
                       className={`inline-block mt-1 px-2.5 py-0.5 rounded-md text-[11px] font-black tracking-wider uppercase border ${member.roleColor}`}
                     >

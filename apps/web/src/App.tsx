@@ -35,7 +35,7 @@ import { AdminUser } from '@anajaksmp/shared';
 
 // Public Layout Wrapper
 const StorefrontLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="min-h-screen flex flex-col bg-[#0b0b0f] text-white pb-16 md:pb-0">
+  <div className="min-h-screen flex flex-col bg-[#E8F6FE] text-[#1e293b] pb-16 md:pb-0">
     <AnnouncementBanner />
     <Navbar />
     <main className="flex-1">{children}</main>
