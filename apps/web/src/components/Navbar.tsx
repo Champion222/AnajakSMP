@@ -76,12 +76,12 @@ export const Navbar: React.FC = () => {
 
   return (
     <div className="relative w-full select-none">
-      {/* 1. Sticky Navigation Bar (Follows on scroll) */}
-      <nav className="sticky top-0 z-40 w-full bg-gradient-to-r from-[#6b021d] via-[#820424] to-[#6b021d] border-b border-black/25 shadow-[0_4px_25px_rgba(0,0,0,0.5)] backdrop-blur-md">
+      {/* 1. Fixed Navigation Bar (Follows on scroll permanently) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-r from-[#6b021d] via-[#820424] to-[#6b021d] border-b border-black/30 shadow-[0_4px_25px_rgba(0,0,0,0.5)] backdrop-blur-md">
         {/* Minecraft Grass Block Top Strip */}
         <div className="h-1.5 w-full bg-gradient-to-r from-[#3e721a] via-[#529322] to-[#3e721a] border-b border-[#284c10]" />
 
-        {/* Ambient subtle sparkles in sticky bar */}
+        {/* Ambient subtle sparkles in fixed bar */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <span className="absolute top-4 left-[12%] w-1.5 h-1.5 bg-white/30 rotate-45 animate-pulse" />
           <span className="absolute top-5 right-[18%] w-1.5 h-1.5 bg-white/30 rotate-45 animate-pulse" />
@@ -188,7 +188,7 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* 2. Main Red Crimson Header with Server Showcase & Sawtooth Edge */}
-      <header className="relative bg-gradient-to-b from-[#7A0222] via-[#A80836] to-[#C71047] text-white overflow-hidden shadow-2xl">
+      <header className="relative bg-gradient-to-b from-[#7A0222] via-[#A80836] to-[#C71047] text-white overflow-hidden shadow-2xl pt-[70px] sm:pt-[86px]">
         {/* Ambient Glow & Sparkle Particles */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
