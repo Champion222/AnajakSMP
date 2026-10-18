@@ -187,6 +187,10 @@ export const App: React.FC = () => {
               }
             />
             <Route
+              path="/help"
+              element={<Navigate to="/support" replace />}
+            />
+            <Route
               path="/terms"
               element={
                 <StorefrontLayout>

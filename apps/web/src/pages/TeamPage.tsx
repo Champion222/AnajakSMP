@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, Check, Sparkles, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, Check, Sparkles, CheckCircle2, Users } from 'lucide-react';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
 
 interface StaffMember {
@@ -130,6 +130,21 @@ export const TeamPage: React.FC = () => {
         </div>
       )}
 
+      {/* Mazer Style Header Banner */}
+      <div className="bg-[#1e1319] border-2 border-[#3b202d] rounded-2xl px-5 py-3.5 flex items-center space-x-3.5 shadow-md">
+        <div className="w-10 h-10 rounded-xl bg-[#e93b67] flex items-center justify-center shrink-0 shadow-inner">
+          <Users className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+            SERVER DIRECTORY
+          </span>
+          <h1 className="text-lg sm:text-2xl font-minecraft font-black text-white tracking-wide uppercase">
+            STAFF TEAM
+          </h1>
+        </div>
+      </div>
+
       {/* Role Group Sections */}
       {roleGroups.map((group) => (
         <section
@@ -148,33 +163,42 @@ export const TeamPage: React.FC = () => {
             {group.members.map((member) => (
               <div
                 key={member.id}
-                className="bg-[#9ec4cd] hover:bg-[#93bcc5] border border-[#89b1ba] rounded-2xl p-3 sm:p-3.5 flex items-center space-x-3.5 shadow-sm transition-all hover:shadow-md hover:scale-[1.01]"
+                className="bg-[#9ec4cd] hover:bg-[#93bcc5] border border-[#89b1ba] rounded-2xl p-3 sm:p-4 flex items-center space-x-3.5 shadow-sm transition-all hover:shadow-md hover:scale-[1.01]"
               >
-                {/* Minecraft Bust / Body Avatar */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#c5dfe6] border border-white/40 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+                {/* Full Minecraft Character Standing Skin */}
+                <div className="w-16 sm:w-20 h-28 sm:h-34 rounded-xl bg-[#c5dfe6] border border-white/50 overflow-hidden flex items-center justify-center p-1 shrink-0 shadow-inner group/skin">
                   <img
-                    src={`https://mc-heads.net/body/${member.skinUsername}/160`}
+                    src={`https://mc-heads.net/body/${member.skinUsername}/240`}
                     alt={member.ign}
-                    className="w-full h-full object-cover object-top scale-[1.3] translate-y-1 pixelated"
+                    className="h-full w-auto object-contain pixelated drop-shadow-[0_4px_8px_rgba(0,0,0,0.18)] transition-transform duration-200 group-hover/skin:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://mc-heads.net/body/Steve/160';
+                      (e.target as HTMLImageElement).src = 'https://mc-heads.net/body/Steve/240';
                     }}
                   />
                 </div>
 
-                {/* Dark Name Pill with Optional Speech Bubble */}
-                <button
-                  onClick={() => handleCopyDiscord(member.discordTag, member.ign)}
-                  title={`Click to copy Discord: ${member.discordTag}`}
-                  className="bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white px-3.5 py-2 rounded-xl flex items-center space-x-2 transition-all shadow-sm font-minecraft group"
-                >
-                  <span className="text-xs sm:text-sm font-bold text-white tracking-wider">
-                    {member.ign}
-                  </span>
-                  {member.hasChat && (
-                    <MessageSquare className="w-3.5 h-3.5 text-white/90 shrink-0 group-hover:scale-110 transition-transform" />
-                  )}
-                </button>
+                {/* Member Details */}
+                <div className="flex flex-col justify-center space-y-1.5 min-w-0 flex-1">
+                  {/* Dark Name Pill with Optional Speech Bubble */}
+                  <button
+                    onClick={() => handleCopyDiscord(member.discordTag, member.ign)}
+                    title={`Click to copy Discord: ${member.discordTag}`}
+                    className="bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white px-3.5 py-2 rounded-xl flex items-center space-x-2 transition-all shadow-sm font-minecraft group w-fit max-w-full"
+                  >
+                    <span className="text-xs sm:text-sm font-bold text-white tracking-wider truncate">
+                      {member.ign}
+                    </span>
+                    {member.hasChat && (
+                      <MessageSquare className="w-3.5 h-3.5 text-white/90 shrink-0 group-hover:scale-110 transition-transform ml-0.5" />
+                    )}
+                  </button>
+
+                  {/* Discord Username Copy Hint */}
+                  <p className="text-[11px] text-[#2c3e50]/80 font-medium truncate flex items-center space-x-1">
+                    <span className="text-[#3b4e5b]">Discord:</span>
+                    <span className="font-semibold text-[#131d24]">@{member.discordTag}</span>
+                  </p>
+                </div>
               </div>
             ))}
           </div>
