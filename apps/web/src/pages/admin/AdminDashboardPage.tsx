@@ -130,7 +130,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ token })
         <div className="p-5 border-b border-brand-border flex items-center justify-between bg-brand-secondary">
           <h2 className="font-extrabold text-base text-white">Recent Customer Orders</h2>
           <Link
-            to="/control-panel/orders"
+            to="../orders"
             className="text-xs text-gold font-bold flex items-center space-x-1 hover:underline"
           >
             <span>View All Orders</span>
@@ -183,7 +183,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ token })
                     </td>
                     <td className="p-4 text-right">
                       <Link
-                        to="/control-panel/orders"
+                        to="../orders"
                         className="text-gold font-bold hover:underline"
                       >
                         Inspect

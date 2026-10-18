@@ -21,7 +21,7 @@ export const ENV = {
   // Auth
   JWT_SECRET: process.env.JWT_SECRET || 'anajaksmp_super_secure_jwt_secret_key_2026',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  ADMIN_PANEL_PATH: process.env.ADMIN_PANEL_PATH || '/control-panel',
+  ADMIN_PANEL_PATH: process.env.ADMIN_PANEL_PATH || '/anajak-admin_dasboard',
   
   // ABA PayWay
   ABA_PAYWAY_MERCHANT_ID: process.env.ABA_PAYWAY_MERCHANT_ID || '',

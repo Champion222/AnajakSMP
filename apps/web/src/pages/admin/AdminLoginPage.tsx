@@ -23,7 +23,10 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess }
       setIsLoading(true);
       const res = await api.admin.login(usernameOrEmail.trim(), password);
       onLoginSuccess(res.user, res.token);
-      navigate('/control-panel/dashboard');
+      const dest = window.location.pathname.includes('control-panel')
+        ? '/control-panel/dashboard'
+        : '/anajak-admin_dasboard/dashboard';
+      navigate(dest);
     } catch (err: any) {
       setError(err.message || 'Login failed. Please verify your credentials.');
     } finally {

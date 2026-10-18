@@ -219,29 +219,33 @@ export const App: React.FC = () => {
 
             {/* Admin Control Panel Routes */}
             <Route
-              path="/control-panel/login"
+              path="/anajak-admin_dasboard/login"
               element={<AdminLoginPage onLoginSuccess={handleLoginSuccess} />}
             />
             <Route
+              path="/control-panel/login"
+              element={<Navigate to="/anajak-admin_dasboard/login" replace />}
+            />
+            <Route
               path="/admin"
-              element={<Navigate to="/control-panel/login" replace />}
+              element={<Navigate to="/anajak-admin_dasboard/login" replace />}
             />
             <Route
               path="/admin/login"
-              element={<Navigate to="/control-panel/login" replace />}
+              element={<Navigate to="/anajak-admin_dasboard/login" replace />}
             />
 
             <Route
-              path="/control-panel"
+              path="/anajak-admin_dasboard"
               element={
                 adminToken ? (
                   <AdminLayout adminUser={adminUser} onLogout={handleLogout} />
                 ) : (
-                  <Navigate to="/control-panel/login" replace />
+                  <Navigate to="/anajak-admin_dasboard/login" replace />
                 )
               }
             >
-              <Route index element={<Navigate to="/control-panel/dashboard" replace />} />
+              <Route index element={<Navigate to="/anajak-admin_dasboard/dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboardPage token={adminToken!} />} />
               <Route path="products" element={<AdminProductsPage token={adminToken!} />} />
               <Route path="team" element={<AdminTeamPage token={adminToken!} />} />
@@ -252,6 +256,16 @@ export const App: React.FC = () => {
               <Route path="audit-logs" element={<AdminAuditLogsPage token={adminToken!} />} />
               <Route path="tickets" element={<AdminTicketsPage token={adminToken!} />} />
             </Route>
+
+            {/* Backwards compatibility for /control-panel */}
+            <Route
+              path="/control-panel/*"
+              element={<Navigate to="/anajak-admin_dasboard" replace />}
+            />
+            <Route
+              path="/control-panel"
+              element={<Navigate to="/anajak-admin_dasboard" replace />}
+            />
 
             {/* Fallback 404 */}
             <Route
