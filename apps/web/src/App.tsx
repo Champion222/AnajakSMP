@@ -17,7 +17,6 @@ import { OrderStatusPage } from './pages/OrderStatusPage.js';
 import { SupportPage } from './pages/SupportPage.js';
 import { TeamPage } from './pages/TeamPage.js';
 import { SocialsPage } from './pages/SocialsPage.js';
-import { FunPage } from './pages/FunPage.js';
 import { TermsPage, RefundPolicyPage, PrivacyPolicyPage } from './pages/LegalPages.js';
 
 // Admin Pages
@@ -179,11 +178,7 @@ export const App: React.FC = () => {
             />
             <Route
               path="/fun"
-              element={
-                <StorefrontLayout>
-                  <FunPage />
-                </StorefrontLayout>
-              }
+              element={<Navigate to="/" replace />}
             />
             <Route
               path="/support"

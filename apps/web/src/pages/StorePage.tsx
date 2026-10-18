@@ -295,35 +295,8 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
   const meta = getCategoryMeta();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* 1. Category Top Hero Banner */}
-      <div className="relative rounded-3xl bg-white/85 backdrop-blur-md border border-[#cbe4f6] p-6 sm:p-10 overflow-hidden shadow-sm flex flex-col md:flex-row items-center justify-between">
-        <div className="relative z-10 space-y-2 text-center md:text-left mb-6 md:mb-0">
-          <div className="flex items-center justify-center md:justify-start space-x-2 text-xs text-[#5a7184] mb-1">
-            <Link to="/" className="hover:text-[#d99a16] transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-[#d99a16] font-bold">{meta.breadcrumb}</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1a2530] tracking-wide">
-            {meta.title}
-          </h1>
-          <p className="text-xs sm:text-sm text-[#5a7184] max-w-md">
-            {meta.subtitle}
-          </p>
-        </div>
-
-        <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-[#cbe4f6] shadow-sm shrink-0">
-          <img
-            src={meta.bannerImg}
-            alt={meta.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-[#d99a16]/10" />
-        </div>
-      </div>
-
-      {/* 2. Full-Width Products Section (Sidebar Category Removed) */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+      {/* Products Section */}
       <section className="w-full space-y-6">
         {/* Status & Search Toolbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/85 backdrop-blur-md border border-[#cbe4f6] rounded-2xl p-4 shadow-sm">

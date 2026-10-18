@@ -31,15 +31,14 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Navigation order matching Mazer Club reference: HOME, RANK, HELP, VOTE, TEAM, GAME, KEYS
+  // Navigation order: HOME, RANK, KEYS, VOTE, TEAM, HELP
   const navLinks: NavItem[] = [
     { label: 'HOME', path: '/', icon: Home },
     { label: 'RANK', path: '/ranks', icon: Crown },
-    { label: 'HELP', path: '/support', icon: HelpCircle },
+    { label: 'KEYS', path: '/crate-keys', icon: Key },
     { label: 'VOTE', path: '/socials', icon: CheckSquare },
     { label: 'TEAM', path: '/team', icon: Users },
-    { label: 'GAME', path: '/fun', icon: Gamepad2 },
-    { label: 'KEYS', path: '/crate-keys', icon: Key },
+    { label: 'HELP', path: '/support', icon: HelpCircle },
   ];
 
   const serverIp = settings?.server_ip || 'play.anajaksmp.xyz';
@@ -49,24 +48,6 @@ export const Navbar: React.FC = () => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
   };
-
-  const getBreadcrumbTitle = (pathname: string): { subtitle: string; title: string } => {
-    if (pathname === '/') return { subtitle: 'RETURN TO BROWSE', title: 'HOME' };
-    if (pathname.startsWith('/ranks')) return { subtitle: 'RETURN TO BROWSE', title: 'RANK SHOP' };
-    if (pathname.startsWith('/crate-keys')) return { subtitle: 'RETURN TO BROWSE', title: 'CRATE KEYS' };
-    if (pathname.startsWith('/store')) return { subtitle: 'RETURN TO BROWSE', title: 'ALL PRODUCTS' };
-    if (pathname.startsWith('/team')) return { subtitle: 'RETURN TO BROWSE', title: 'OUR STAFF TEAM' };
-    if (pathname.startsWith('/socials') || pathname.startsWith('/social-media'))
-      return { subtitle: 'RETURN TO BROWSE', title: 'VOTE LINKS & SOCIALS' };
-    if (pathname.startsWith('/fun')) return { subtitle: 'RETURN TO BROWSE', title: 'MINI GAMES & FUN' };
-    if (pathname.startsWith('/support')) return { subtitle: 'RETURN TO BROWSE', title: 'HELP & SUPPORT' };
-    if (pathname.startsWith('/cart')) return { subtitle: 'RETURN TO BROWSE', title: 'SHOPPING CART' };
-    if (pathname.startsWith('/checkout')) return { subtitle: 'RETURN TO BROWSE', title: 'CHECKOUT' };
-    if (pathname.startsWith('/orders')) return { subtitle: 'RETURN TO BROWSE', title: 'ORDER STATUS' };
-    return { subtitle: 'RETURN TO BROWSE', title: 'STORE' };
-  };
-
-  const breadcrumb = getBreadcrumbTitle(location.pathname);
 
   return (
     <div className="relative w-full select-none">
@@ -341,28 +322,6 @@ export const Navbar: React.FC = () => {
           </svg>
         </div>
       </header>
-
-      {/* 4. Floating Dark Maroon Breadcrumb Bar */}
-      <div className="relative z-20 -mt-3 sm:-mt-5 px-4 max-w-4xl mx-auto">
-        <Link
-          to="/"
-          onClick={playMinecraftClick}
-          title="Return to Browse Home"
-          className="bg-[#2B0513] hover:bg-[#340718] border-2 border-[#4A0B21] hover:border-[#6B1232] rounded-2xl md:rounded-3xl p-3 sm:p-4 shadow-[0_16px_40px_rgba(20,2,8,0.7)] flex items-center space-x-4 transition-all group block"
-        >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#DE124D] to-[#FF4579] shadow-[0_0_15px_rgba(222,18,77,0.5)] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-            <Home className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[10px] sm:text-[11px] font-minecraft tracking-[0.2em] text-[#E0A0B0] uppercase group-hover:text-white transition-colors">
-              {breadcrumb.subtitle}
-            </span>
-            <span className="font-minecraft text-xl sm:text-2xl md:text-3xl font-black text-white tracking-wider leading-tight group-hover:text-[#FFE600] transition-colors">
-              {breadcrumb.title}
-            </span>
-          </div>
-        </Link>
-      </div>
     </div>
   );
 };
