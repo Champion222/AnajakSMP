@@ -7,6 +7,7 @@ import { SettingsService } from '../services/settings.service.js';
 import { SupportService } from '../services/support.service.js';
 import { TeamService } from '../services/team.service.js';
 import { MinecraftDeliveryService } from '../services/minecraft-delivery.service.js';
+import { supabase, isSupabaseConfigured } from '../db/supabase.js';
 import { ProductCreateInput, CouponCreateInput, StoreSettingsUpdateInput } from '@anajaksmp/shared';
 
 export class AdminController {
@@ -366,7 +367,7 @@ export class AdminController {
    */
   static async getTeam(_req: Request, res: Response): Promise<void> {
     try {
-      const team = TeamService.getTeam();
+      const team = await TeamService.getTeam();
       res.json({ success: true, team });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -380,8 +381,26 @@ export class AdminController {
         res.status(400).json({ error: 'Groups must be an array' });
         return;
       }
-      const updated = TeamService.saveTeam(groups);
+      const updated = await TeamService.saveTeam(groups);
       res.json({ success: true, team: updated });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async updatePageControls(req: Request, res: Response): Promise<void> {
+    try {
+      const { page, isSoon } = req.body;
+      if (!page) {
+        res.status(400).json({ error: 'Page identifier is required' });
+        return;
+      }
+      if (isSupabaseConfigured && supabase) {
+        await supabase
+          .from('site_pages')
+          .upsert({ id: page, is_soon: Boolean(isSoon), updated_at: new Date().toISOString() });
+      }
+      res.json({ success: true, page, isSoon: Boolean(isSoon) });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

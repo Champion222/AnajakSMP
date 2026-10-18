@@ -9,5 +9,6 @@ router.get('/products/:slug', StoreController.getProductBySlug);
 router.get('/team', StoreController.getTeam);
 router.get('/settings', StoreController.getStoreSettings);
 router.get('/server-status', StoreController.getServerStatus);
+router.get('/page-controls', StoreController.getPageControls);
 
 export default router;

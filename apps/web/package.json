@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@anajaksmp/shared": "*",
+    "@supabase/supabase-js": "^2.118.0",
+    "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.3",
     "lucide-react": "^0.460.0",
     "qrcode.react": "^4.1.0",
@@ -19,6 +21,7 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/canvas-confetti": "^1.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

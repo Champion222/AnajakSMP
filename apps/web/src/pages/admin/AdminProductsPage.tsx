@@ -176,6 +176,8 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [modalType, setModalType] = useState<'rank' | 'key' | null>(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form Fields
   const [name, setName] = useState('');
@@ -329,15 +331,19 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     }
   };
 
-  const handleDelete = async (id: string, prodName: string) => {
-    if (!window.confirm(`Are you sure you want to delete "${prodName}"?`)) return;
+  const confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
     try {
-      await api.admin.deleteProduct(token, id);
-      setNotification(`Successfully removed "${prodName}" from catalog.`);
+      setIsDeleting(true);
+      await api.admin.deleteProduct(token, productToDelete.id);
+      setNotification(`Successfully removed "${productToDelete.name}" from catalog.`);
+      setProductToDelete(null);
       await loadData();
       setTimeout(() => setNotification(null), 4000);
     } catch (err: any) {
       alert(err.message || 'Failed to delete product');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -557,8 +563,8 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
-                        onClick={() => handleDelete(prod.id, prod.name)}
-                        className="p-1.5 rounded-lg bg-brand-secondary border border-brand-border hover:border-status-error text-text-secondary hover:text-status-error"
+                        onClick={() => setProductToDelete(prod)}
+                        className="p-1.5 rounded-lg bg-brand-secondary border border-brand-border hover:border-status-error text-text-secondary hover:text-status-error cursor-pointer"
                         title="Delete"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -829,23 +835,87 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                 </label>
               </div>
 
-              <div className="pt-4 border-t border-brand-border flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-brand-secondary border border-brand-border text-text-secondary hover:text-white font-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="gold-gradient-btn px-6 py-2 rounded-xl font-bold text-xs"
-                >
-                  {isSubmitting ? 'Saving...' : 'Save Product'}
-                </button>
+              <div className="pt-4 border-t border-brand-border flex items-center justify-between">
+                {editingProduct ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const prod = editingProduct;
+                      setIsModalOpen(false);
+                      setProductToDelete(prod);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-status-error/15 border border-status-error/40 text-status-error hover:bg-status-error hover:text-white font-bold transition-all flex items-center space-x-1.5 cursor-pointer text-xs"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>Delete Product</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
+
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-4 py-2 rounded-xl bg-brand-secondary border border-brand-border text-text-secondary hover:text-white font-bold text-xs cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="gold-gradient-btn px-6 py-2 rounded-xl font-bold text-xs cursor-pointer"
+                  >
+                    {isSubmitting ? 'Saving...' : 'Save Product'}
+                  </button>
+                </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {productToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-brand-card border border-brand-border rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center space-x-3 text-status-error">
+              <div className="p-3 rounded-xl bg-status-error/15 border border-status-error/30">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-base text-white">Delete Product</h3>
+                <p className="text-xs text-text-muted">This action will remove the item from your store.</p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-brand-secondary border border-brand-border text-xs">
+              <p className="text-white font-bold">{productToDelete.name}</p>
+              <p className="text-[11px] text-text-muted font-mono mt-0.5">{productToDelete.slug}</p>
+            </div>
+
+            <p className="text-xs text-text-secondary">
+              Are you sure you want to permanently delete this product? Players will no longer be able to purchase it in the store.
+            </p>
+
+            <div className="flex justify-end space-x-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setProductToDelete(null)}
+                className="px-4 py-2 rounded-xl bg-brand-secondary border border-brand-border text-text-secondary hover:text-white font-bold text-xs cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={confirmDeleteProduct}
+                className="px-4 py-2 rounded-xl bg-status-error hover:bg-red-600 text-white font-bold text-xs transition-colors flex items-center space-x-1.5 cursor-pointer"
+              >
+                {isDeleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                <span>{isDeleting ? 'Deleting...' : 'Yes, Delete Product'}</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

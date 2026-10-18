@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { ProductService } from '../services/product.service.js';
 import { SettingsService } from '../services/settings.service.js';
 import { TeamService } from '../services/team.service.js';
+import { supabase, isSupabaseConfigured } from '../db/supabase.js';
 
 export class StoreController {
   static async getTeam(_req: Request, res: Response): Promise<void> {
     try {
-      const team = TeamService.getTeam();
+      const team = await TeamService.getTeam();
       res.json({ team });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -130,6 +131,25 @@ export class StoreController {
         version: '1.20.4 - 1.21.x',
         motd: 'AnajakSMP - Your Adventure. Your Legend.',
       });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async getPageControls(_req: Request, res: Response): Promise<void> {
+    try {
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase.from('site_pages').select('*');
+        if (!error && data && data.length > 0) {
+          const pages: Record<string, boolean> = {};
+          for (const row of data) {
+            pages[row.id] = Boolean(row.is_soon);
+          }
+          res.json({ pages });
+          return;
+        }
+      }
+      res.json({ pages: { keys: true, vote: false, help: false } });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

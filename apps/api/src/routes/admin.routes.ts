@@ -95,4 +95,7 @@ router.patch('/tickets/:id', AdminController.updateSupportTicket);
 router.get('/team', AdminController.getTeam);
 router.post('/team', requireRole(['OWNER', 'ADMIN']), AdminController.saveTeam);
 
+// Site Pages SOON Control
+router.patch('/page-controls', requireRole(['OWNER', 'ADMIN']), AdminController.updatePageControls);
+
 export default router;

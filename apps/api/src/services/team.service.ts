@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import { supabase, isSupabaseConfigured } from '../db/supabase.js';
 
 export interface StaffMember {
   id: string;
@@ -70,66 +69,87 @@ export const DEFAULT_TEAM: RoleGroup[] = [
   },
 ];
 
-const DATA_DIR = path.resolve(process.cwd(), 'data');
-const TEAM_FILE = path.join(DATA_DIR, 'team.json');
-
-function ensureDataDir(): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    try {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    } catch (e: any) {
-      console.warn('⚠️ [TeamService] Could not create data dir:', e.message);
-    }
-  }
-}
-
 let cachedTeam: RoleGroup[] | null = null;
 
 export class TeamService {
-  static getTeam(): RoleGroup[] {
+  static async getTeam(): Promise<RoleGroup[]> {
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('team_members')
+          .select('*')
+          .order('display_order', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          const groupMap = new Map<string, StaffMember[]>();
+          for (const row of data) {
+            const groupName = row.role_group;
+            if (!groupMap.has(groupName)) {
+              groupMap.set(groupName, []);
+            }
+            groupMap.get(groupName)!.push({
+              id: row.id,
+              ign: row.ign,
+              skinUsername: row.skin_username,
+              discordTag: row.discord_tag,
+              hasChat: row.has_chat ?? true,
+            });
+          }
+
+          const groups: RoleGroup[] = [];
+          for (const [title, members] of groupMap.entries()) {
+            groups.push({
+              id: title.toLowerCase().replace(/\s+/g, '-'),
+              title,
+              members,
+            });
+          }
+          cachedTeam = groups;
+          return groups;
+        }
+      } catch (err: any) {
+        console.warn('⚠️ [TeamService] Supabase team fetch error:', err.message);
+      }
+    }
+
     if (cachedTeam !== null) {
       return cachedTeam;
     }
 
-    ensureDataDir();
+    return DEFAULT_TEAM;
+  }
 
-    if (fs.existsSync(TEAM_FILE)) {
+  static async saveTeam(groups: RoleGroup[]): Promise<RoleGroup[]> {
+    cachedTeam = groups;
+    if (isSupabaseConfigured && supabase) {
       try {
-        const raw = fs.readFileSync(TEAM_FILE, 'utf-8');
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          cachedTeam = parsed;
-          return cachedTeam;
+        await supabase.from('team_members').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+        const rows: any[] = [];
+        let order = 1;
+        for (const g of groups) {
+          for (const m of g.members) {
+            rows.push({
+              role_group: g.title,
+              ign: m.ign,
+              skin_username: m.skinUsername,
+              discord_tag: m.discordTag,
+              has_chat: m.hasChat ?? true,
+              display_order: order++,
+            });
+          }
         }
-      } catch (e: any) {
-        console.warn('⚠️ [TeamService] Failed to read team.json:', e.message);
+        if (rows.length > 0) {
+          await supabase.from('team_members').insert(rows);
+        }
+      } catch (err: any) {
+        console.warn('⚠️ [TeamService] Supabase team save error:', err.message);
       }
     }
-
-    cachedTeam = DEFAULT_TEAM;
-    try {
-      ensureDataDir();
-      fs.writeFileSync(TEAM_FILE, JSON.stringify(cachedTeam, null, 2), 'utf-8');
-    } catch (e: any) {
-      console.warn('⚠️ [TeamService] Failed to write initial team.json:', e.message);
-    }
-
     return cachedTeam;
   }
 
-  static saveTeam(groups: RoleGroup[]): RoleGroup[] {
-    cachedTeam = groups;
-    try {
-      ensureDataDir();
-      fs.writeFileSync(TEAM_FILE, JSON.stringify(groups, null, 2), 'utf-8');
-    } catch (e: any) {
-      console.warn('⚠️ [TeamService] Failed to save team.json:', e.message);
-    }
-    return cachedTeam;
-  }
-
-  static addMember(groupId: string, memberData: Omit<StaffMember, 'id'>): StaffMember {
-    const groups = this.getTeam();
+  static async addMember(groupId: string, memberData: Omit<StaffMember, 'id'>): Promise<StaffMember> {
+    const groups = await this.getTeam();
     const newMember: StaffMember = {
       ...memberData,
       id: `member-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -147,12 +167,12 @@ export class TeamService {
       groups.push(newGroup);
     }
 
-    this.saveTeam(groups);
+    await this.saveTeam(groups);
     return newMember;
   }
 
-  static updateMember(memberId: string, updates: Partial<StaffMember>, newGroupId?: string): boolean {
-    const groups = this.getTeam();
+  static async updateMember(memberId: string, updates: Partial<StaffMember>, newGroupId?: string): Promise<boolean> {
+    const groups = await this.getTeam();
     let foundMember: StaffMember | null = null;
     let oldGroup: RoleGroup | null = null;
 
@@ -185,12 +205,12 @@ export class TeamService {
       }
     }
 
-    this.saveTeam(groups);
+    await this.saveTeam(groups);
     return true;
   }
 
-  static deleteMember(memberId: string): boolean {
-    const groups = this.getTeam();
+  static async deleteMember(memberId: string): Promise<boolean> {
+    const groups = await this.getTeam();
     let removed = false;
 
     for (const g of groups) {
@@ -203,15 +223,16 @@ export class TeamService {
     }
 
     if (removed) {
-      // Remove empty groups if custom
-      const cleaned = groups.filter((g) => g.members.length > 0 || ['owner', 'builder', 'developer', 'moderator'].includes(g.id.toLowerCase()));
-      this.saveTeam(cleaned);
+      const cleaned = groups.filter(
+        (g) => g.members.length > 0 || ['owner', 'builder', 'developer', 'moderator'].includes(g.id.toLowerCase())
+      );
+      await this.saveTeam(cleaned);
     }
 
     return removed;
   }
 
-  static resetToDefault(): RoleGroup[] {
+  static async resetToDefault(): Promise<RoleGroup[]> {
     return this.saveTeam(DEFAULT_TEAM);
   }
 }

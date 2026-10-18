@@ -1,3 +1,5 @@
+import { supabase } from './supabase.js';
+
 export interface StaffMember {
   id: string;
   ign: string;
@@ -68,14 +70,16 @@ export const DEFAULT_TEAM: RoleGroup[] = [
 ];
 
 const STORAGE_KEY = 'anajaksmp_team_members';
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = ((import.meta as any).env?.VITE_API_URL || '/api').replace(/\/$/, '');
 
 export const teamService = {
   async syncFromServer(): Promise<RoleGroup[]> {
+    // 1. Try Backend API
     try {
       const res = await fetch(`${API_BASE}/store/team`);
-      if (res.ok) {
-        const data = await res.json();
+      const text = await res.text();
+      if (res.ok && text.trim().startsWith('{')) {
+        const data = JSON.parse(text);
         if (Array.isArray(data.team) && data.team.length > 0) {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data.team));
           window.dispatchEvent(new CustomEvent('anajaksmp_team_updated', { detail: data.team }));
@@ -83,8 +87,49 @@ export const teamService = {
         }
       }
     } catch (e) {
-      console.warn('Could not sync team from server', e);
+      // Fall through to direct Supabase
     }
+
+    // 2. Direct Supabase Fallback (Guaranteed to work on Vercel without backend server)
+    try {
+      const { data, error } = await supabase
+        .from('team_members')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        const groupMap = new Map<string, StaffMember[]>();
+        for (const row of data) {
+          const groupName = row.role_group;
+          if (!groupMap.has(groupName)) {
+            groupMap.set(groupName, []);
+          }
+          groupMap.get(groupName)!.push({
+            id: row.id,
+            ign: row.ign,
+            skinUsername: row.skin_username,
+            discordTag: row.discord_tag,
+            hasChat: row.has_chat ?? true,
+          });
+        }
+
+        const groups: RoleGroup[] = [];
+        for (const [title, members] of groupMap.entries()) {
+          groups.push({
+            id: title.toLowerCase().replace(/\s+/g, '-'),
+            title,
+            members,
+          });
+        }
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
+        window.dispatchEvent(new CustomEvent('anajaksmp_team_updated', { detail: groups }));
+        return groups;
+      }
+    } catch (err) {
+      console.warn('Could not sync team from Supabase:', err);
+    }
+
     return this.getTeam();
   },
 
@@ -100,13 +145,18 @@ export const teamService = {
     return DEFAULT_TEAM;
   },
 
-  saveTeam(groups: RoleGroup[], adminToken?: string): void {
+  async saveTeam(groups: RoleGroup[], adminToken?: string): Promise<void> {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
       window.dispatchEvent(new CustomEvent('anajaksmp_team_updated', { detail: groups }));
 
-      const token = adminToken || localStorage.getItem('anajaksmp_admin_token') || sessionStorage.getItem('anajaksmp_admin_token');
-      if (token) {
+      // Attempt backend API
+      const token =
+        adminToken ||
+        localStorage.getItem('anajaksmp_admin_token') ||
+        sessionStorage.getItem('anajaksmp_admin_token');
+
+      if (token && !token.startsWith('anajak_admin_session_')) {
         fetch(`${API_BASE}/admin/team`, {
           method: 'POST',
           headers: {
@@ -114,14 +164,38 @@ export const teamService = {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ groups }),
-        }).catch((err) => console.warn('Failed to persist team to backend:', err));
+        }).catch(() => {});
+      }
+
+      // Also sync directly to Supabase
+      try {
+        await supabase.from('team_members').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+        const rows: any[] = [];
+        let order = 1;
+        for (const g of groups) {
+          for (const m of g.members) {
+            rows.push({
+              role_group: g.title,
+              ign: m.ign,
+              skin_username: m.skinUsername,
+              discord_tag: m.discordTag,
+              has_chat: m.hasChat ?? true,
+              display_order: order++,
+            });
+          }
+        }
+        if (rows.length > 0) {
+          await supabase.from('team_members').insert(rows);
+        }
+      } catch (err) {
+        console.warn('Direct Supabase team sync warning:', err);
       }
     } catch (e) {
       console.warn('Failed to save team members', e);
     }
   },
 
-  addMember(groupId: string, memberData: Omit<StaffMember, 'id'>): StaffMember {
+  async addMember(groupId: string, memberData: Omit<StaffMember, 'id'>): Promise<StaffMember> {
     const groups = this.getTeam();
     const newMember: StaffMember = {
       ...memberData,
@@ -132,7 +206,6 @@ export const teamService = {
     if (group) {
       group.members.push(newMember);
     } else {
-      // Create new role group
       const newGroup: RoleGroup = {
         id: groupId.toLowerCase().replace(/\s+/g, '-'),
         title: groupId.toUpperCase(),
@@ -141,11 +214,11 @@ export const teamService = {
       groups.push(newGroup);
     }
 
-    this.saveTeam(groups);
+    await this.saveTeam(groups);
     return newMember;
   },
 
-  updateMember(memberId: string, updates: Partial<StaffMember>, newGroupId?: string): boolean {
+  async updateMember(memberId: string, updates: Partial<StaffMember>, newGroupId?: string): Promise<boolean> {
     const groups = this.getTeam();
     let foundMember: StaffMember | null = null;
     let oldGroup: RoleGroup | null = null;
@@ -156,10 +229,8 @@ export const teamService = {
         foundMember = { ...g.members[idx], ...updates };
         oldGroup = g;
         if (newGroupId && newGroupId.toLowerCase() !== g.id.toLowerCase()) {
-          // Remove from old group
           g.members.splice(idx, 1);
         } else {
-          // Update in place
           g.members[idx] = foundMember;
         }
         break;
@@ -181,11 +252,11 @@ export const teamService = {
       }
     }
 
-    this.saveTeam(groups);
+    await this.saveTeam(groups);
     return true;
   },
 
-  deleteMember(memberId: string): boolean {
+  async deleteMember(memberId: string): Promise<boolean> {
     const groups = this.getTeam();
     let removed = false;
 
@@ -199,13 +270,22 @@ export const teamService = {
     }
 
     if (removed) {
-      this.saveTeam(groups);
+      const cleaned = groups.filter(
+        (g) => g.members.length > 0 || ['owner', 'builder', 'developer', 'moderator'].includes(g.id.toLowerCase())
+      );
+      await this.saveTeam(cleaned);
     }
+
     return removed;
   },
 
-  resetToDefault(): RoleGroup[] {
-    this.saveTeam(DEFAULT_TEAM);
+  async resetToDefault(): Promise<RoleGroup[]> {
+    await this.saveTeam(DEFAULT_TEAM);
     return DEFAULT_TEAM;
   },
 };
+
+// Auto-sync on client boot
+if (typeof window !== 'undefined') {
+  teamService.syncFromServer();
+}
