@@ -1,0 +1,6 @@
+.git
+.github
+.agents
+supabase
+docs
+*.log

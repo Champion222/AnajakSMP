@@ -1,0 +1,31 @@
+{
+  "name": "anajaksmp-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AnajakSMP.xyz - Premium Minecraft Survival Store & Ecommerce Platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:all": "concurrently -n api,web -c yellow,cyan \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspace=apps/api"
+  },
+  "keywords": [
+    "minecraft",
+    "store",
+    "ecommerce",
+    "khqr",
+    "payway",
+    "anajaksmp",
+    "supabase"
+  ],
+  "author": "AnajakSMP Team",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
