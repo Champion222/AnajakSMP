@@ -132,8 +132,18 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ usernameOrEmail, password: passwordPlain }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Login failed');
+      const text = await res.text();
+      let data: any = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        throw new Error(
+          res.ok
+            ? 'Unexpected response from server'
+            : 'API server is not reachable on port 5000. Please ensure the backend is running with "npm run dev:api" or "npm run dev:all".'
+        );
+      }
+      if (!res.ok) throw new Error(data.error || 'Login failed. Please verify your credentials.');
       return data;
     },
 

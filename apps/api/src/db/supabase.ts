@@ -14,14 +14,15 @@ import {
 } from '@anajaksmp/shared';
 
 export let supabase: SupabaseClient | null = null;
+const supabaseKey = ENV.SUPABASE_SERVICE_ROLE_KEY || ENV.SUPABASE_ANON_KEY;
 export const isSupabaseConfigured = Boolean(
   ENV.SUPABASE_URL &&
-    ENV.SUPABASE_SERVICE_ROLE_KEY &&
+    supabaseKey &&
     !ENV.SUPABASE_URL.includes('your-project')
 );
 
 if (isSupabaseConfigured) {
-  supabase = createClient(ENV.SUPABASE_URL, ENV.SUPABASE_SERVICE_ROLE_KEY, {
+  supabase = createClient(ENV.SUPABASE_URL, supabaseKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -30,7 +31,7 @@ if (isSupabaseConfigured) {
   console.log('✅ [Database] Connected to Supabase at:', ENV.SUPABASE_URL);
 } else {
   console.log(
-    '⚠️ [Database] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY not configured. Running in-memory database adapter.'
+    '⚠️ [Database] SUPABASE_URL and Supabase keys not configured. Running in-memory database adapter.'
   );
 }
 
@@ -84,8 +85,8 @@ export const memoryStore: MemoryStore = {
   ],
   adminPasswordHashes: new Map([
     // bcrypt hash for "AdminAnajak2026!"
-    ['admin@anajaksmp.xyz', '$2a$10$mB5O92T5fKrvqZ0qN/1O/ee1G6x55dK9Q0lOcg8L88Qx700cI1wma'],
-    ['admin', '$2a$10$mB5O92T5fKrvqZ0qN/1O/ee1G6x55dK9Q0lOcg8L88Qx700cI1wma'],
+    ['admin@anajaksmp.xyz', '$2a$10$xayraNJgrk8FFYIVWQaXQOF4T19mtztnHMb7rMtTjJaQ2dvjEM4zW'],
+    ['admin', '$2a$10$xayraNJgrk8FFYIVWQaXQOF4T19mtztnHMb7rMtTjJaQ2dvjEM4zW'],
   ]),
   categories: [
     {
