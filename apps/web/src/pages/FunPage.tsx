@@ -194,12 +194,12 @@ export const FunPage: React.FC = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
       {/* Hero Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-minecraft text-minecraft-shadow">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-heading">
           <Sparkles className="w-3.5 h-3.5 text-gold" />
           <span>Interactive Arcade & Minecraft Playground</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-minecraft text-minecraft-shadow tracking-wide">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide">
           ANAJAKSMP <span className="text-gold">FUN ZONE</span>
         </h1>
 
@@ -214,7 +214,7 @@ export const FunPage: React.FC = () => {
         <div className="rounded-3xl bg-gradient-to-b from-[#181827] to-[#12121d] border border-cyan-500/30 p-6 sm:p-8 space-y-6 flex flex-col justify-between relative overflow-hidden">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-minecraft">
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-heading">
                 <Pickaxe className="w-3.5 h-3.5" />
                 <span>Mini-Game 1: Block Clicker</span>
               </span>
@@ -223,7 +223,7 @@ export const FunPage: React.FC = () => {
               </span>
             </div>
 
-            <h3 className="text-2xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h3 className="text-2xl font-black text-white font-heading">
               DIAMOND ORE MINER
             </h3>
             <p className="text-xs text-[#a0a0b6]">
@@ -239,7 +239,7 @@ export const FunPage: React.FC = () => {
                 <div
                   key={p.id}
                   style={{ left: `${p.x}px`, top: `${p.y}px` }}
-                  className="absolute pointer-events-none font-minecraft text-sm font-bold text-cyan-300 animate-bounce text-minecraft-shadow"
+                  className="absolute pointer-events-none text-sm font-bold text-cyan-300 animate-bounce"
                 >
                   +1 💎
                 </div>
@@ -254,7 +254,7 @@ export const FunPage: React.FC = () => {
                 <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_15%,transparent_16%)] bg-[size:24px_24px] opacity-60" />
                 <div className="relative z-10 flex flex-col items-center space-y-2">
                   <span className="text-5xl group-hover:scale-110 transition-transform">💎</span>
-                  <span className="text-xs font-minecraft text-white font-black text-minecraft-shadow">
+                  <span className="text-xs text-white font-black font-heading">
                     DIAMOND ORE
                   </span>
                 </div>
@@ -283,7 +283,7 @@ export const FunPage: React.FC = () => {
           </div>
 
           {/* Stats Footer */}
-          <div className="pt-4 border-t border-cyan-500/20 grid grid-cols-2 gap-4 text-center font-minecraft">
+          <div className="pt-4 border-t border-cyan-500/20 grid grid-cols-2 gap-4 text-center">
             <div className="p-3 rounded-xl bg-[#141422] border border-[#232335]">
               <span className="text-[10px] text-[#8c8ca0] block">TOTAL CLICKS</span>
               <span className="text-lg font-black text-white">{clicks}</span>
@@ -299,14 +299,14 @@ export const FunPage: React.FC = () => {
         <div className="rounded-3xl bg-gradient-to-b from-[#191828] to-[#12121d] border border-gold/30 p-6 sm:p-8 space-y-6 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold font-minecraft">
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold font-heading">
                 <Trophy className="w-3.5 h-3.5" />
                 <span>Mini-Game 2: Lucky Spinner</span>
               </span>
               <span className="text-xs font-mono text-gold font-bold">100% Free Fun</span>
             </div>
 
-            <h3 className="text-2xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h3 className="text-2xl font-black text-white font-heading">
               LUCKY ANAJAK WHEEL
             </h3>
             <p className="text-xs text-[#a0a0b6]">
@@ -340,7 +340,7 @@ export const FunPage: React.FC = () => {
                       }}
                     >
                       <span className="text-2xl block">{p.emoji}</span>
-                      <span className="text-[9px] font-minecraft font-bold text-white/90 drop-shadow">
+                      <span className="text-[9px] font-bold text-white/90 drop-shadow">
                         {p.name.split(' ')[0]}
                       </span>
                     </div>
@@ -358,7 +358,7 @@ export const FunPage: React.FC = () => {
             {wheelPrize && (
               <div className="p-3 rounded-xl bg-gold/15 border border-gold/40 text-center animate-bounce">
                 <span className="text-xs text-[#a0a0b8] block">YOU WON:</span>
-                <span className="text-sm font-black text-gold font-minecraft text-minecraft-shadow">
+                <span className="text-sm font-black text-gold font-heading">
                   🎉 {wheelPrize}!
                 </span>
               </div>
@@ -367,7 +367,7 @@ export const FunPage: React.FC = () => {
             <button
               onClick={handleSpinWheel}
               disabled={isSpinning}
-              className={`gold-gradient-btn px-8 py-3 rounded-xl font-minecraft text-xs font-black tracking-wider uppercase flex items-center space-x-2 text-minecraft-shadow ${
+              className={`gold-gradient-btn px-8 py-3 rounded-xl font-heading text-xs font-black tracking-wider uppercase flex items-center space-x-2 ${
                 isSpinning ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
               }`}
             >
@@ -387,11 +387,11 @@ export const FunPage: React.FC = () => {
         {/* Feature 3: Minecraft Soundboard */}
         <div className="rounded-3xl bg-gradient-to-b from-[#181827] to-[#12121d] border border-purple-500/30 p-6 sm:p-8 space-y-6">
           <div className="space-y-2">
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold font-minecraft">
+            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold font-heading">
               <Volume2 className="w-3.5 h-3.5" />
               <span>Feature 3: 8-Bit Web Audio Jukebox</span>
             </span>
-            <h3 className="text-2xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h3 className="text-2xl font-black text-white font-heading">
               MINECRAFT SOUNDBOARD
             </h3>
             <p className="text-xs text-[#a0a0b6]">
@@ -416,7 +416,7 @@ export const FunPage: React.FC = () => {
                 <span className="text-2xl block group-hover:scale-110 transition-transform">
                   {sound.emoji}
                 </span>
-                <span className="text-xs font-black text-white font-minecraft block">
+                <span className="text-xs font-black text-white font-heading block">
                   {sound.name}
                 </span>
                 <span className="text-[10px] text-[#7d7d94] font-mono block">
@@ -430,11 +430,11 @@ export const FunPage: React.FC = () => {
         {/* Feature 4: Skin & Avatar 3D Viewer */}
         <div className="rounded-3xl bg-gradient-to-b from-[#181827] to-[#12121d] border border-emerald-500/30 p-6 sm:p-8 space-y-6 flex flex-col justify-between">
           <div className="space-y-2">
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-minecraft">
+            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-heading">
               <Search className="w-3.5 h-3.5" />
               <span>Feature 4: Live Player Skin Viewer</span>
             </span>
-            <h3 className="text-2xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h3 className="text-2xl font-black text-white font-heading">
               SKIN & AVATAR VIEWER
             </h3>
             <p className="text-xs text-[#a0a0b6]">
@@ -458,7 +458,7 @@ export const FunPage: React.FC = () => {
                   playMinecraftClick();
                 }
               }}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-minecraft text-xs font-bold transition-colors"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-heading text-xs font-bold transition-colors"
             >
               Lookup
             </button>
@@ -489,7 +489,7 @@ export const FunPage: React.FC = () => {
                   (e.target as HTMLImageElement).src = 'https://mc-heads.net/body/Steve/160';
                 }}
               />
-              <span className="text-[11px] font-minecraft text-emerald-400 font-bold block">
+              <span className="text-[11px] font-heading text-emerald-400 font-bold block">
                 {activeSkinUser}
               </span>
             </div>
@@ -501,11 +501,11 @@ export const FunPage: React.FC = () => {
       <div className="rounded-3xl bg-gradient-to-r from-[#171725] via-[#1a1a2b] to-[#171725] border border-gold/30 p-8 sm:p-10 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-gold/15 text-gold text-xs font-bold font-minecraft uppercase">
+            <span className="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-gold/15 text-gold text-xs font-bold font-heading uppercase">
               <Award className="w-3.5 h-3.5" />
               <span>Feature 5: Minecraft Trivia Quiz</span>
             </span>
-            <h3 className="text-2xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h3 className="text-2xl font-black text-white font-heading">
               HOW WELL DO YOU KNOW SURVIVAL?
             </h3>
           </div>
@@ -521,7 +521,7 @@ export const FunPage: React.FC = () => {
               <span>Question {currentQIndex + 1} of {quizQuestions.length}</span>
             </div>
 
-            <h4 className="text-lg font-bold text-white font-minecraft">
+            <h4 className="text-lg font-bold text-white font-heading">
               {quizQuestions[currentQIndex].question}
             </h4>
 
@@ -565,7 +565,7 @@ export const FunPage: React.FC = () => {
                 </p>
                 <button
                   onClick={handleNextQuestion}
-                  className="gold-gradient-btn px-5 py-2 rounded-xl text-xs font-minecraft font-black shrink-0 text-minecraft-shadow"
+                  className="gold-gradient-btn px-5 py-2 rounded-xl text-xs font-heading font-black shrink-0"
                 >
                   {currentQIndex + 1 < quizQuestions.length ? 'NEXT QUESTION →' : 'SEE RESULTS 🎉'}
                 </button>
@@ -575,7 +575,7 @@ export const FunPage: React.FC = () => {
         ) : (
           <div className="text-center py-6 space-y-4 max-w-md mx-auto">
             <span className="text-4xl block">🏆</span>
-            <h4 className="text-xl font-black text-white font-minecraft">
+            <h4 className="text-xl font-black text-white font-heading">
               QUIZ COMPLETED!
             </h4>
             <p className="text-xs text-[#a0a0b8]">
@@ -586,7 +586,7 @@ export const FunPage: React.FC = () => {
             </p>
             <button
               onClick={restartQuiz}
-              className="gold-gradient-btn px-6 py-2.5 rounded-xl font-minecraft text-xs font-bold text-minecraft-shadow"
+              className="gold-gradient-btn px-6 py-2.5 rounded-xl font-heading text-xs font-bold"
             >
               PLAY AGAIN 🔄
             </button>

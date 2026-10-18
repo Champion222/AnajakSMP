@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
           </Link>
 
           {/* Navigation Links */}
-          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-[#a8a8ba] font-minecraft">
+          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-[#a8a8ba]">
             <Link to="/" className="hover:text-gold transition-colors">Home</Link>
             <Link to="/ranks" className="hover:text-gold transition-colors">Ranks</Link>
             <Link to="/crate-keys" className="hover:text-gold transition-colors">Crate Keys</Link>

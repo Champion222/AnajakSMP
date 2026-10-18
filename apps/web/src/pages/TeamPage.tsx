@@ -159,12 +159,12 @@ export const TeamPage: React.FC = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       {/* Hero Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-minecraft text-minecraft-shadow">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-heading">
           <Shield className="w-3.5 h-3.5 text-gold" />
           <span>Server Administration & Guardians</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-minecraft text-minecraft-shadow tracking-wide">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide">
           MEET THE <span className="text-gold">ANAJAKSMP TEAM</span>
         </h1>
 
@@ -201,7 +201,7 @@ export const TeamPage: React.FC = () => {
                 playMinecraftClick();
                 setActiveCategory(cat.id);
               }}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all font-minecraft ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 isActive
                   ? 'bg-gold text-brand-bg shadow-gold-glow scale-105'
                   : 'bg-[#151522] border border-[#262638] text-[#9a9ab0] hover:text-white hover:border-gold/40'
@@ -249,13 +249,13 @@ export const TeamPage: React.FC = () => {
 
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="text-lg font-black text-white font-minecraft group-hover:text-gold transition-colors">
+                      <h3 className="text-lg font-black text-white font-heading group-hover:text-gold transition-colors">
                         {member.ign}
                       </h3>
                     </div>
                     <p className="text-xs text-[#8c8ca0] font-mono">aka &quot;{member.nickname}&quot;</p>
                     <span
-                      className={`inline-block mt-1 px-2.5 py-0.5 rounded-md text-[11px] font-black tracking-wider uppercase border font-minecraft ${member.roleColor}`}
+                      className={`inline-block mt-1 px-2.5 py-0.5 rounded-md text-[11px] font-black tracking-wider uppercase border ${member.roleColor}`}
                     >
                       {member.role}
                     </span>
@@ -275,7 +275,7 @@ export const TeamPage: React.FC = () => {
                     <Flame className="w-3.5 h-3.5 text-gold" />
                     <span>Fav Item:</span>
                   </span>
-                  <span className="font-semibold text-white/90 text-right font-minecraft text-[11px]">
+                  <span className="font-semibold text-white/90 text-right text-[11px]">
                     {member.favoriteItem}
                   </span>
                 </div>
@@ -326,12 +326,12 @@ export const TeamPage: React.FC = () => {
         <div className="absolute top-0 right-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 text-xs font-bold font-minecraft uppercase">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 text-xs font-bold font-heading uppercase">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Staff Recruitment Open</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-white font-minecraft text-minecraft-shadow">
+          <h2 className="text-2xl sm:text-3xl font-black text-white font-heading">
             WANT TO JOIN THE <span className="text-gold">ANAJAKSMP STAFF TEAM</span>?
           </h2>
 
@@ -364,7 +364,7 @@ export const TeamPage: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               onClick={playMinecraftClick}
-              className="gold-gradient-btn px-6 py-3 rounded-xl font-minecraft text-xs flex items-center space-x-2 text-minecraft-shadow"
+              className="gold-gradient-btn px-6 py-3 rounded-xl font-heading text-xs font-bold flex items-center space-x-2"
             >
               <MessageSquare className="w-4 h-4" />
               <span>APPLY VIA DISCORD TICKET</span>
@@ -372,7 +372,7 @@ export const TeamPage: React.FC = () => {
             <Link
               to="/support"
               onClick={playMinecraftClick}
-              className="px-6 py-3 rounded-xl bg-[#141420] border border-[#2d2d42] text-white hover:border-gold/50 font-minecraft text-xs flex items-center space-x-2"
+              className="px-6 py-3 rounded-xl bg-[#141420] border border-[#2d2d42] text-white hover:border-gold/50 font-heading text-xs font-bold flex items-center space-x-2"
             >
               <span>READ REQUIREMENTS</span>
               <ExternalLink className="w-3.5 h-3.5 text-[#88889a]" />

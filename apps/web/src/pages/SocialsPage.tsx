@@ -120,12 +120,12 @@ export const SocialsPage: React.FC = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
       {/* Hero Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-minecraft text-minecraft-shadow">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest font-heading">
           <Users className="w-3.5 h-3.5 text-gold" />
           <span>Official Social Networks & Guilds</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-minecraft text-minecraft-shadow tracking-wide">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide">
           JOIN THE <span className="text-gold">ANAJAKSMP COMMUNITY</span>
         </h1>
 
@@ -177,7 +177,7 @@ export const SocialsPage: React.FC = () => {
                       <Icon className="w-7 h-7" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-black text-white font-minecraft">
+                      <h3 className="text-xl font-black text-white font-heading">
                         {platform.name}
                       </h3>
                       <p className="text-xs text-[#8e8ea4]">{platform.subtitle}</p>
@@ -211,7 +211,7 @@ export const SocialsPage: React.FC = () => {
                   target="_blank"
                   rel="noreferrer"
                   onClick={playMinecraftClick}
-                  className={`flex-1 min-w-[200px] text-center py-3 px-4 rounded-xl ${platform.accentBg} text-white font-minecraft text-xs font-bold hover:brightness-110 transition-all flex items-center justify-center space-x-2 shadow-md`}
+                  className={`flex-1 min-w-[200px] text-center py-3 px-4 rounded-xl ${platform.accentBg} text-white font-heading text-xs font-bold hover:brightness-110 transition-all flex items-center justify-center space-x-2 shadow-md`}
                 >
                   <span>{platform.buttonText}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -234,11 +234,11 @@ export const SocialsPage: React.FC = () => {
       <div className="rounded-3xl bg-gradient-to-r from-[#171725] via-[#1a1a2b] to-[#171725] border border-gold/30 p-8 sm:p-10 space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-gold/15 text-gold text-xs font-bold font-minecraft uppercase">
+            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-gold/15 text-gold text-xs font-bold font-heading uppercase">
               <Gift className="w-3.5 h-3.5" />
               <span>Free In-Game Rewards</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white font-minecraft text-minecraft-shadow">
+            <h2 className="text-2xl sm:text-3xl font-black text-white font-heading">
               VOTE DAILY FOR <span className="text-gold">FREE CRATE KEYS & COINS</span>
             </h2>
             <p className="text-xs sm:text-sm text-[#9e9eb4] max-w-2xl">
@@ -267,7 +267,7 @@ export const SocialsPage: React.FC = () => {
               </div>
 
               <div>
-                <h4 className="text-base font-black text-white font-minecraft">{site.name}</h4>
+                <h4 className="text-base font-black text-white font-heading">{site.name}</h4>
                 <p className="text-xs text-gold font-semibold mt-1 flex items-center space-x-1">
                   <span>{site.reward}</span>
                 </p>
@@ -278,7 +278,7 @@ export const SocialsPage: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 onClick={playMinecraftClick}
-                className="w-full block text-center py-2 px-3 rounded-xl bg-gold text-brand-bg font-minecraft text-xs font-black hover:brightness-110 transition-all text-minecraft-shadow"
+                className="w-full block text-center py-2 px-3 rounded-xl bg-gold text-brand-bg font-heading text-xs font-black hover:brightness-110 transition-all"
               >
                 VOTE ON {site.name.toUpperCase()}
               </a>
