@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '@anajaksmp/shared';
 import { useCart } from '../context/CartContext.js';
 import { useSettings } from '../context/SettingsContext.js';
@@ -31,6 +31,19 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
   const { currency } = useSettings();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        try {
+          playMinecraftClick();
+        } catch {}
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   if (!product) return null;
 
@@ -139,11 +152,18 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fadeIn"
-      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fadeIn cursor-pointer"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          try {
+            playMinecraftClick();
+          } catch {}
+          onClose();
+        }
+      }}
     >
       <div
-        className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl border-2 border-[#cbe4f6] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-h-[92vh] flex flex-col animate-scaleUp"
+        className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl border-2 border-[#cbe4f6] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-h-[92vh] flex flex-col animate-scaleUp cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 1. Modal Header Banner */}
@@ -155,19 +175,24 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
           </div>
 
-          {/* Close Button */}
+          {/* Close Button - elevated z-30 with safe click & audio handler */}
           <button
-            onClick={() => {
-              playMinecraftClick();
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              try {
+                playMinecraftClick();
+              } catch {}
               onClose();
             }}
-            className="absolute top-4 right-4 p-2 rounded-xl bg-black/30 hover:bg-black/50 text-white/80 hover:text-white transition-colors border border-white/15"
+            className="absolute top-4 right-4 z-30 p-2.5 rounded-xl bg-black/40 hover:bg-black/70 text-white/90 hover:text-white transition-all border border-white/20 hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-4">
+          <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-4 pr-12 sm:pr-14">
             {/* 3D Rank Icon Badge */}
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-black/30 border-2 border-white/20 p-2 shadow-2xl flex items-center justify-center shrink-0">
               {isRank ? (
@@ -291,11 +316,14 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
             <span className="text-xs text-[#5a7184] font-black uppercase">Quantity:</span>
             <div className="flex items-center bg-[#ebf5fc] rounded-xl border border-[#cbe4f6]">
               <button
+                type="button"
                 onClick={() => {
-                  playMinecraftClick();
+                  try {
+                    playMinecraftClick();
+                  } catch {}
                   setQuantity(Math.max(1, quantity - 1));
                 }}
-                className="p-2 text-[#5a7184] hover:text-[#1a2530] transition-colors"
+                className="p-2 text-[#5a7184] hover:text-[#1a2530] transition-colors cursor-pointer"
                 disabled={quantity <= 1}
                 aria-label="Decrease quantity"
               >
@@ -303,11 +331,14 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
               </button>
               <span className="px-3 font-mono font-black text-sm text-[#1a2530]">{quantity}</span>
               <button
+                type="button"
                 onClick={() => {
-                  playMinecraftClick();
+                  try {
+                    playMinecraftClick();
+                  } catch {}
                   setQuantity(quantity + 1);
                 }}
-                className="p-2 text-[#5a7184] hover:text-[#1a2530] transition-colors"
+                className="p-2 text-[#5a7184] hover:text-[#1a2530] transition-colors cursor-pointer"
                 aria-label="Increase quantity"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -315,8 +346,8 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
             </div>
           </div>
 
-          {/* Pricing & Add to Cart Button */}
-          <div className="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end">
+          {/* Pricing & Actions (Close & Add to Cart) */}
+          <div className="flex flex-wrap items-center space-x-3 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-end">
             <div className="text-right">
               <span className="text-xs text-[#7a8a98] uppercase font-bold block">Total Price</span>
               <div className="flex items-baseline space-x-2">
@@ -327,26 +358,44 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
               </div>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              className={`py-3.5 px-6 rounded-xl font-minecraft text-xs sm:text-sm font-black tracking-wider uppercase transition-all duration-200 flex items-center space-x-2 shadow-md active:scale-95 ${
-                added
-                  ? 'bg-status-success text-white'
-                  : 'bg-[#FFE600] hover:bg-[#fad800] text-[#121216] shadow-[0_4px_14px_rgba(255,230,0,0.5)]'
-              }`}
-            >
-              {added ? (
-                <>
-                  <Check className="w-4 h-4 text-white" />
-                  <span>Added to Cart!</span>
-                </>
-              ) : (
-                <>
-                  <ShoppingBag className="w-4 h-4 text-[#121216]" />
-                  <span>Add to Cart</span>
-                </>
-              )}
-            </button>
+            <div className="flex items-center space-x-2">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  try {
+                    playMinecraftClick();
+                  } catch {}
+                  onClose();
+                }}
+                className="py-3.5 px-4 rounded-xl font-minecraft text-xs sm:text-sm font-bold tracking-wider uppercase text-[#5a7184] hover:text-[#1a2530] bg-[#f0f4f8] hover:bg-[#e2e8f0] border border-[#cbe4f6] transition-all cursor-pointer active:scale-95 shadow-sm"
+              >
+                Close
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className={`py-3.5 px-6 rounded-xl font-minecraft text-xs sm:text-sm font-black tracking-wider uppercase transition-all duration-200 flex items-center space-x-2 shadow-md cursor-pointer active:scale-95 ${
+                  added
+                    ? 'bg-status-success text-white'
+                    : 'bg-[#FFE600] hover:bg-[#fad800] text-[#121216] shadow-[0_4px_14px_rgba(255,230,0,0.5)]'
+                }`}
+              >
+                {added ? (
+                  <>
+                    <Check className="w-4 h-4 text-white" />
+                    <span>Added to Cart!</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="w-4 h-4 text-[#121216]" />
+                    <span>Add to Cart</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

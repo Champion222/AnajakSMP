@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext.js';
 import { useSettings } from '../context/SettingsContext.js';
@@ -31,6 +31,20 @@ export const GuestCheckoutModal: React.FC = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!isCheckoutOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        try {
+          playMinecraftClick();
+        } catch {}
+        setIsCheckoutOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCheckoutOpen, setIsCheckoutOpen]);
 
   if (!isCheckoutOpen) return null;
 
@@ -96,14 +110,18 @@ export const GuestCheckoutModal: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fadeIn select-none"
-      onClick={() => {
-        playMinecraftClick();
-        setIsCheckoutOpen(false);
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fadeIn select-none cursor-pointer"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          try {
+            playMinecraftClick();
+          } catch {}
+          setIsCheckoutOpen(false);
+        }
       }}
     >
       <div
-        className="relative w-full max-w-xl bg-white/95 backdrop-blur-2xl border-2 border-[#cbe4f6] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] flex flex-col max-h-[92vh] animate-scaleUp"
+        className="relative w-full max-w-xl bg-white/95 backdrop-blur-2xl border-2 border-[#cbe4f6] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] flex flex-col max-h-[92vh] animate-scaleUp cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -124,11 +142,16 @@ export const GuestCheckoutModal: React.FC = () => {
             </div>
 
             <button
-              onClick={() => {
-                playMinecraftClick();
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                  playMinecraftClick();
+                } catch {}
                 setIsCheckoutOpen(false);
               }}
-              className="p-2 rounded-xl bg-black/30 hover:bg-black/50 text-white/80 hover:text-white transition-colors border border-white/15"
+              className="z-30 p-2.5 rounded-xl bg-black/40 hover:bg-black/70 text-white/90 hover:text-white transition-all border border-white/20 hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
