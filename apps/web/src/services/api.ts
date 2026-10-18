@@ -333,5 +333,27 @@ export const api = {
       if (!res.ok) throw new Error(data.error || 'Failed to update ticket');
       return data;
     },
+
+    async getTeam(token: string) {
+      const res = await fetch(`${API_BASE}/admin/team`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to load team');
+      return res.json();
+    },
+
+    async saveTeam(token: string, groups: any[]) {
+      const res = await fetch(`${API_BASE}/admin/team`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ groups }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save team');
+      return data;
+    },
   },
 };

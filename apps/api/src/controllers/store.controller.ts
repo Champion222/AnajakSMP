@@ -1,8 +1,18 @@
 import { Request, Response } from 'express';
 import { ProductService } from '../services/product.service.js';
 import { SettingsService } from '../services/settings.service.js';
+import { TeamService } from '../services/team.service.js';
 
 export class StoreController {
+  static async getTeam(_req: Request, res: Response): Promise<void> {
+    try {
+      const team = TeamService.getTeam();
+      res.json({ team });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   static async getCategories(_req: Request, res: Response): Promise<void> {
     try {
       const categories = await ProductService.getCategories();

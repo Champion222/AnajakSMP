@@ -1,17 +1,102 @@
 import { supabase, isSupabaseConfigured, memoryStore } from '../db/supabase.js';
 import { Product, ProductCategory } from '@anajaksmp/shared';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import path from 'path';
+
+const DATA_DIR = path.resolve(process.cwd(), 'data');
+const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
+
+// In-memory cache for fast, reactive queries
+let cachedProducts: Product[] | null = null;
+
+function ensureDataDir(): void {
+  if (!fs.existsSync(DATA_DIR)) {
+    try {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    } catch (e: any) {
+      console.warn('⚠️ [ProductService] Could not create data dir:', e.message);
+    }
+  }
+}
+
+async function loadProducts(): Promise<Product[]> {
+  if (cachedProducts !== null) {
+    return cachedProducts;
+  }
+
+  ensureDataDir();
+
+  // 1. Try reading from local products.json first if it exists
+  if (fs.existsSync(PRODUCTS_FILE)) {
+    try {
+      const raw = fs.readFileSync(PRODUCTS_FILE, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        cachedProducts = parsed;
+        memoryStore.products = [...cachedProducts];
+        return cachedProducts;
+      }
+    } catch (err: any) {
+      console.warn('⚠️ [ProductService] Failed to read local products.json:', err.message);
+    }
+  }
+
+  // 2. If not on disk, load from Supabase or fallback to memoryStore
+  let initialProducts: Product[] = [];
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase.from('products').select('*');
+      if (!error && data && data.length > 0) {
+        initialProducts = data as Product[];
+      }
+    } catch (err: any) {
+      console.warn('⚠️ [ProductService] Supabase initial products fetch failed:', err.message);
+    }
+  }
+
+  if (initialProducts.length === 0) {
+    initialProducts = [...memoryStore.products];
+  }
+
+  cachedProducts = initialProducts;
+  memoryStore.products = [...cachedProducts];
+
+  // Persist to disk so future server restarts retain everything
+  try {
+    ensureDataDir();
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(cachedProducts, null, 2), 'utf-8');
+  } catch (err: any) {
+    console.warn('⚠️ [ProductService] Failed to write initial products.json:', err.message);
+  }
+
+  return cachedProducts;
+}
+
+function saveProductsToDisk(products: Product[]): void {
+  try {
+    ensureDataDir();
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf-8');
+  } catch (err: any) {
+    console.warn('⚠️ [ProductService] Failed to save products to disk:', err.message);
+  }
+}
 
 export class ProductService {
   static async getCategories(includeInactive = false): Promise<ProductCategory[]> {
     if (isSupabaseConfigured && supabase) {
-      let query = supabase.from('product_categories').select('*').order('display_order', { ascending: true });
-      if (!includeInactive) {
-        query = query.eq('is_active', true);
+      try {
+        let query = supabase.from('product_categories').select('*').order('display_order', { ascending: true });
+        if (!includeInactive) {
+          query = query.eq('is_active', true);
+        }
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          return data as ProductCategory[];
+        }
+      } catch (err: any) {
+        console.warn('⚠️ [ProductService] Supabase getCategories warning:', err.message);
       }
-      const { data, error } = await query;
-      if (error) throw error;
-      return (data || []) as ProductCategory[];
     }
 
     return memoryStore.categories
@@ -26,28 +111,15 @@ export class ProductService {
     featuredOnly?: boolean;
     includeInactive?: boolean;
   }): Promise<Product[]> {
-    let products: Product[] = [];
+    const all = await loadProducts();
     const categories = await this.getCategories(true);
     const categoryMap = new Map(categories.map((c) => [c.id, c]));
 
-    if (isSupabaseConfigured && supabase) {
-      let query = supabase.from('products').select('*');
-      if (!options?.includeInactive) {
-        query = query.eq('is_active', true);
-      }
-      if (options?.featuredOnly) {
-        query = query.eq('is_featured', true);
-      }
-      const { data, error } = await query;
-      if (error) throw error;
-      products = (data || []) as Product[];
-    } else {
-      products = [...memoryStore.products].filter(
-        (p) =>
-          (options?.includeInactive || p.is_active) &&
-          (!options?.featuredOnly || p.is_featured)
-      );
-    }
+    let products = all.filter(
+      (p) =>
+        (options?.includeInactive || p.is_active) &&
+        (!options?.featuredOnly || p.is_featured)
+    );
 
     // Attach category
     products = products.map((p) => ({
@@ -92,24 +164,11 @@ export class ProductService {
   }
 
   static async getProductBySlug(slug: string): Promise<Product | null> {
+    const products = await loadProducts();
     const categories = await this.getCategories(true);
     const categoryMap = new Map(categories.map((c) => [c.id, c]));
 
-    if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('slug', slug)
-        .eq('is_active', true)
-        .single();
-
-      if (error || !data) return null;
-      const product = data as Product;
-      product.category = categoryMap.get(product.category_id);
-      return product;
-    }
-
-    const found = memoryStore.products.find((p) => p.slug === slug && p.is_active);
+    const found = products.find((p) => p.slug === slug && p.is_active);
     if (!found) return null;
     return {
       ...found,
@@ -118,19 +177,21 @@ export class ProductService {
   }
 
   static async getProductById(id: string): Promise<Product | null> {
-    if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .single();
-      if (error || !data) return null;
-      return data as Product;
-    }
-    return memoryStore.products.find((p) => p.id === id) || null;
+    const products = await loadProducts();
+    const categories = await this.getCategories(true);
+    const categoryMap = new Map(categories.map((c) => [c.id, c]));
+
+    const found = products.find((p) => p.id === id);
+    if (!found) return null;
+    return {
+      ...found,
+      category: categoryMap.get(found.category_id),
+    };
   }
 
   static async createProduct(input: Omit<Product, 'id' | 'created_at' | 'updated_at'>): Promise<Product> {
+    const products = await loadProducts();
+
     const newProduct: Product = {
       ...input,
       id: uuidv4(),
@@ -138,48 +199,71 @@ export class ProductService {
       updated_at: new Date().toISOString(),
     };
 
+    // Attempt to sync with Supabase
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('products').insert(newProduct).select().single();
-      if (error) throw error;
-      return data as Product;
+      try {
+        await supabase.from('products').insert(newProduct);
+      } catch (err: any) {
+        console.warn('⚠️ [ProductService] Supabase insert warning (RLS/Permissions):', err.message);
+      }
     }
 
-    memoryStore.products.push(newProduct);
+    products.unshift(newProduct);
+    cachedProducts = products;
+    saveProductsToDisk(cachedProducts);
+    memoryStore.products = [...cachedProducts];
+
     return newProduct;
   }
 
   static async updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
-    if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase
-        .from('products')
-        .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Product;
-    }
-
-    const index = memoryStore.products.findIndex((p) => p.id === id);
+    const products = await loadProducts();
+    const index = products.findIndex((p) => p.id === id);
     if (index === -1) return null;
-    memoryStore.products[index] = {
-      ...memoryStore.products[index],
+
+    const updated: Product = {
+      ...products[index],
       ...updates,
       updated_at: new Date().toISOString(),
     };
-    return memoryStore.products[index];
+
+    // Attempt to sync with Supabase
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('products').update({ ...updates, updated_at: updated.updated_at }).eq('id', id);
+      } catch (err: any) {
+        console.warn('⚠️ [ProductService] Supabase update warning (RLS/Permissions):', err.message);
+      }
+    }
+
+    products[index] = updated;
+    cachedProducts = products;
+    saveProductsToDisk(cachedProducts);
+    memoryStore.products = [...cachedProducts];
+
+    return updated;
   }
 
   static async deleteProduct(id: string): Promise<boolean> {
+    const products = await loadProducts();
+    const index = products.findIndex((p) => p.id === id);
+    if (index === -1) return false;
+
+    // Attempt to delete from Supabase
     if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.from('products').delete().eq('id', id);
-      if (error) throw error;
-      return true;
+      try {
+        await supabase.from('products').delete().eq('id', id);
+      } catch (err: any) {
+        console.warn('⚠️ [ProductService] Supabase delete warning (RLS/Permissions):', err.message);
+      }
     }
 
-    const index = memoryStore.products.findIndex((p) => p.id === id);
-    if (index === -1) return false;
-    memoryStore.products.splice(index, 1);
+    products.splice(index, 1);
+    cachedProducts = products;
+    saveProductsToDisk(cachedProducts);
+    memoryStore.products = [...cachedProducts];
+
     return true;
   }
 }
+

@@ -1,0 +1,345 @@
+[
+  {
+    "id": "b0000000-0000-0000-0000-000000000001",
+    "slug": "vip-rank",
+    "name": "VIP Rank",
+    "description": "The premier entry rank for every AnajakSMP survivalist. Includes chat perks, claim fly, and essential survival commands.",
+    "category_id": "c0000000-0000-0000-0000-000000000001",
+    "price_usd": 4.99,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "[VIP] Golden Chat Tag & Prefix",
+      "Fly ability inside your own claims (/fly)",
+      "3 Extra Home Teleports (/sethome)",
+      "VIP Weekly Kit (Full Diamond Gear)",
+      "Access to /hat and /workbench",
+      "Priority server queue slot"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add vip",
+      "broadcast &6[Store] &fPlayer &e{username} &fhas purchased &6VIP Rank!"
+    ],
+    "rank_duration": "Permanent Lifetime",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 1,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000002",
+    "slug": "mvp-rank",
+    "name": "MVP Rank",
+    "description": "Advanced rank upgrade with quality of life automation, extra land claims, and superior kits.",
+    "category_id": "c0000000-0000-0000-0000-000000000001",
+    "price_usd": 12.99,
+    "sale_price_usd": 9.99,
+    "image_url": "https://images.unsplash.com/photo-1563089145-599997674d42?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "All VIP Rank Perks included",
+      "[MVP] Cyan Diamond Prefix",
+      "6 Extra Home Teleports",
+      "Access to /feed and /condense commands",
+      "MVP Weekly Kit with Netherite Ingots",
+      "Keep Inventory in Wilderness claims",
+      "Double land claim accrual rate"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add mvp",
+      "broadcast &b[Store] &fPlayer &e{username} &fhas ascended to &bMVP Rank!"
+    ],
+    "rank_duration": "Permanent Lifetime",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 2,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000003",
+    "slug": "mvp-plus-rank",
+    "name": "MVP+ Rank",
+    "description": "Elite prestige rank with full survival utility, auto-sorting, and monthly key crates.",
+    "category_id": "c0000000-0000-0000-0000-000000000001",
+    "price_usd": 24.99,
+    "sale_price_usd": 19.99,
+    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "All VIP & MVP perks included",
+      "[MVP+] Emerald Aqua Prefix",
+      "10 Extra Home Teleports",
+      "/heal command (30m cooldown)",
+      "/craft and /enderchest anywhere",
+      "Automatic chest inventory sorting",
+      "1x Free Mythic Spawner Key monthly"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add mvpplus",
+      "broadcast &a[Store] &fPlayer &e{username} &fhas unlocked &aMVP+ Rank!"
+    ],
+    "rank_duration": "Permanent Lifetime",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 3,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000004",
+    "slug": "anajak-titan-rank",
+    "name": "Anajak Titan Rank",
+    "description": "The supreme apex rank of AnajakSMP. Ultimate dominance, exclusive Titan armor skins, and unyielding prestige.",
+    "category_id": "c0000000-0000-0000-0000-000000000001",
+    "price_usd": 49.99,
+    "sale_price_usd": 39.99,
+    "image_url": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "ALL server rank commands and kits unlocked",
+      "Exclusive [TITAN] Animated Rainbow & Gold Prefix",
+      "Unlimited Home Teleports",
+      "Access to /repair all command",
+      "Golden Angel Wings cosmetic unlocked",
+      "Custom In-game Join and Death Message",
+      "Dedicated Titan Private Discord Channel"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add titan",
+      "broadcast &6&l[LEGENDARY] &fPlayer &e{username} &fhas achieved &6&lTITAN RANK! &fAll hail the ruler!"
+    ],
+    "rank_duration": "Permanent Lifetime",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 4,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000005",
+    "slug": "spawner-crate-key-5x",
+    "name": "5x Spawner Crate Keys",
+    "description": "Open the legendary Spawner Crate at /warp crates. Win Blaze, Iron Golem, Creeper, or Skeleton spawners!",
+    "category_id": "c0000000-0000-0000-0000-000000000002",
+    "price_usd": 3.99,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "5x Physical Spawner Crate Keys",
+      "Guaranteed high-tier mob spawner drops",
+      "Usable at spawn crates /warp crates",
+      "Tradeable with other players in-game"
+    ],
+    "delivery_commands": [
+      "crate key give {username} spawner 5",
+      "msg {username} &aYou received 5x Spawner Crate Keys!"
+    ],
+    "rank_duration": null,
+    "stock": null,
+    "is_featured": false,
+    "is_active": true,
+    "display_order": 5,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000006",
+    "slug": "mythic-dragon-key-3x",
+    "name": "3x Mythic Dragon Keys",
+    "description": "Contains ancient Netherite enchanted tools, God apples, Elytra wings, and Custom Enchantment tomes.",
+    "category_id": "c0000000-0000-0000-0000-000000000002",
+    "price_usd": 7.99,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "3x Mythic Dragon Crate Keys",
+      "High chance for Max Level Custom Enchants",
+      "Rare chance for Overpowered Elytra",
+      "100% Unbreakable tool drops"
+    ],
+    "delivery_commands": [
+      "crate key give {username} mythic 3",
+      "msg {username} &dYou received 3x Mythic Dragon Keys!"
+    ],
+    "rank_duration": null,
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 6,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000007",
+    "slug": "100000-coins-pack",
+    "name": "100,000 In-Game Coins",
+    "description": "Instantly deposit 100,000 coins into your /balance. Purchase materials, auction house items, and claims.",
+    "category_id": "c0000000-0000-0000-0000-000000000003",
+    "price_usd": 5,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "100,000 Coins directly into /balance",
+      "Immediate economy spending power",
+      "Valid across all survival worlds"
+    ],
+    "delivery_commands": [
+      "eco give {username} 100000",
+      "msg {username} &6[Bank] 100,000 Coins added to your account!"
+    ],
+    "rank_duration": null,
+    "stock": null,
+    "is_featured": false,
+    "is_active": true,
+    "display_order": 7,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000008",
+    "slug": "500000-coins-pack",
+    "name": "500,000 Coins Empire Pack",
+    "description": "Become the wealthiest merchant on AnajakSMP. Includes 500,000 in-game currency with bonus interest.",
+    "category_id": "c0000000-0000-0000-0000-000000000003",
+    "price_usd": 20,
+    "sale_price_usd": 16.99,
+    "image_url": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "500,000 Coins added to /balance",
+      "Save 20% compared to smaller coin packs",
+      "Bonus [Merchant] Chat Title"
+    ],
+    "delivery_commands": [
+      "eco give {username} 500000",
+      "lp user {username} permission set title.merchant true",
+      "msg {username} &6[Bank] 500,000 Coins added to your account!"
+    ],
+    "rank_duration": null,
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 8,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000009",
+    "slug": "golden-angel-wings",
+    "name": "Golden Angel Wings Cosmetic",
+    "description": "Equip animated glowing golden halo and angel wings with custom flapping physics in-game.",
+    "category_id": "c0000000-0000-0000-0000-000000000004",
+    "price_usd": 8.99,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "Animated 3D Golden Angel Wings",
+      "Luminous particle trails as you walk or fly",
+      "Toggle on/off anytime with /cosmetics",
+      "Works in all survival dimensions"
+    ],
+    "delivery_commands": [
+      "cosmetics give {username} golden_wings",
+      "msg {username} &eGolden Angel Wings unlocked in /cosmetics!"
+    ],
+    "rank_duration": "Permanent Cosmetic",
+    "stock": null,
+    "is_featured": false,
+    "is_active": true,
+    "display_order": 9,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000010",
+    "slug": "baby-phoenix-pet",
+    "name": "Baby Phoenix Companion",
+    "description": "A mystical flaming baby bird that flies beside you, chirps during combat, and brings good fortune.",
+    "category_id": "c0000000-0000-0000-0000-000000000005",
+    "price_usd": 6.99,
+    "sale_price_usd": null,
+    "image_url": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "Interactive Baby Phoenix Pet",
+      "Fire particle aura surrounding the companion",
+      "Level up your pet through in-game playtime",
+      "Renameable with /pet rename"
+    ],
+    "delivery_commands": [
+      "pet give {username} baby_phoenix",
+      "msg {username} &6Baby Phoenix Pet unlocked! Summon with /pet!"
+    ],
+    "rank_duration": "Permanent Pet",
+    "stock": null,
+    "is_featured": false,
+    "is_active": true,
+    "display_order": 10,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000011",
+    "slug": "starter-survival-bundle",
+    "name": "Starter Survival Bundle",
+    "description": "Kickstart your adventure with the best value pack! Includes VIP rank, 3x Spawner Keys, and 50,000 Coins.",
+    "category_id": "c0000000-0000-0000-0000-000000000006",
+    "price_usd": 14.99,
+    "sale_price_usd": 10.99,
+    "image_url": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "VIP Rank (Permanent)",
+      "3x Spawner Crate Keys",
+      "50,000 In-game Coins",
+      "Starter Diamond Tool Kit",
+      "Save 30% versus purchasing separately"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add vip",
+      "crate key give {username} spawner 3",
+      "eco give {username} 50000",
+      "broadcast &e[Store] &fPlayer &a{username} &fpurchased the &6Starter Survival Bundle!"
+    ],
+    "rank_duration": "Lifetime Bundle",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 11,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  },
+  {
+    "id": "b0000000-0000-0000-0000-000000000012",
+    "slug": "emperor-legend-bundle",
+    "name": "Emperor Legend Bundle",
+    "description": "The grandest collection of power on AnajakSMP. Titan Rank, 10x Mythic Keys, 1,000,000 Coins, and both cosmetics.",
+    "category_id": "c0000000-0000-0000-0000-000000000006",
+    "price_usd": 79.99,
+    "sale_price_usd": 59.99,
+    "image_url": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop&q=80",
+    "perks": [
+      "Titan Rank (Permanent Lifetime)",
+      "10x Mythic Dragon Crate Keys",
+      "1,000,000 Coins Empire Balance",
+      "Golden Angel Wings Cosmetic",
+      "Baby Phoenix Companion Pet",
+      "Exclusive [Emperor] Discord & In-game Role"
+    ],
+    "delivery_commands": [
+      "lp user {username} parent add titan",
+      "crate key give {username} mythic 10",
+      "eco give {username} 1000000",
+      "cosmetics give {username} golden_wings",
+      "pet give {username} baby_phoenix",
+      "broadcast &6&l[ANNOUNCEMENT] &e{username} &fhas claimed the &6&lEMPEROR LEGEND BUNDLE!"
+    ],
+    "rank_duration": "Lifetime Bundle",
+    "stock": null,
+    "is_featured": true,
+    "is_active": true,
+    "display_order": 12,
+    "created_at": "2026-10-17T09:08:37.890512+00:00",
+    "updated_at": "2026-10-17T09:08:37.890512+00:00"
+  }
+]

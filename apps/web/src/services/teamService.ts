@@ -68,8 +68,26 @@ export const DEFAULT_TEAM: RoleGroup[] = [
 ];
 
 const STORAGE_KEY = 'anajaksmp_team_members';
+const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000/api';
 
 export const teamService = {
+  async syncFromServer(): Promise<RoleGroup[]> {
+    try {
+      const res = await fetch(`${API_BASE}/store/team`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.team) && data.team.length > 0) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data.team));
+          window.dispatchEvent(new CustomEvent('anajaksmp_team_updated', { detail: data.team }));
+          return data.team;
+        }
+      }
+    } catch (e) {
+      console.warn('Could not sync team from server', e);
+    }
+    return this.getTeam();
+  },
+
   getTeam(): RoleGroup[] {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -82,10 +100,22 @@ export const teamService = {
     return DEFAULT_TEAM;
   },
 
-  saveTeam(groups: RoleGroup[]): void {
+  saveTeam(groups: RoleGroup[], adminToken?: string): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
       window.dispatchEvent(new CustomEvent('anajaksmp_team_updated', { detail: groups }));
+
+      const token = adminToken || localStorage.getItem('anajaksmp_admin_token') || sessionStorage.getItem('anajaksmp_admin_token');
+      if (token) {
+        fetch(`${API_BASE}/admin/team`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ groups }),
+        }).catch((err) => console.warn('Failed to persist team to backend:', err));
+      }
     } catch (e) {
       console.warn('Failed to save team members', e);
     }

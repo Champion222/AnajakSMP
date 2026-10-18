@@ -1,13 +1,9 @@
 import dotenv from 'dotenv';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 // Load from apps/api/.env, root .env, or current working directory
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+const cwd = process.cwd();
+dotenv.config({ path: path.resolve(cwd, '.env') });
+dotenv.config({ path: path.resolve(cwd, '../../.env') });
 dotenv.config();
 
 export const ENV = {

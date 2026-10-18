@@ -91,4 +91,8 @@ router.get('/audit-logs', requireRole(['OWNER', 'ADMIN']), AdminController.getAu
 router.get('/tickets', AdminController.getSupportTickets);
 router.patch('/tickets/:id', AdminController.updateSupportTicket);
 
+// Staff Team Management
+router.get('/team', AdminController.getTeam);
+router.post('/team', requireRole(['OWNER', 'ADMIN']), AdminController.saveTeam);
+
 export default router;

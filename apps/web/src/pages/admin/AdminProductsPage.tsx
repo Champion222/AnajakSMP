@@ -7,6 +7,7 @@ import {
   Edit2,
   Trash2,
   Check,
+  CheckCircle2,
   X,
   Loader2,
   Search,
@@ -17,11 +18,151 @@ import {
   Crown,
   Key,
   Sparkles,
+  Wand2,
 } from 'lucide-react';
 
 interface AdminProductsPageProps {
   token: string;
 }
+
+interface ProductPreset {
+  name: string;
+  slug: string;
+  priceUsd: string;
+  salePriceUsd: string;
+  description: string;
+  imageUrl: string;
+  rankDuration: string;
+  perksText: string;
+  commandsText: string;
+  isFeatured: boolean;
+}
+
+const RANK_PRESETS: Record<string, ProductPreset> = {
+  vip: {
+    name: 'VIP Rank',
+    slug: 'vip-rank',
+    priceUsd: '4.99',
+    salePriceUsd: '',
+    description: 'The premier entry rank with chat prefix, claim fly, extra homes, and diamond kits.',
+    imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80',
+    rankDuration: 'Permanent Lifetime',
+    perksText: '[VIP] Chat Tag & Prefix\nFly ability in claims (/fly)\n3 Extra Home Teleports (/sethome)\nVIP Weekly Diamond Kit\nAccess to /hat and /workbench\nPriority queue slot',
+    commandsText: 'lp user {username} parent add vip\nbroadcast &6Player &e{username} &6has purchased &6VIP Rank!',
+    isFeatured: false,
+  },
+  mvp: {
+    name: 'MVP Rank',
+    slug: 'mvp-rank',
+    priceUsd: '12.99',
+    salePriceUsd: '9.99',
+    description: 'Advanced rank with automation, extra land claims, keep inventory, and superior kits.',
+    imageUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=500&auto=format&fit=crop&q=80',
+    rankDuration: 'Permanent Lifetime',
+    perksText: 'All VIP perks included\n[MVP] Cyan Diamond Prefix\n6 Extra Home Teleports\nAccess to /feed and /condense\nMVP Weekly Kit with Netherite\nKeep Inventory in Wilderness\nDouble claim accrual rate',
+    commandsText: 'lp user {username} parent add mvp\nbroadcast &bPlayer &e{username} &bhas ascended to &bMVP Rank!',
+    isFeatured: true,
+  },
+  mvpplus: {
+    name: 'MVP+ Rank',
+    slug: 'mvp-plus-rank',
+    priceUsd: '24.99',
+    salePriceUsd: '19.99',
+    description: 'Elite prestige rank with full survival utility, auto-sorting, and monthly key crates.',
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    rankDuration: 'Permanent Lifetime',
+    perksText: 'All VIP & MVP perks included\n[MVP+] Emerald Prefix\n10 Extra Home Teleports\n/heal command (30m cooldown)\n/craft and /enderchest anywhere\nAutomatic chest sorting\n1x Free Mythic Spawner Key monthly',
+    commandsText: 'lp user {username} parent add mvpplus\nbroadcast &aPlayer &e{username} &ahas unlocked &aMVP+ Rank!',
+    isFeatured: true,
+  },
+  titan: {
+    name: 'Anajak Titan Rank',
+    slug: 'anajak-titan-rank',
+    priceUsd: '49.99',
+    salePriceUsd: '39.99',
+    description: 'The supreme apex rank of AnajakSMP. Ultimate dominance, exclusive Titan armor, and prestige.',
+    imageUrl: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=80',
+    rankDuration: 'Permanent Lifetime',
+    perksText: 'All VIP, MVP & MVP+ perks included\n[TITAN] Chat Prefix & Glow\n20 Extra Home Teleports\n/repair hand without XP cost\nCustom particle trail\n1.5x Economy Multiplier\nExclusive Titan Discord role',
+    commandsText: 'lp user {username} parent add titan\nbroadcast &d&lPlayer &e{username} &d&lunlocked &d&lTITAN RANK!',
+    isFeatured: true,
+  },
+  custom: {
+    name: 'Custom Rank',
+    slug: 'custom-rank',
+    priceUsd: '49.99',
+    salePriceUsd: '',
+    description: 'Personalized server rank! Custom prefix, chat color, join announcement, and top perks.',
+    imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80',
+    rankDuration: 'Permanent Lifetime',
+    perksText: '⭐ Choose your custom prefix (up to 12 chars)\n⭐ Choose your chat & prefix color\n⭐ Custom join broadcast announcement\nALL server commands unlocked\nUnlimited Home Teleports\nDirect contact with Owner',
+    commandsText: 'lp user {username} parent add custom\nbroadcast &ePlayer &e{username} &6unlocked Custom Rank!',
+    isFeatured: true,
+  },
+};
+
+const KEY_PRESETS: Record<string, ProductPreset> = {
+  common: {
+    name: 'Common Key',
+    slug: 'common-key',
+    priceUsd: '1.00',
+    salePriceUsd: '',
+    description: 'Open the Common Crate at spawn crates. Win iron gear, building materials, and food supplies.',
+    imageUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80',
+    rankDuration: '',
+    perksText: 'Common crate rewards\nBasic survival gear & tools\nFood & building supplies\nInstant delivery',
+    commandsText: 'crate key give {username} common 1\nmsg {username} &7You received 1x Common Key!',
+    isFeatured: false,
+  },
+  rare: {
+    name: 'Rare Key',
+    slug: 'rare-key',
+    priceUsd: '2.50',
+    salePriceUsd: '',
+    description: 'Open the Rare Crate for diamond tools, enchanted books, and economy coin pouches.',
+    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    rankDuration: '',
+    perksText: 'Diamond enchanted equipment\nEnchanted books & experience\nEconomy coins pouches\nInstant delivery',
+    commandsText: 'crate key give {username} rare 1\nmsg {username} &bYou received 1x Rare Key!',
+    isFeatured: false,
+  },
+  epic: {
+    name: 'Epic Key',
+    slug: 'epic-key',
+    priceUsd: '5.00',
+    salePriceUsd: '',
+    description: 'Unlock high-tier Netherite gear, custom enchants, and rare spawner vouchers.',
+    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    rankDuration: '',
+    perksText: 'Netherite enchanted equipment\nCustom Enchantment books\nRare Spawner vouchers\nInstant delivery',
+    commandsText: 'crate key give {username} epic 1\nmsg {username} &dYou received 1x Epic Key!',
+    isFeatured: true,
+  },
+  spawner: {
+    name: '5x Spawner Crate Keys',
+    slug: 'spawner-crate-key-5x',
+    priceUsd: '3.99',
+    salePriceUsd: '',
+    description: 'Open the legendary Spawner Crate at /warp crates. Win Blaze, Iron Golem, Creeper, or Skeleton spawners!',
+    imageUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80',
+    rankDuration: '',
+    perksText: '5x Spawner Crate Keys bundle\nChance to win Iron Golem spawners\nBlaze & Creeper spawners\nInstant automated delivery',
+    commandsText: 'crate key give {username} spawner 5\nbroadcast &e{username} &6unlocked &a5x Spawner Crate Keys&6!',
+    isFeatured: false,
+  },
+  mythic: {
+    name: '3x Mythic Dragon Keys',
+    slug: 'mythic-dragon-key-3x',
+    priceUsd: '7.99',
+    salePriceUsd: '',
+    description: 'Contains ancient Netherite enchanted tools, God apples, Elytra wings, and Custom Enchantment tomes.',
+    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    rankDuration: '',
+    perksText: '3x Mythic Dragon Crate Keys\nGod apples & Netherite gear\nElytra wings & rare cosmetics\nInstant delivery',
+    commandsText: 'crate key give {username} mythic 3\nbroadcast &d{username} &6claimed &d3x Mythic Dragon Keys&6!',
+    isFeatured: true,
+  },
+};
 
 export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,10 +170,12 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedTab, setSelectedTab] = useState<'all' | 'ranks' | 'crate-keys'>('all');
+  const [notification, setNotification] = useState<string | null>(null);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [modalType, setModalType] = useState<'rank' | 'key' | null>(null);
 
   // Form Fields
   const [name, setName] = useState('');
@@ -74,38 +217,25 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     loadData();
   }, [token]);
 
-  const openCreateModal = () => {
-    setEditingProduct(null);
-    setName('');
-    setSlug('');
-    setPriceUsd('9.99');
-    setSalePriceUsd('');
-    setDescription('');
-    setImageUrl('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80');
-    setRankDuration('Permanent Lifetime');
-    setPerksText('[VIP] Chat Tag\nFly command (/fly)\n3 Extra Home teleports');
-    setCommandsText('lp user {username} parent add vip\nbroadcast &6Player &e{username} &6unlocked VIP!');
-    setIsFeatured(false);
-    setIsActive(true);
-    setFormError(null);
-    setIsModalOpen(true);
+  const applyPreset = (preset: ProductPreset) => {
+    setName(preset.name);
+    setSlug(preset.slug);
+    setPriceUsd(preset.priceUsd);
+    setSalePriceUsd(preset.salePriceUsd);
+    setDescription(preset.description);
+    setImageUrl(preset.imageUrl);
+    setRankDuration(preset.rankDuration);
+    setPerksText(preset.perksText);
+    setCommandsText(preset.commandsText);
+    setIsFeatured(preset.isFeatured);
   };
 
   const openCreateRankModal = () => {
     const rankCat = categories.find((c) => c.slug === 'ranks' || c.name.toLowerCase().includes('rank'));
     setEditingProduct(null);
-    setName('Titan Rank');
-    setSlug('titan-rank');
+    setModalType('rank');
     if (rankCat) setCategoryId(rankCat.id);
-    setPriceUsd('29.99');
-    setSalePriceUsd('24.99');
-    setDescription('Elite tier server rank with all previous perks, fly, repair, and exclusive prefix.');
-    setImageUrl('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80');
-    setRankDuration('Permanent Lifetime');
-    setPerksText('[TITAN] Chat Prefix & Gold Glow\nFly command in claims (/fly)\n8 Extra Home teleports (/sethome)\nAccess to /feed and /repair\nTitan Weekly Kit with Netherite\nPriority server queue slot');
-    setCommandsText('lp user {username} parent add titan\nbroadcast &6Player &e{username} &6has unlocked &cTITAN Rank&6!');
-    setIsFeatured(true);
-    setIsActive(true);
+    applyPreset(RANK_PRESETS.vip);
     setFormError(null);
     setIsModalOpen(true);
   };
@@ -113,24 +243,16 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
   const openCreateKeyModal = () => {
     const keyCat = categories.find((c) => c.slug === 'crate-keys' || c.name.toLowerCase().includes('key'));
     setEditingProduct(null);
-    setName('Mythic Crate Key');
-    setSlug('mythic-key');
+    setModalType('key');
     if (keyCat) setCategoryId(keyCat.id);
-    setPriceUsd('4.99');
-    setSalePriceUsd('3.99');
-    setDescription('Open the Mythic Crate at spawn crates for top-tier Netherite rewards and rare items.');
-    setImageUrl('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80');
-    setRankDuration('');
-    setPerksText('Top-tier Netherite tools & armor\nRare Mob Spawners voucher\nExclusive Custom Enchants\nInstant automated delivery');
-    setCommandsText('crate key give {username} mythic 1\nbroadcast &e{username} &6just purchased a &dMythic Crate Key&6!');
-    setIsFeatured(false);
-    setIsActive(true);
+    applyPreset(KEY_PRESETS.common);
     setFormError(null);
     setIsModalOpen(true);
   };
 
   const openEditModal = (p: Product) => {
     setEditingProduct(p);
+    setModalType(isRankProduct(p) ? 'rank' : 'key');
     setName(p.name);
     setSlug(p.slug);
     setCategoryId(p.category_id);
@@ -192,11 +314,14 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
       setIsSubmitting(true);
       if (editingProduct) {
         await api.admin.updateProduct(token, editingProduct.id, payload);
+        setNotification(`Successfully updated "${payload.name}"!`);
       } else {
         await api.admin.createProduct(token, payload);
+        setNotification(`Successfully added "${payload.name}" to catalog!`);
       }
       setIsModalOpen(false);
       await loadData();
+      setTimeout(() => setNotification(null), 4000);
     } catch (err: any) {
       setFormError(err.message || 'Failed to save product');
     } finally {
@@ -208,7 +333,9 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     if (!window.confirm(`Are you sure you want to delete "${prodName}"?`)) return;
     try {
       await api.admin.deleteProduct(token, id);
+      setNotification(`Successfully removed "${prodName}" from catalog.`);
       await loadData();
+      setTimeout(() => setNotification(null), 4000);
     } catch (err: any) {
       alert(err.message || 'Failed to delete product');
     }
@@ -271,6 +398,14 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
           </button>
         </div>
       </div>
+
+      {/* Success Notification Alert */}
+      {notification && (
+        <div className="p-4 rounded-2xl bg-status-success/15 border border-status-success/30 text-xs text-status-success flex items-center space-x-2.5 animate-fadeIn">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span className="font-bold">{notification}</span>
+        </div>
+      )}
 
       {/* Filter Tabs and Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -442,13 +577,72 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-2xl bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
             <div className="p-5 border-b border-brand-border bg-brand-secondary flex items-center justify-between">
-              <h3 className="font-extrabold text-base text-white">
-                {editingProduct ? 'Edit Product' : 'Create New Product'}
-              </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-text-muted hover:text-white">
+              <div>
+                <h3 className="font-extrabold text-base text-white flex items-center space-x-2">
+                  {editingProduct ? (
+                    <>
+                      <Edit2 className="w-4 h-4 text-gold" />
+                      <span>Edit Product: {editingProduct.name}</span>
+                    </>
+                  ) : modalType === 'rank' ? (
+                    <>
+                      <Crown className="w-4 h-4 text-gold" />
+                      <span>Add New Server Rank</span>
+                    </>
+                  ) : (
+                    <>
+                      <Key className="w-4 h-4 text-[#5865F2] rotate-45" />
+                      <span>Add New Crate Key</span>
+                    </>
+                  )}
+                </h3>
+                <p className="text-[11px] text-text-muted mt-0.5">
+                  {editingProduct
+                    ? 'Update prices, perks, and RCON automated delivery commands.'
+                    : 'Choose a quick template below or type your custom rank/key details.'}
+                </p>
+              </div>
+              <button onClick={() => setIsModalOpen(false)} className="text-text-muted hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {/* Quick Template Presets */}
+            {!editingProduct && (
+              <div className="px-6 py-2.5 bg-[#131d24] border-b border-brand-border/60 flex items-center space-x-2 overflow-x-auto text-[11px]">
+                <span className="text-text-muted shrink-0 font-bold flex items-center space-x-1">
+                  <Wand2 className="w-3.5 h-3.5 text-gold" />
+                  <span>Templates:</span>
+                </span>
+                {modalType === 'rank' ? (
+                  <>
+                    {Object.entries(RANK_PRESETS).map(([k, p]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => applyPreset(p)}
+                        className="px-2.5 py-1 rounded-lg bg-brand-secondary border border-brand-border hover:border-gold hover:text-gold text-white font-bold transition-all cursor-pointer whitespace-nowrap active:scale-95"
+                      >
+                        {p.name} (${p.priceUsd})
+                      </button>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {Object.entries(KEY_PRESETS).map(([k, p]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => applyPreset(p)}
+                        className="px-2.5 py-1 rounded-lg bg-brand-secondary border border-brand-border hover:border-[#5865F2] hover:text-[#7289da] text-white font-bold transition-all cursor-pointer whitespace-nowrap active:scale-95"
+                      >
+                        {p.name} (${p.priceUsd})
+                      </button>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
 
             <form onSubmit={handleSaveProduct} className="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
               {formError && (
@@ -465,7 +659,14 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                   <input
                     type="text"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => {
+                      const newName = e.target.value;
+                      setName(newName);
+                      if (!editingProduct) {
+                        setSlug(newName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+                      }
+                    }}
+                    placeholder={modalType === 'rank' ? 'e.g. VIP Rank' : 'e.g. Mythic Key'}
                     className="w-full bg-brand-secondary border border-brand-border rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-gold"
                     required
                   />
@@ -479,6 +680,7 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                     type="text"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
+                    placeholder="e.g. vip-rank"
                     className="w-full bg-brand-secondary border border-brand-border rounded-xl px-3.5 py-2 text-white font-mono focus:outline-none focus:border-gold"
                     required
                   />

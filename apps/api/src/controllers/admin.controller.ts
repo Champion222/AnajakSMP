@@ -5,6 +5,7 @@ import { ProductService } from '../services/product.service.js';
 import { CouponService } from '../services/coupon.service.js';
 import { SettingsService } from '../services/settings.service.js';
 import { SupportService } from '../services/support.service.js';
+import { TeamService } from '../services/team.service.js';
 import { MinecraftDeliveryService } from '../services/minecraft-delivery.service.js';
 import { ProductCreateInput, CouponCreateInput, StoreSettingsUpdateInput } from '@anajaksmp/shared';
 
@@ -355,6 +356,32 @@ export class AdminController {
         return;
       }
       res.json({ success: true, ticket: updated });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  /**
+   * Team Management
+   */
+  static async getTeam(_req: Request, res: Response): Promise<void> {
+    try {
+      const team = TeamService.getTeam();
+      res.json({ success: true, team });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async saveTeam(req: Request, res: Response): Promise<void> {
+    try {
+      const { groups } = req.body;
+      if (!Array.isArray(groups)) {
+        res.status(400).json({ error: 'Groups must be an array' });
+        return;
+      }
+      const updated = TeamService.saveTeam(groups);
+      res.json({ success: true, team: updated });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

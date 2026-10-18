@@ -6,6 +6,7 @@ import {
   Edit2,
   Trash2,
   Check,
+  CheckCircle2,
   X,
   MessageSquare,
   Shield,
@@ -22,6 +23,7 @@ interface AdminTeamPageProps {
 export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
   const [search, setSearch] = useState('');
+  const [notification, setNotification] = useState<string | null>(null);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,6 +43,7 @@ export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
 
   useEffect(() => {
     loadTeam();
+    teamService.syncFromServer().then((groups) => setRoleGroups(groups));
     const handleUpdate = () => loadTeam();
     window.addEventListener('anajaksmp_team_updated', handleUpdate);
     return () => window.removeEventListener('anajaksmp_team_updated', handleUpdate);
@@ -93,6 +96,7 @@ export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
         },
         formattedGroup.toLowerCase()
       );
+      setNotification(`Staff member "${ign.trim()}" updated successfully!`);
     } else {
       teamService.addMember(formattedGroup.toLowerCase(), {
         ign: ign.trim(),
@@ -100,22 +104,28 @@ export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
         discordTag: discordTag.trim() || ign.trim(),
         hasChat,
       });
+      setNotification(`Staff member "${ign.trim()}" added to ${formattedGroup} team!`);
     }
 
     setIsModalOpen(false);
     loadTeam();
+    setTimeout(() => setNotification(null), 4000);
   };
 
   const handleDelete = (member: StaffMember) => {
     if (!window.confirm(`Are you sure you want to remove staff member "${member.ign}"?`)) return;
     teamService.deleteMember(member.id);
+    setNotification(`Staff member "${member.ign}" removed from team.`);
     loadTeam();
+    setTimeout(() => setNotification(null), 4000);
   };
 
   const handleResetDefault = () => {
     if (window.confirm('Reset all staff members back to default AnajakSMP team?')) {
       teamService.resetToDefault();
+      setNotification('Staff team reset back to default configuration.');
       loadTeam();
+      setTimeout(() => setNotification(null), 4000);
     }
   };
 
@@ -154,7 +164,7 @@ export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
           <button
             onClick={handleResetDefault}
             title="Reset team to initial configuration"
-            className="p-2.5 rounded-xl bg-brand-secondary border border-brand-border text-text-secondary hover:text-white hover:border-gold/50 transition-colors text-xs font-bold flex items-center space-x-1.5"
+            className="p-2.5 rounded-xl bg-brand-secondary border border-brand-border text-text-secondary hover:text-white hover:border-gold/50 transition-colors text-xs font-bold flex items-center space-x-1.5 cursor-pointer active:scale-95"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Reset Defaults</span>
@@ -162,13 +172,21 @@ export const AdminTeamPage: React.FC<AdminTeamPageProps> = () => {
 
           <button
             onClick={openCreateModal}
-            className="gold-gradient-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-gold-glow"
+            className="gold-gradient-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-gold-glow cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Add Team Member</span>
           </button>
         </div>
       </div>
+
+      {/* Success Notification Alert */}
+      {notification && (
+        <div className="p-4 rounded-2xl bg-status-success/15 border border-status-success/30 text-xs text-status-success flex items-center space-x-2.5 animate-fadeIn">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span className="font-bold">{notification}</span>
+        </div>
+      )}
 
       {/* Search Bar */}
       <div className="p-3 bg-brand-secondary rounded-xl border border-brand-border flex items-center max-w-sm">

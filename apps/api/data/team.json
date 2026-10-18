@@ -1,0 +1,54 @@
+[
+  {
+    "id": "owner",
+    "title": "OWNER",
+    "members": [
+      {
+        "id": "owner-1",
+        "ign": "_T_Z",
+        "skinUsername": "_T_Z",
+        "discordTag": "_T_Z",
+        "hasChat": false
+      }
+    ]
+  },
+  {
+    "id": "builder",
+    "title": "BUILDER",
+    "members": [
+      {
+        "id": "builder-1",
+        "ign": "Nx4YGzz",
+        "skinUsername": "Nx4YGzz",
+        "discordTag": "Nx4YGzz",
+        "hasChat": true
+      }
+    ]
+  },
+  {
+    "id": "developer",
+    "title": "DEVELOPER",
+    "members": [
+      {
+        "id": "dev-1",
+        "ign": "Nx4YGzz",
+        "skinUsername": "Nx4YGzz",
+        "discordTag": "Nx4YGzz",
+        "hasChat": true
+      }
+    ]
+  },
+  {
+    "id": "moderator",
+    "title": "MODERATOR",
+    "members": [
+      {
+        "id": "mod-1",
+        "ign": "_T_Z",
+        "skinUsername": "_T_Z",
+        "discordTag": "_T_Z",
+        "hasChat": true
+      }
+    ]
+  }
+]
