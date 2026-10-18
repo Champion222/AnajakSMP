@@ -333,10 +333,13 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
 
   const confirmDeleteProduct = async () => {
     if (!productToDelete) return;
+    const targetId = productToDelete.id;
+    const targetName = productToDelete.name;
     try {
       setIsDeleting(true);
-      await api.admin.deleteProduct(token, productToDelete.id);
-      setNotification(`Successfully removed "${productToDelete.name}" from catalog.`);
+      await api.admin.deleteProduct(token, targetId);
+      setProducts((prev) => prev.filter((p) => p.id !== targetId));
+      setNotification(`Successfully removed "${targetName}" from catalog.`);
       setProductToDelete(null);
       await loadData();
       setTimeout(() => setNotification(null), 4000);
