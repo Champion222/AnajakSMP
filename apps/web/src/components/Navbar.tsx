@@ -310,7 +310,7 @@ export const Navbar: React.FC = () => {
                 <img
                   src="/assets/anajak_logo.png"
                   alt="AnajakSMP Minecraft Server"
-                  className="w-48 sm:w-56 md:w-64 lg:w-72 h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300 select-none pointer-events-auto"
+                  className="w-52 sm:w-64 md:w-72 lg:w-80 h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300 select-none pointer-events-auto"
                 />
               </Link>
 

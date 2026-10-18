@@ -1,0 +1,9 @@
+# robots.txt for AnajakSMP
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /favicon*
+Allow: /apple-touch-icon.png
+Allow: /site.webmanifest
+
+Sitemap: https://anajaksmp.xyz/sitemap.xml

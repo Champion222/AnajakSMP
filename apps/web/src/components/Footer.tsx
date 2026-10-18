@@ -11,15 +11,15 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#1f1f2e]">
           {/* Brand Logo & Tagline matching reference */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-gold to-gold-deep p-0.5 shadow-gold-glow">
-              <div className="w-full h-full bg-[#12121c] rounded-[10px] flex items-center justify-center">
-                <Zap className="w-4 h-4 text-gold fill-gold" />
-              </div>
-            </div>
+          <Link to="/" className="flex items-center space-x-3.5 group">
+            <img
+              src="/assets/anajak_logo.png"
+              alt="AnajakSMP"
+              className="h-10 w-auto object-contain drop-shadow group-hover:scale-105 transition-transform"
+            />
             <div className="flex flex-col text-left">
               <span className="font-black text-lg tracking-wider text-white">
-                ANAJAK<span className="text-gold">SMP</span>
+                ANAJAK<span className="text-[#FFE600]">SMP</span>
               </span>
               <span className="text-[9px] tracking-[0.2em] text-[#7a7a90] uppercase font-bold">
                 PLAY • SURVIVE • TOGETHER
