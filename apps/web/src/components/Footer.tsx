@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext.js';
-import { Zap, MessageSquare, Send, ShieldCheck, Heart } from 'lucide-react';
+import { Zap, Send, ShieldCheck, Heart } from 'lucide-react';
+import { DiscordIcon } from './DiscordIcon.js';
 
 export const Footer: React.FC = () => {
   const { settings } = useSettings();
@@ -48,7 +49,7 @@ export const Footer: React.FC = () => {
               className="w-8 h-8 rounded-lg bg-[#181824] hover:bg-gold hover:text-brand-bg border border-[#28283a] flex items-center justify-center text-[#a8a8ba] transition-all"
               aria-label="Discord"
             >
-              <MessageSquare className="w-4 h-4" />
+              <DiscordIcon className="w-4 h-4" />
             </a>
             <a
               href={settings?.telegram_url || 'https://t.me/anajaksmp'}

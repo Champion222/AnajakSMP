@@ -19,6 +19,7 @@ import {
   Server,
   Smartphone,
 } from 'lucide-react';
+import { DiscordIcon } from './DiscordIcon.js';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
 
 interface NavItem {
@@ -276,8 +277,8 @@ export const Navbar: React.FC = () => {
                 title="Click to copy Minecraft Server IP"
                 className="w-full sm:w-auto lg:min-w-[280px] bg-black/30 backdrop-blur-md border border-white/15 hover:border-[#FFE600]/60 rounded-2xl px-5 py-3.5 flex items-center space-x-4 transition-all cursor-pointer group shadow-xl hover:scale-[1.02]"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-white shadow-inner group-hover:scale-105 transition-transform shrink-0 border border-white/10">
-                  <Play className="w-5 h-5 fill-white text-white translate-x-0.5" />
+                <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shadow-inner group-hover:bg-white/20 group-hover:scale-105 transition-all shrink-0">
+                  <Play className="w-6 h-6 fill-white text-white translate-x-0.5" />
                 </div>
                 <div className="flex flex-col min-w-0">
                   <div className="flex items-center space-x-2">
@@ -335,8 +336,8 @@ export const Navbar: React.FC = () => {
                     DC.ANAJAKSMP.XYZ
                   </span>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-[#5865F2]/40 border border-[#5865F2]/60 flex items-center justify-center text-white shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                  <MessageSquare className="w-5 h-5 fill-white text-white" />
+                <div className="w-12 h-12 rounded-2xl bg-[#5865F2]/40 hover:bg-[#5865F2]/60 border border-[#5865F2]/60 flex items-center justify-center text-white shadow-inner group-hover:scale-105 transition-all shrink-0">
+                  <DiscordIcon className="w-6 h-6 fill-white text-white" />
                 </div>
               </a>
             </div>
@@ -481,8 +482,8 @@ export const Navbar: React.FC = () => {
             className="w-full bg-[#3d0210]/70 hover:bg-[#4a0214] active:scale-[0.98] border border-white/10 rounded-2xl p-3 flex items-center justify-between text-left transition-all block"
           >
             <div className="flex items-center space-x-3 min-w-0">
-              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#5865F2] shrink-0">
-                <MessageSquare className="w-5 h-5 fill-current" />
+              <div className="w-10 h-10 rounded-xl bg-[#5865F2]/25 border border-[#5865F2]/40 flex items-center justify-center text-[#5865F2] shrink-0">
+                <DiscordIcon className="w-5 h-5 fill-current" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-white truncate tracking-wide">
