@@ -34,23 +34,23 @@ export const Navbar: React.FC = () => {
   const [copiedBedrock, setCopiedBedrock] = useState(false);
   const location = useLocation();
 
-  // Navigation order for desktop: HOME, RANK, KEYS, VOTE, TEAM, HELP
+  // Navigation order matching Mazer reference: HOME, VOTE, HELP, TEAM, RANK, KEYS
   const navLinks: NavItem[] = [
     { label: 'HOME', path: '/', icon: Home },
+    { label: 'VOTE', path: '/socials', icon: CheckSquare },
+    { label: 'HELP', path: '/support', icon: HelpCircle },
+    { label: 'TEAM', path: '/team', icon: Users },
     { label: 'RANK', path: '/ranks', icon: Crown },
     { label: 'KEYS', path: '/crate-keys', icon: Key },
-    { label: 'VOTE', path: '/socials', icon: CheckSquare },
-    { label: 'TEAM', path: '/team', icon: Users },
-    { label: 'HELP', path: '/support', icon: HelpCircle },
   ];
 
-  // Mobile drawer items matching Mazer reference layout: Home, Vote, Help, Rank, Team, Keys
+  // Mobile drawer items matching Mazer reference layout: Home, Vote, Help, Team, Rank, Keys
   const mobileNavLinks: NavItem[] = [
     { label: 'Home', path: '/', icon: Home },
     { label: 'Vote', path: '/socials', icon: CheckSquare },
     { label: 'Help', path: '/support', icon: HelpCircle },
-    { label: 'Rank', path: '/ranks', icon: Crown },
     { label: 'Team', path: '/team', icon: Users },
+    { label: 'Rank', path: '/ranks', icon: Crown },
     { label: 'Keys', path: '/crate-keys', icon: Key },
   ];
 
@@ -76,27 +76,20 @@ export const Navbar: React.FC = () => {
 
   return (
     <div className="relative w-full select-none">
-      {/* 1. Minecraft Grass Block Top Strip */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#3e721a] via-[#529322] to-[#3e721a] border-b border-[#284c10]" />
+      {/* 1. Sticky Navigation Bar (Follows on scroll) */}
+      <nav className="sticky top-0 z-40 w-full bg-gradient-to-r from-[#6b021d] via-[#820424] to-[#6b021d] border-b border-black/25 shadow-[0_4px_25px_rgba(0,0,0,0.5)] backdrop-blur-md">
+        {/* Minecraft Grass Block Top Strip */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#3e721a] via-[#529322] to-[#3e721a] border-b border-[#284c10]" />
 
-      {/* 2. Main Red Crimson Header with Subtle Pixel Sparkles */}
-      <header className="relative bg-gradient-to-b from-[#7A0222] via-[#A80836] to-[#C71047] text-white overflow-hidden shadow-2xl">
-        {/* Ambient Glow & Sparkle Particles */}
+        {/* Ambient subtle sparkles in sticky bar */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-gold/10 rounded-full blur-3xl" />
-          {/* Diamond dust particles */}
-          <span className="absolute top-6 left-[12%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
-          <span className="absolute top-16 left-[28%] w-1 h-1 bg-white/30 rotate-45" />
-          <span className="absolute top-8 right-[18%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
-          <span className="absolute top-24 right-[32%] w-1 h-1 bg-white/30 rotate-45" />
-          <span className="absolute bottom-10 left-[42%] w-1 h-1 bg-white/30 rotate-45" />
-          <span className="absolute bottom-14 right-[10%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
+          <span className="absolute top-4 left-[12%] w-1.5 h-1.5 bg-white/30 rotate-45 animate-pulse" />
+          <span className="absolute top-5 right-[18%] w-1.5 h-1.5 bg-white/30 rotate-45 animate-pulse" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Top Navigation Row */}
-          <div className="flex items-center justify-between h-16 sm:h-20 border-b border-white/10 gap-2">
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
             {/* Mobile Brand */}
             <div className="flex items-center lg:hidden">
               <Link to="/" onClick={playMinecraftClick} className="flex items-center space-x-2.5">
@@ -112,7 +105,7 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* Desktop Centered Mazer-style Nav Bar */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 space-x-1 xl:space-x-2 font-minecraft">
+            <div className="hidden lg:flex items-center justify-center flex-1 space-x-1 xl:space-x-2 font-minecraft">
               {navLinks.map((item) => {
                 const active = isActive(item.path);
                 const Icon = item.icon;
@@ -132,7 +125,7 @@ export const Navbar: React.FC = () => {
                   </Link>
                 );
               })}
-            </nav>
+            </div>
 
             {/* Top Right Utilities: Currency, Cart & Mobile Menu Button */}
             <div className="flex items-center space-x-2 shrink-0 font-minecraft">
@@ -191,7 +184,24 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
           </div>
+        </div>
+      </nav>
 
+      {/* 2. Main Red Crimson Header with Server Showcase & Sawtooth Edge */}
+      <header className="relative bg-gradient-to-b from-[#7A0222] via-[#A80836] to-[#C71047] text-white overflow-hidden shadow-2xl">
+        {/* Ambient Glow & Sparkle Particles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-gold/10 rounded-full blur-3xl" />
+          <span className="absolute top-6 left-[12%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
+          <span className="absolute top-16 left-[28%] w-1 h-1 bg-white/30 rotate-45" />
+          <span className="absolute top-8 right-[18%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
+          <span className="absolute top-24 right-[32%] w-1 h-1 bg-white/30 rotate-45" />
+          <span className="absolute bottom-10 left-[42%] w-1 h-1 bg-white/30 rotate-45" />
+          <span className="absolute bottom-14 right-[10%] w-1.5 h-1.5 bg-white/40 rotate-45 animate-pulse" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Middle Server Showcase Row (Play Online | 3D Emblem | Users Online) */}
           <div className="py-6 sm:py-8 lg:py-10">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-4">
