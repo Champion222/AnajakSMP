@@ -14,6 +14,9 @@ import {
   Shield,
   Eye,
   DollarSign,
+  Crown,
+  Key,
+  Sparkles,
 } from 'lucide-react';
 
 interface AdminProductsPageProps {
@@ -25,6 +28,7 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [selectedTab, setSelectedTab] = useState<'all' | 'ranks' | 'crate-keys' | 'other'>('all');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,6 +85,44 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     setRankDuration('Permanent Lifetime');
     setPerksText('[VIP] Chat Tag\nFly command (/fly)\n3 Extra Home teleports');
     setCommandsText('lp user {username} parent add vip\nbroadcast &6Player &e{username} &6unlocked VIP!');
+    setIsFeatured(false);
+    setIsActive(true);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openCreateRankModal = () => {
+    const rankCat = categories.find((c) => c.slug === 'ranks' || c.name.toLowerCase().includes('rank'));
+    setEditingProduct(null);
+    setName('Titan Rank');
+    setSlug('titan-rank');
+    if (rankCat) setCategoryId(rankCat.id);
+    setPriceUsd('29.99');
+    setSalePriceUsd('24.99');
+    setDescription('Elite tier server rank with all previous perks, fly, repair, and exclusive prefix.');
+    setImageUrl('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80');
+    setRankDuration('Permanent Lifetime');
+    setPerksText('[TITAN] Chat Prefix & Gold Glow\nFly command in claims (/fly)\n8 Extra Home teleports (/sethome)\nAccess to /feed and /repair\nTitan Weekly Kit with Netherite\nPriority server queue slot');
+    setCommandsText('lp user {username} parent add titan\nbroadcast &6Player &e{username} &6has unlocked &cTITAN Rank&6!');
+    setIsFeatured(true);
+    setIsActive(true);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openCreateKeyModal = () => {
+    const keyCat = categories.find((c) => c.slug === 'crate-keys' || c.name.toLowerCase().includes('key'));
+    setEditingProduct(null);
+    setName('Mythic Crate Key');
+    setSlug('mythic-key');
+    if (keyCat) setCategoryId(keyCat.id);
+    setPriceUsd('4.99');
+    setSalePriceUsd('3.99');
+    setDescription('Open the Mythic Crate at spawn crates for top-tier Netherite rewards and rare items.');
+    setImageUrl('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80');
+    setRankDuration('');
+    setPerksText('Top-tier Netherite tools & armor\nRare Mob Spawners voucher\nExclusive Custom Enchants\nInstant automated delivery');
+    setCommandsText('crate key give {username} mythic 1\nbroadcast &e{username} &6just purchased a &dMythic Crate Key&6!');
     setIsFeatured(false);
     setIsActive(true);
     setFormError(null);
@@ -172,42 +214,132 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     }
   };
 
-  const filtered = products.filter(
-    (p) =>
+  const isRankProduct = (p: Product) =>
+    p.slug.toLowerCase().includes('rank') ||
+    p.category?.slug === 'ranks' ||
+    p.name.toLowerCase().includes('rank');
+
+  const isKeyProduct = (p: Product) =>
+    p.slug.toLowerCase().includes('key') ||
+    p.category?.slug === 'crate-keys' ||
+    p.name.toLowerCase().includes('key');
+
+  const filtered = products.filter((p) => {
+    const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.slug.toLowerCase().includes(search.toLowerCase())
-  );
+      p.slug.toLowerCase().includes(search.toLowerCase());
+    if (!matchesSearch) return false;
+
+    if (selectedTab === 'ranks') return isRankProduct(p);
+    if (selectedTab === 'crate-keys') return isKeyProduct(p);
+    if (selectedTab === 'other') return !isRankProduct(p) && !isKeyProduct(p);
+    return true;
+  });
+
+  const ranksCount = products.filter(isRankProduct).length;
+  const keysCount = products.filter(isKeyProduct).length;
+  const otherCount = products.length - ranksCount - keysCount;
 
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-white">Product Catalog Management</h1>
           <p className="text-xs text-text-secondary mt-1">
-            Create, edit prices, update delivery commands, and toggle items on the storefront.
+            Add ranks, configure crate keys, edit prices & perks, update RCON delivery commands, and remove products.
           </p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="gold-gradient-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-gold-glow"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add New Product</span>
-        </button>
+        {/* Action Buttons for Rank, Key, and Custom Product */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={openCreateRankModal}
+            className="gold-gradient-btn px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-gold-glow"
+          >
+            <Crown className="w-4 h-4 text-brand-bg fill-current" />
+            <span>+ Add Rank</span>
+          </button>
+
+          <button
+            onClick={openCreateKeyModal}
+            className="px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 bg-[#5865F2] hover:bg-[#4752c4] text-white shadow-md transition-all active:scale-95"
+          >
+            <Key className="w-4 h-4 text-white rotate-45" />
+            <span>+ Add Crate Key</span>
+          </button>
+
+          <button
+            onClick={openCreateModal}
+            className="px-3 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 bg-brand-secondary border border-brand-border text-text-secondary hover:text-white hover:border-gold transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Other Item</span>
+          </button>
+        </div>
       </div>
 
-      {/* Filter bar */}
-      <div className="p-3 bg-brand-secondary rounded-xl border border-brand-border flex items-center max-w-sm">
-        <Search className="w-4 h-4 text-text-muted mr-2" />
-        <input
-          type="text"
-          placeholder="Filter products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="bg-transparent text-xs text-white placeholder-text-muted focus:outline-none w-full"
-        />
+      {/* Filter Tabs and Search Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Category Tabs */}
+        <div className="flex items-center space-x-1 p-1 bg-brand-secondary rounded-xl border border-brand-border text-xs font-bold overflow-x-auto">
+          <button
+            onClick={() => setSelectedTab('all')}
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+              selectedTab === 'all'
+                ? 'bg-gold text-brand-bg shadow-sm'
+                : 'text-text-secondary hover:text-white'
+            }`}
+          >
+            All Products ({products.length})
+          </button>
+          <button
+            onClick={() => setSelectedTab('ranks')}
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 ${
+              selectedTab === 'ranks'
+                ? 'bg-gold text-brand-bg shadow-sm'
+                : 'text-text-secondary hover:text-white'
+            }`}
+          >
+            <Crown className="w-3.5 h-3.5" />
+            <span>Ranks ({ranksCount})</span>
+          </button>
+          <button
+            onClick={() => setSelectedTab('crate-keys')}
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 ${
+              selectedTab === 'crate-keys'
+                ? 'bg-gold text-brand-bg shadow-sm'
+                : 'text-text-secondary hover:text-white'
+            }`}
+          >
+            <Key className="w-3.5 h-3.5" />
+            <span>Crate Keys ({keysCount})</span>
+          </button>
+          {otherCount > 0 && (
+            <button
+              onClick={() => setSelectedTab('other')}
+              className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+                selectedTab === 'other'
+                  ? 'bg-gold text-brand-bg shadow-sm'
+                  : 'text-text-secondary hover:text-white'
+              }`}
+            >
+              Other Items ({otherCount})
+            </button>
+          )}
+        </div>
+
+        {/* Search Input */}
+        <div className="p-2.5 bg-brand-secondary rounded-xl border border-brand-border flex items-center sm:max-w-xs w-full">
+          <Search className="w-4 h-4 text-text-muted mr-2 shrink-0" />
+          <input
+            type="text"
+            placeholder="Search by name, slug..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="bg-transparent text-xs text-white placeholder-text-muted focus:outline-none w-full"
+          />
+        </div>
       </div>
 
       {/* Products Table */}
@@ -248,9 +380,21 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className="px-2 py-0.5 rounded bg-brand-secondary border border-brand-border text-text-secondary text-[10px] font-bold">
-                        {categories.find((c) => c.id === prod.category_id)?.name || 'General'}
-                      </span>
+                      {isRankProduct(prod) ? (
+                        <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-gold/15 border border-gold/30 text-gold text-[10px] font-black uppercase font-minecraft">
+                          <Crown className="w-3 h-3" />
+                          <span>RANK</span>
+                        </span>
+                      ) : isKeyProduct(prod) ? (
+                        <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#5865F2]/20 border border-[#5865F2]/40 text-[#7289da] text-[10px] font-black uppercase font-minecraft">
+                          <Key className="w-3 h-3 rotate-45" />
+                          <span>CRATE KEY</span>
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded bg-brand-secondary border border-brand-border text-text-secondary text-[10px] font-bold">
+                          {categories.find((c) => c.id === prod.category_id)?.name || 'General'}
+                        </span>
+                      )}
                     </td>
                     <td className="p-4">
                       <div className="font-bold text-gold">

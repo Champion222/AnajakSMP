@@ -28,6 +28,8 @@ import { AdminCouponsPage } from './pages/admin/AdminCouponsPage.js';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage.js';
 import { AdminAuditLogsPage } from './pages/admin/AdminAuditLogsPage.js';
 import { AdminTicketsPage } from './pages/admin/AdminTicketsPage.js';
+import { AdminTeamPage } from './pages/admin/AdminTeamPage.js';
+import { AdminPagesControlPage } from './pages/admin/AdminPagesControlPage.js';
 
 import { AdminUser } from '@anajaksmp/shared';
 
@@ -242,6 +244,8 @@ export const App: React.FC = () => {
               <Route index element={<Navigate to="/control-panel/dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboardPage token={adminToken!} />} />
               <Route path="products" element={<AdminProductsPage token={adminToken!} />} />
+              <Route path="team" element={<AdminTeamPage token={adminToken!} />} />
+              <Route path="pages" element={<AdminPagesControlPage token={adminToken!} />} />
               <Route path="orders" element={<AdminOrdersPage token={adminToken!} />} />
               <Route path="coupons" element={<AdminCouponsPage token={adminToken!} />} />
               <Route path="settings" element={<AdminSettingsPage token={adminToken!} />} />

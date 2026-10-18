@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { DiscordIcon } from './DiscordIcon.js';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
+import { pageSettingsService, SoonPageSettings } from '../services/pageSettingsService.js';
 
 interface NavItem {
   label: string;
@@ -33,7 +34,24 @@ export const Navbar: React.FC = () => {
   const { settings, serverStatus, copiedIp, copyServerIp, currency, setCurrency } = useSettings();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedBedrock, setCopiedBedrock] = useState(false);
+  const [soonSettings, setSoonSettings] = useState<SoonPageSettings>(() => pageSettingsService.getSettings());
   const location = useLocation();
+
+  useEffect(() => {
+    const handleSoonUpdate = (e: any) => {
+      if (e.detail) setSoonSettings(e.detail);
+    };
+    window.addEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+    return () => window.removeEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+  }, []);
+
+  const isItemSoon = (label: string) => {
+    const norm = label.toUpperCase();
+    if (norm === 'KEYS' && soonSettings.keys) return true;
+    if (norm === 'VOTE' && soonSettings.vote) return true;
+    if (norm === 'HELP' && soonSettings.help) return true;
+    return false;
+  };
 
   // Sliding pill position state for desktop active nav item
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number; opacity: number }>({
@@ -188,6 +206,11 @@ export const Navbar: React.FC = () => {
                       }`}
                     />
                     <span>{item.label}</span>
+                    {isItemSoon(item.label) && (
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md bg-[#e93b67] text-white shadow-sm animate-pulse tracking-tight ml-1 font-minecraft shrink-0">
+                        SOON
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -434,7 +457,14 @@ export const Navbar: React.FC = () => {
                       active ? 'text-[#121216]' : 'text-white/80'
                     }`}
                   />
-                  <span>{item.label}</span>
+                  <div className="flex items-center justify-between flex-1">
+                    <span>{item.label}</span>
+                    {isItemSoon(item.label) && (
+                      <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-[#e93b67] text-white shadow-sm animate-pulse tracking-tight font-minecraft">
+                        SOON
+                      </span>
+                    )}
+                  </div>
                 </Link>
               );
             })}

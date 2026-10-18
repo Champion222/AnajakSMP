@@ -13,10 +13,20 @@ import {
 } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext.js';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
+import { pageSettingsService } from '../services/pageSettingsService.js';
 
 export const SocialsPage: React.FC = () => {
   const { settings, copyServerIp, copiedIp } = useSettings();
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
+  const [isVoteSoon, setIsVoteSoon] = useState(() => pageSettingsService.getSettings().vote);
+
+  React.useEffect(() => {
+    const handleSoonUpdate = (e: any) => {
+      if (e.detail) setIsVoteSoon(Boolean(e.detail.vote));
+    };
+    window.addEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+    return () => window.removeEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+  }, []);
 
   const discordUrl = settings?.discord_url || 'https://discord.gg/anajaksmp';
   const telegramUrl = settings?.telegram_url || 'https://t.me/anajaksmp';
@@ -151,27 +161,42 @@ export const SocialsPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Blue Minecraft Action Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            {votingSites.map((site) => (
-              <a
-                key={site.id}
-                href={site.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={playMinecraftClick}
-                className="py-4 px-4 rounded-xl bg-[#0092ff] hover:bg-[#0082ea] text-white font-minecraft shadow-[0_5px_0_#006fc4] active:translate-y-1 active:shadow-[0_1px_0_#006fc4] transition-all flex flex-col items-center justify-center text-center group select-none"
-              >
-                <span className="text-sm font-black tracking-wider flex items-center gap-1.5">
-                  <Vote className="w-4 h-4" />
-                  <span>{site.name}</span>
-                </span>
-                <span className="text-[10px] text-white/80 mt-1 font-mono">
-                  {site.siteName}
-                </span>
-              </a>
-            ))}
-          </div>
+          {/* Blue Minecraft Action Buttons or SOON Teaser */}
+          {isVoteSoon ? (
+            <div className="rounded-2xl bg-[#ebf5fc] border border-[#cbe4f6] p-6 text-center space-y-3">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#e93b67]/15 text-[#e93b67] text-xs font-minecraft font-black tracking-wider uppercase">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>UPCOMING VOTING REWARDS SYSTEM</span>
+              </div>
+              <h3 className="text-3xl font-minecraft font-black text-[#1a2530] tracking-widest uppercase">
+                SOON
+              </h3>
+              <p className="text-xs text-[#5a7184] max-w-md mx-auto">
+                Voting rewards, streaks, and top monthly voter rewards are being configured. Check back soon!
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              {votingSites.map((site) => (
+                <a
+                  key={site.id}
+                  href={site.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={playMinecraftClick}
+                  className="py-4 px-4 rounded-xl bg-[#0092ff] hover:bg-[#0082ea] text-white font-minecraft shadow-[0_5px_0_#006fc4] active:translate-y-1 active:shadow-[0_1px_0_#006fc4] transition-all flex flex-col items-center justify-center text-center group select-none"
+                >
+                  <span className="text-sm font-black tracking-wider flex items-center gap-1.5">
+                    <Vote className="w-4 h-4" />
+                    <span>{site.name}</span>
+                  </span>
+                  <span className="text-[10px] text-white/80 mt-1 font-mono">
+                    {site.siteName}
+                  </span>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

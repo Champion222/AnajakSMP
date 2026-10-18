@@ -1,78 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageSquare, Check, Sparkles, CheckCircle2, Users } from 'lucide-react';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
-
-interface StaffMember {
-  id: string;
-  ign: string;
-  skinUsername: string;
-  discordTag: string;
-  hasChat?: boolean;
-}
-
-interface RoleGroup {
-  id: string;
-  title: string;
-  members: StaffMember[];
-}
-
-const roleGroups: RoleGroup[] = [
-  {
-    id: 'owner',
-    title: 'OWNER',
-    members: [
-      {
-        id: 'owner-1',
-        ign: '_T_Z',
-        skinUsername: '_T_Z',
-        discordTag: '_T_Z',
-        hasChat: false,
-      },
-    ],
-  },
-  {
-    id: 'builder',
-    title: 'BUILDER',
-    members: [
-      {
-        id: 'builder-1',
-        ign: 'Nx4YGzz',
-        skinUsername: 'Nx4YGzz',
-        discordTag: 'Nx4YGzz',
-        hasChat: true,
-      },
-    ],
-  },
-  {
-    id: 'developer',
-    title: 'DEVELOPER',
-    members: [
-      {
-        id: 'dev-1',
-        ign: 'Nx4YGzz',
-        skinUsername: 'Nx4YGzz',
-        discordTag: 'Nx4YGzz',
-        hasChat: true,
-      },
-    ],
-  },
-  {
-    id: 'moderator',
-    title: 'MODERATOR',
-    members: [
-      {
-        id: 'mod-1',
-        ign: '_T_Z',
-        skinUsername: '_T_Z',
-        discordTag: '_T_Z',
-        hasChat: true,
-      },
-    ],
-  },
-];
+import { teamService, RoleGroup, StaffMember } from '../services/teamService.js';
 
 export const TeamPage: React.FC = () => {
+  const [roleGroups, setRoleGroups] = useState<RoleGroup[]>(() => teamService.getTeam());
   const [copiedInfo, setCopiedInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setRoleGroups(teamService.getTeam());
+    };
+    window.addEventListener('anajaksmp_team_updated', handleUpdate);
+    return () => window.removeEventListener('anajaksmp_team_updated', handleUpdate);
+  }, []);
 
   const handleCopyDiscord = (discordTag: string, ign: string) => {
     playMinecraftClick();

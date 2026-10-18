@@ -16,6 +16,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
+import { pageSettingsService } from '../services/pageSettingsService.js';
 
 interface StorePageProps {
   initialCategory?: string;
@@ -253,6 +254,15 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
   const [sortOption, setSortOption] = useState<'newest' | 'price_asc' | 'price_desc' | 'popular'>('newest');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isKeysSoon, setIsKeysSoon] = useState(() => pageSettingsService.getSettings().keys);
+
+  useEffect(() => {
+    const handleSoonUpdate = (e: any) => {
+      if (e.detail) setIsKeysSoon(Boolean(e.detail.keys));
+    };
+    window.addEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+    return () => window.removeEventListener('anajaksmp_soon_updated', handleSoonUpdate);
+  }, []);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -350,8 +360,8 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
         </div>
       </div>
 
-      {/* Crate Keys "SOON" State View */}
-      {currentCategory === 'crate-keys' ? (
+      {/* Crate Keys "SOON" State View (Controlled via Admin) */}
+      {currentCategory === 'crate-keys' && isKeysSoon ? (
         <section className="rounded-3xl bg-[#c2dee5] border-2 border-[#a7ccd6] p-8 sm:p-14 text-center shadow-sm relative overflow-hidden space-y-6">
           {/* Key Icon Container */}
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-[#485963] text-[#FFE600] border-2 border-white/40 flex items-center justify-center mx-auto shadow-lg relative group">

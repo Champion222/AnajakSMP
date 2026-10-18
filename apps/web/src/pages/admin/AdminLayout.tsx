@@ -14,6 +14,8 @@ import {
   ChevronRight,
   Menu,
   X,
+  Users,
+  ToggleLeft,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -28,7 +30,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ adminUser, onLogout })
 
   const navItems = [
     { label: 'Dashboard', path: '/control-panel/dashboard', icon: LayoutDashboard },
-    { label: 'Products', path: '/control-panel/products', icon: Package },
+    { label: 'Products (Ranks & Keys)', path: '/control-panel/products', icon: Package },
+    { label: 'Team Members', path: '/control-panel/team', icon: Users },
+    { label: 'Page Controls (SOON)', path: '/control-panel/pages', icon: ToggleLeft },
     { label: 'Orders', path: '/control-panel/orders', icon: ShoppingBag },
     { label: 'Coupons', path: '/control-panel/coupons', icon: Tag },
     { label: 'Settings', path: '/control-panel/settings', icon: Settings, roles: ['OWNER'] },
