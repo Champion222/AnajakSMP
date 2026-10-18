@@ -23,16 +23,9 @@ const roleGroups: RoleGroup[] = [
     members: [
       {
         id: 'owner-1',
-        ign: 'XinG_Mazer',
-        skinUsername: 'Xing_Mazer',
-        discordTag: 'xing_mazer',
-        hasChat: false,
-      },
-      {
-        id: 'owner-2',
-        ign: 'KingTayy',
-        skinUsername: 'KingTayy',
-        discordTag: 'kingtayy',
+        ign: '_T_Z',
+        skinUsername: '_T_Z',
+        discordTag: '_T_Z',
         hasChat: false,
       },
     ],
@@ -43,23 +36,9 @@ const roleGroups: RoleGroup[] = [
     members: [
       {
         id: 'builder-1',
-        ign: 'CUBEKHMER',
-        skinUsername: 'CUBEKHMER',
-        discordTag: 'cubekhmer',
-        hasChat: true,
-      },
-      {
-        id: 'builder-2',
-        ign: 'PRO_PHEAR',
-        skinUsername: 'PRO_PHEAR',
-        discordTag: 'pro_phear',
-        hasChat: true,
-      },
-      {
-        id: 'builder-3',
-        ign: 'CHOMRERN',
-        skinUsername: 'CHOMRERN',
-        discordTag: 'chomrern',
+        ign: 'Nx4YGzz',
+        skinUsername: 'Nx4YGzz',
+        discordTag: 'Nx4YGzz',
         hasChat: true,
       },
     ],
@@ -70,16 +49,9 @@ const roleGroups: RoleGroup[] = [
     members: [
       {
         id: 'dev-1',
-        ign: 'Golden_IQ',
-        skinUsername: 'Golden_IQ',
-        discordTag: 'golden_iq',
-        hasChat: true,
-      },
-      {
-        id: 'dev-2',
-        ign: 'VathnaDev',
-        skinUsername: 'VathnaDev',
-        discordTag: 'vathnadev',
+        ign: 'Nx4YGzz',
+        skinUsername: 'Nx4YGzz',
+        discordTag: 'Nx4YGzz',
         hasChat: true,
       },
     ],
@@ -90,16 +62,9 @@ const roleGroups: RoleGroup[] = [
     members: [
       {
         id: 'mod-1',
-        ign: 'LotusGuard',
-        skinUsername: 'CaptainSparklez',
-        discordTag: 'lotus_guard',
-        hasChat: true,
-      },
-      {
-        id: 'mod-2',
-        ign: 'PixelSlayer',
-        skinUsername: 'DanTDM',
-        discordTag: 'pixelslayer',
+        ign: '_T_Z',
+        skinUsername: '_T_Z',
+        discordTag: '_T_Z',
         hasChat: true,
       },
     ],

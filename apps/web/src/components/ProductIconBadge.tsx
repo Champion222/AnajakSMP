@@ -20,6 +20,8 @@ export const ProductIconBadge: React.FC<ProductIconBadgeProps> = ({
   const isVip = slug.includes('vip') && !slug.includes('mvp');
   const isMvp = slug.includes('mvp') && !slug.includes('plus');
   const isMvpPlus = slug.includes('mvp-plus') || slug.includes('plus');
+  const isPremium = slug.includes('premium') || slug.includes('premuin');
+  const isCustomRank = slug.includes('custom');
   const isTitanOrFlame = slug.includes('titan') || slug.includes('flame');
 
   const isCommonKey = slug.includes('common');
@@ -33,20 +35,30 @@ export const ProductIconBadge: React.FC<ProductIconBadgeProps> = ({
   let auraBg = 'bg-gold/10';
 
   if (isVip) {
-    glowColor = 'from-purple-500/25 via-purple-500/10 to-transparent';
-    iconColor = 'text-purple-400';
-    borderColor = 'border-purple-500/30';
-    auraBg = 'bg-purple-500/10';
+    glowColor = 'from-yellow-400/30 via-amber-500/15 to-transparent';
+    iconColor = 'text-yellow-400';
+    borderColor = 'border-yellow-400/40';
+    auraBg = 'bg-yellow-400/15';
   } else if (isMvp) {
-    glowColor = 'from-cyan-500/25 via-cyan-500/10 to-transparent';
+    glowColor = 'from-cyan-400/30 via-cyan-400/10 to-transparent';
     iconColor = 'text-cyan-400';
-    borderColor = 'border-cyan-500/30';
-    auraBg = 'bg-cyan-500/10';
+    borderColor = 'border-cyan-400/40';
+    auraBg = 'bg-cyan-400/15';
   } else if (isMvpPlus) {
-    glowColor = 'from-amber-400/30 via-amber-400/10 to-transparent';
-    iconColor = 'text-amber-400';
-    borderColor = 'border-amber-400/40';
-    auraBg = 'bg-amber-400/15';
+    glowColor = 'from-emerald-400/30 via-teal-400/15 to-transparent';
+    iconColor = 'text-emerald-400';
+    borderColor = 'border-emerald-400/40';
+    auraBg = 'bg-emerald-400/15';
+  } else if (isPremium) {
+    glowColor = 'from-purple-500/35 via-fuchsia-500/20 to-transparent';
+    iconColor = 'text-fuchsia-400';
+    borderColor = 'border-purple-400/50';
+    auraBg = 'bg-purple-500/20';
+  } else if (isCustomRank) {
+    glowColor = 'from-pink-500/35 via-amber-400/20 to-cyan-400/20';
+    iconColor = 'text-amber-300';
+    borderColor = 'border-amber-300/50';
+    auraBg = 'bg-gradient-to-tr from-pink-500/25 via-purple-500/20 to-cyan-500/25';
   } else if (isTitanOrFlame) {
     glowColor = 'from-red-500/30 via-orange-500/15 to-transparent';
     iconColor = 'text-orange-400';

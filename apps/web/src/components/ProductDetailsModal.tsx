@@ -62,6 +62,30 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
 
   // Rank-specific Theme configurations
   const getRankTheme = () => {
+    if (product.slug.includes('custom')) {
+      return {
+        prefixText: '[CUSTOM]',
+        prefixColor: 'text-[#FFE600] font-black',
+        badgeBg: 'bg-gradient-to-r from-[#FF007A] via-[#7928CA] to-[#00DFD8]',
+        badgeText: 'text-white',
+        glowBorder: 'border-[#FFE600]/60',
+        chatSample: '⭐ [CUSTOM] Your personalized prefix & chat color in AnajakSMP!',
+        sampleColor: 'text-[#FFE600]',
+        icon: Sparkles,
+      };
+    }
+    if (product.slug.includes('premium') || product.slug.includes('premuin')) {
+      return {
+        prefixText: '[PREMIUM]',
+        prefixColor: 'text-[#E879F9] font-black',
+        badgeBg: 'bg-gradient-to-r from-[#A855F7] to-[#EC4899]',
+        badgeText: 'text-white',
+        glowBorder: 'border-[#A855F7]/60',
+        chatSample: 'Hello world! Mining with 1.5x economy bonus and /repair hand.',
+        sampleColor: 'text-[#F472B6]',
+        icon: Crown,
+      };
+    }
     if (product.slug.includes('titan')) {
       return {
         prefixText: '[TITAN]',
