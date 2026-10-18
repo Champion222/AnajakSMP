@@ -486,9 +486,19 @@ export const api = {
         }
       }
 
-      // Direct Supabase Insert Fallback
-      const { data, error } = await supabase.from('products').insert(product).select().single();
-      if (error) throw new Error(error.message);
+      // Direct Supabase Insert Fallback with auto-slug retry
+      const insertPayload = { ...product };
+      const { data, error } = await supabase.from('products').insert(insertPayload).select().single();
+      if (error) {
+        if (error.message?.includes('products_slug_key') || error.message?.includes('duplicate key') || error.message?.includes('unique constraint')) {
+          insertPayload.slug = `${insertPayload.slug}-${Date.now().toString().slice(-4)}`;
+          const retryRes = await supabase.from('products').insert(insertPayload).select().single();
+          if (!retryRes.error && retryRes.data) {
+            return { success: true, product: retryRes.data };
+          }
+        }
+        throw new Error(error.message);
+      }
       return { success: true, product: data };
     },
 

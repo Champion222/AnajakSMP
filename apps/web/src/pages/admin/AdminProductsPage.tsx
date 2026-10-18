@@ -221,7 +221,11 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
 
   const applyPreset = (preset: ProductPreset) => {
     setName(preset.name);
-    setSlug(preset.slug);
+    let targetSlug = preset.slug;
+    if (!editingProduct && products.some((p) => p.slug.toLowerCase() === targetSlug.toLowerCase())) {
+      targetSlug = `${preset.slug}-${Date.now().toString().slice(-4)}`;
+    }
+    setSlug(targetSlug);
     setPriceUsd(preset.priceUsd);
     setSalePriceUsd(preset.salePriceUsd);
     setDescription(preset.description);
@@ -237,7 +241,17 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     setEditingProduct(null);
     setModalType('rank');
     if (rankCat) setCategoryId(rankCat.id);
-    applyPreset(RANK_PRESETS.vip);
+    setName('');
+    setSlug('');
+    setPriceUsd('4.99');
+    setSalePriceUsd('');
+    setDescription('Exclusive server rank with custom prefix, extra homes, and survival kits.');
+    setImageUrl('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80');
+    setRankDuration('Permanent Lifetime');
+    setPerksText('[RANK] Chat Tag & Prefix\nFly ability in claims (/fly)\nExtra Home Teleports\nWeekly Diamond Kit');
+    setCommandsText('lp user {username} parent add rank\nbroadcast &6Player &e{username} &6unlocked a new Rank!');
+    setIsFeatured(false);
+    setIsActive(true);
     setFormError(null);
     setIsModalOpen(true);
   };
@@ -247,7 +261,17 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     setEditingProduct(null);
     setModalType('key');
     if (keyCat) setCategoryId(keyCat.id);
-    applyPreset(KEY_PRESETS.common);
+    setName('');
+    setSlug('');
+    setPriceUsd('1.99');
+    setSalePriceUsd('');
+    setDescription('Open exclusive crates at spawn for rare equipment and loot drops.');
+    setImageUrl('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80');
+    setRankDuration('');
+    setPerksText('Rare crate drop rewards\nCustom enchantment tomes\nInstant automated delivery');
+    setCommandsText('crate key give {username} key 1\nmsg {username} &6You received 1x Crate Key!');
+    setIsFeatured(false);
+    setIsActive(true);
     setFormError(null);
     setIsModalOpen(true);
   };
@@ -297,9 +321,17 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
       .map((s) => s.trim())
       .filter(Boolean);
 
+    let finalSlug = (slug.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')).toLowerCase();
+    if (!finalSlug || finalSlug === '-') {
+      finalSlug = `${modalType || 'product'}-${Date.now().toString().slice(-4)}`;
+    }
+    if (!editingProduct && products.some((p) => p.slug.toLowerCase() === finalSlug)) {
+      finalSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
+    }
+
     const payload = {
       name: name.trim(),
-      slug: slug.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      slug: finalSlug,
       category_id: categoryId,
       price_usd: price,
       sale_price_usd: salePrice,
@@ -325,7 +357,12 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
       await loadData();
       setTimeout(() => setNotification(null), 4000);
     } catch (err: any) {
-      setFormError(err.message || 'Failed to save product');
+      const msg = err.message || '';
+      if (msg.includes('products_slug_key') || msg.includes('duplicate key') || msg.includes('unique constraint')) {
+        setFormError(`The Slug/URL "${finalSlug}" is already used by an existing product. Please change the Slug.`);
+      } else {
+        setFormError(msg || 'Failed to save product');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -693,6 +730,11 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                     className="w-full bg-brand-secondary border border-brand-border rounded-xl px-3.5 py-2 text-white font-mono focus:outline-none focus:border-gold"
                     required
                   />
+                  {!editingProduct && slug.trim() && products.some((p) => p.slug.toLowerCase() === slug.trim().toLowerCase()) && (
+                    <p className="text-[10px] text-amber-400 mt-1 flex items-center space-x-1">
+                      <span>⚠️ Note: This Slug is already taken. A unique suffix will be added automatically to prevent collision.</span>
+                    </p>
+                  )}
                 </div>
 
                 <div>
