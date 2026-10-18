@@ -28,7 +28,7 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [selectedTab, setSelectedTab] = useState<'all' | 'ranks' | 'crate-keys' | 'other'>('all');
+  const [selectedTab, setSelectedTab] = useState<'all' | 'ranks' | 'crate-keys'>('all');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -224,7 +224,10 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
     p.category?.slug === 'crate-keys' ||
     p.name.toLowerCase().includes('key');
 
-  const filtered = products.filter((p) => {
+  // Website only sells Ranks and Keys
+  const storeProducts = products.filter((p) => isRankProduct(p) || isKeyProduct(p));
+
+  const filtered = storeProducts.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.slug.toLowerCase().includes(search.toLowerCase());
@@ -232,13 +235,11 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
 
     if (selectedTab === 'ranks') return isRankProduct(p);
     if (selectedTab === 'crate-keys') return isKeyProduct(p);
-    if (selectedTab === 'other') return !isRankProduct(p) && !isKeyProduct(p);
     return true;
   });
 
-  const ranksCount = products.filter(isRankProduct).length;
-  const keysCount = products.filter(isKeyProduct).length;
-  const otherCount = products.length - ranksCount - keysCount;
+  const ranksCount = storeProducts.filter(isRankProduct).length;
+  const keysCount = storeProducts.filter(isKeyProduct).length;
 
   return (
     <div className="space-y-6">
@@ -247,15 +248,15 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
         <div>
           <h1 className="text-2xl font-extrabold text-white">Product Catalog Management</h1>
           <p className="text-xs text-text-secondary mt-1">
-            Add ranks, configure crate keys, edit prices & perks, update RCON delivery commands, and remove products.
+            Manage your store's Ranks and Crate Keys: edit prices, update perks, configure RCON commands, or remove items.
           </p>
         </div>
 
-        {/* Action Buttons for Rank, Key, and Custom Product */}
+        {/* Action Buttons for Rank & Key only */}
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             onClick={openCreateRankModal}
-            className="gold-gradient-btn px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-gold-glow"
+            className="gold-gradient-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-gold-glow cursor-pointer active:scale-95"
           >
             <Crown className="w-4 h-4 text-brand-bg fill-current" />
             <span>+ Add Rank</span>
@@ -263,39 +264,31 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
 
           <button
             onClick={openCreateKeyModal}
-            className="px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 bg-[#5865F2] hover:bg-[#4752c4] text-white shadow-md transition-all active:scale-95"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 bg-[#5865F2] hover:bg-[#4752c4] text-white shadow-md transition-all cursor-pointer active:scale-95"
           >
             <Key className="w-4 h-4 text-white rotate-45" />
             <span>+ Add Crate Key</span>
-          </button>
-
-          <button
-            onClick={openCreateModal}
-            className="px-3 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 bg-brand-secondary border border-brand-border text-text-secondary hover:text-white hover:border-gold transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            <span>+ Other Item</span>
           </button>
         </div>
       </div>
 
       {/* Filter Tabs and Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        {/* Category Tabs */}
+        {/* Category Tabs: All Products, Ranks, Crate Keys only */}
         <div className="flex items-center space-x-1 p-1 bg-brand-secondary rounded-xl border border-brand-border text-xs font-bold overflow-x-auto">
           <button
             onClick={() => setSelectedTab('all')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
               selectedTab === 'all'
                 ? 'bg-gold text-brand-bg shadow-sm'
                 : 'text-text-secondary hover:text-white'
             }`}
           >
-            All Products ({products.length})
+            All Products ({storeProducts.length})
           </button>
           <button
             onClick={() => setSelectedTab('ranks')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 ${
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 cursor-pointer ${
               selectedTab === 'ranks'
                 ? 'bg-gold text-brand-bg shadow-sm'
                 : 'text-text-secondary hover:text-white'
@@ -306,7 +299,7 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
           </button>
           <button
             onClick={() => setSelectedTab('crate-keys')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 ${
+            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center space-x-1 cursor-pointer ${
               selectedTab === 'crate-keys'
                 ? 'bg-gold text-brand-bg shadow-sm'
                 : 'text-text-secondary hover:text-white'
@@ -315,18 +308,6 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
             <Key className="w-3.5 h-3.5" />
             <span>Crate Keys ({keysCount})</span>
           </button>
-          {otherCount > 0 && (
-            <button
-              onClick={() => setSelectedTab('other')}
-              className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
-                selectedTab === 'other'
-                  ? 'bg-gold text-brand-bg shadow-sm'
-                  : 'text-text-secondary hover:text-white'
-              }`}
-            >
-              Other Items ({otherCount})
-            </button>
-          )}
         </div>
 
         {/* Search Input */}
@@ -372,6 +353,9 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                           src={prod.image_url}
                           alt={prod.name}
                           className="w-10 h-10 rounded-lg object-cover bg-black/40"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/assets/anajak_logo.png';
+                          }}
                         />
                         <div>
                           <p className="font-bold text-white">{prod.name}</p>
@@ -509,11 +493,19 @@ export const AdminProductsPage: React.FC<AdminProductsPageProps> = ({ token }) =
                     onChange={(e) => setCategoryId(e.target.value)}
                     className="w-full bg-brand-secondary border border-brand-border rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-gold"
                   >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
+                    {categories
+                      .filter(
+                        (c) =>
+                          c.slug === 'ranks' ||
+                          c.slug === 'crate-keys' ||
+                          c.name.toLowerCase().includes('rank') ||
+                          c.name.toLowerCase().includes('key')
+                      )
+                      .map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
 
