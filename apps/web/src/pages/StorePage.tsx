@@ -341,10 +341,10 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
           )}
         </div>
         <div>
-          <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+          <span className="block text-xs font-minecraft font-bold text-[#ffb4c2] tracking-wider uppercase">
             {currentCategory === 'crate-keys' ? 'MYSTERY LOOT & CRATES' : 'SERVER MEMBERSHIP'}
           </span>
-          <h1 className="text-lg sm:text-2xl font-minecraft font-black text-white tracking-wide uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-minecraft font-black text-white tracking-wide uppercase">
             {currentCategory === 'crate-keys' ? 'CRATE KEYS' : 'RANK SHOP'}
           </h1>
         </div>
@@ -363,14 +363,14 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
 
           {/* Title & Badge */}
           <div className="space-y-2">
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#485963]/15 border border-[#485963]/30 text-[#131d24] text-[11px] font-minecraft font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#485963]/15 border border-[#485963]/30 text-[#131d24] text-xs font-minecraft font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-[#d99a16]" />
               <span>UPCOMING CRATE SYSTEM</span>
             </div>
             <h2 className="font-minecraft text-3xl sm:text-5xl font-black text-[#131d24] tracking-widest uppercase">
               SOON
             </h2>
-            <p className="text-xs sm:text-sm text-[#485963] max-w-lg mx-auto leading-relaxed">
+            <p className="text-sm text-[#485963] max-w-lg mx-auto leading-relaxed font-medium">
               Crate keys and mystery spawn loot crates are currently undergoing balance tuning for the upcoming season launch. Stay tuned on Discord for the official release!
             </p>
           </div>
@@ -388,10 +388,10 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory }) => {
                 className="bg-[#9ec4cd]/70 border border-[#89b1ba] rounded-2xl p-3.5 flex flex-col items-center justify-center space-y-1.5 opacity-90 shadow-2xs"
               >
                 <Key className="w-6 h-6 text-[#485963] rotate-45" />
-                <span className="font-minecraft text-xs font-bold text-[#131d24] text-center">
+                <span className="font-minecraft text-xs sm:text-sm font-bold text-[#131d24] text-center">
                   {crate.name}
                 </span>
-                <span className="text-[10px] font-minecraft font-bold text-[#e93b67] bg-[#e93b67]/15 px-2 py-0.5 rounded-md uppercase">
+                <span className="text-xs font-minecraft font-bold text-[#e93b67] bg-[#e93b67]/15 px-2.5 py-0.5 rounded-md uppercase">
                   SOON
                 </span>
               </div>

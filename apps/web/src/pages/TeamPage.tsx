@@ -101,10 +101,10 @@ export const TeamPage: React.FC = () => {
           <Users className="w-5 h-5 text-white" />
         </div>
         <div>
-          <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+          <span className="block text-xs font-minecraft font-bold text-[#ffb4c2] tracking-wider uppercase">
             SERVER DIRECTORY
           </span>
-          <h1 className="text-lg sm:text-2xl font-minecraft font-black text-white tracking-wide uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-minecraft font-black text-white tracking-wide uppercase">
             STAFF TEAM
           </h1>
         </div>
@@ -159,7 +159,7 @@ export const TeamPage: React.FC = () => {
                   </button>
 
                   {/* Discord Username Copy Hint */}
-                  <p className="text-[11px] text-[#2c3e50]/80 font-medium truncate flex items-center space-x-1">
+                  <p className="text-xs text-[#2c3e50]/90 font-medium truncate flex items-center space-x-1">
                     <span className="text-[#3b4e5b]">Discord:</span>
                     <span className="font-semibold text-[#131d24]">@{member.discordTag}</span>
                   </p>

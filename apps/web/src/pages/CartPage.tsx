@@ -81,10 +81,10 @@ export const CartPage: React.FC = () => {
           <ShoppingBag className="w-5 h-5 text-white" />
         </div>
         <div>
-          <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+          <span className="block text-xs font-minecraft font-bold text-[#ffb4c2] tracking-wider uppercase">
             ORDER CHECKOUT
           </span>
-          <h1 className="text-lg sm:text-2xl font-minecraft font-black text-white tracking-wide uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-minecraft font-black text-white tracking-wide uppercase">
             SHOPPING CART
           </h1>
         </div>
@@ -117,7 +117,7 @@ export const CartPage: React.FC = () => {
           {/* Main Left: Items Table */}
           <div className="lg:col-span-8 rounded-3xl bg-[#c2dee5] border-2 border-[#a7ccd6] overflow-hidden shadow-sm">
             {/* Table Header */}
-            <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3.5 bg-[#b0d5de] border-b border-[#a7ccd6] text-[11px] font-minecraft font-bold uppercase tracking-wider text-[#131d24]">
+            <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3.5 bg-[#b0d5de] border-b border-[#a7ccd6] text-xs font-minecraft font-bold uppercase tracking-wider text-[#131d24]">
               <div className="col-span-6">ITEM</div>
               <div className="col-span-2 text-center">PRICE</div>
               <div className="col-span-2 text-center">QUANTITY</div>
@@ -151,8 +151,8 @@ export const CartPage: React.FC = () => {
                           {product.name}
                         </h3>
                         <div className="flex items-center space-x-2 mt-1">
-                          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-lg text-[10px] font-minecraft font-bold bg-[#485963] text-white shadow-2xs">
-                            <User className="w-3 h-3 text-[#FFE600]" />
+                          <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-minecraft font-bold bg-[#485963] text-white shadow-2xs">
+                            <User className="w-3.5 h-3.5 text-[#FFE600]" />
                             <span>{playerUsername || 'Guest Player'}</span>
                           </span>
                         </div>
@@ -218,7 +218,7 @@ export const CartPage: React.FC = () => {
 
             {/* Minecraft Username Quick-Edit Bar */}
             <div className="p-4 bg-[#b0d5de] border-t border-[#a7ccd6] flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center space-x-2 text-xs text-[#131d24] font-minecraft font-bold">
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-[#131d24] font-minecraft font-bold">
                 <User className="w-4 h-4 text-[#d99a16] shrink-0" />
                 <span>Minecraft Username for delivery:</span>
               </div>
@@ -229,7 +229,7 @@ export const CartPage: React.FC = () => {
                     placeholder="e.g. _T_Z or Nx4YGzz"
                     value={playerUsername}
                     onChange={(e) => handleUsernameChange(e.target.value.trim())}
-                    className="w-full px-3.5 py-2 rounded-xl bg-[#f2f9fb] border-2 border-[#89b1ba] text-xs font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#f2f9fb] border-2 border-[#89b1ba] text-xs sm:text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                   />
                   {playerUsername.trim() && (
                     <div className="absolute right-2 w-6 h-6 rounded-md overflow-hidden bg-[#c5dfe6] border border-white/60 shrink-0">
@@ -251,12 +251,12 @@ export const CartPage: React.FC = () => {
           {/* Right Summary Box */}
           <div className="lg:col-span-4 space-y-4">
             <div className="rounded-3xl bg-[#c2dee5] border-2 border-[#a7ccd6] p-6 space-y-5 shadow-sm">
-              <h2 className="text-base font-minecraft font-black text-[#131d24] tracking-wide pb-3 border-b border-[#a7ccd6]">
+              <h2 className="text-base sm:text-lg font-minecraft font-black text-[#131d24] tracking-wide pb-3 border-b border-[#a7ccd6]">
                 ORDER SUMMARY
               </h2>
 
               {/* Totals */}
-              <div className="space-y-3 text-xs">
+              <div className="space-y-3 text-xs sm:text-sm">
                 <div className="flex items-center justify-between text-[#485963]">
                   <span className="font-medium">Subtotal</span>
                   <span className="font-bold text-[#131d24]">{formatPrice(subtotalUsd)}</span>
@@ -288,26 +288,26 @@ export const CartPage: React.FC = () => {
                     placeholder="COUPON (E.G. ANAJAK10)"
                     value={couponCodeInput}
                     onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
-                    className="flex-1 px-3.5 py-2 rounded-xl bg-[#f2f9fb] border-2 border-[#89b1ba] text-xs font-mono text-[#131d24] placeholder-[#7d9da7] uppercase focus:outline-none focus:border-[#485963] transition-colors"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#f2f9fb] border-2 border-[#89b1ba] text-xs sm:text-sm font-mono text-[#131d24] placeholder-[#7d9da7] uppercase focus:outline-none focus:border-[#485963] transition-colors"
                   />
                   <button
                     type="submit"
                     disabled={isApplyingCoupon || !couponCodeInput.trim()}
-                    className="px-4 py-2 rounded-xl bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs transition-colors shadow-sm disabled:opacity-50"
+                    className="px-4 py-2.5 rounded-xl bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs sm:text-sm transition-colors shadow-sm disabled:opacity-50"
                   >
                     APPLY
                   </button>
                 </form>
 
                 {(localCouponError || couponError) && (
-                  <p className="text-[11px] text-[#dc3545] flex items-center space-x-1 font-medium">
-                    <AlertCircle className="w-3 h-3" />
+                  <p className="text-xs text-[#dc3545] flex items-center space-x-1 font-medium">
+                    <AlertCircle className="w-3.5 h-3.5" />
                     <span>{localCouponError || couponError}</span>
                   </p>
                 )}
 
                 {coupon && (
-                  <div className="flex items-center justify-between text-[11px] bg-[#d4edda] border border-[#c3e6cb] px-3 py-1.5 rounded-xl text-[#155724] font-medium">
+                  <div className="flex items-center justify-between text-xs bg-[#d4edda] border border-[#c3e6cb] px-3 py-2 rounded-xl text-[#155724] font-medium">
                     <span>Coupon applied!</span>
                     <button
                       onClick={() => {
@@ -335,9 +335,9 @@ export const CartPage: React.FC = () => {
               </button>
 
               {/* Guarantee Note */}
-              <div className="p-3 rounded-2xl bg-[#9ec4cd]/60 border border-[#89b1ba] flex items-center space-x-2.5">
+              <div className="p-3.5 rounded-2xl bg-[#9ec4cd]/60 border border-[#89b1ba] flex items-center space-x-2.5">
                 <ShieldCheck className="w-5 h-5 text-[#131d24] shrink-0" />
-                <p className="text-[10px] text-[#2c3e50] leading-tight">
+                <p className="text-xs text-[#2c3e50] leading-tight">
                   Instant delivery via Minecraft RCON. Verified with Bakong KHQR & ABA PayWay.
                 </p>
               </div>

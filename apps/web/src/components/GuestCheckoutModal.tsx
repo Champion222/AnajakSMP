@@ -114,10 +114,10 @@ export const GuestCheckoutModal: React.FC = () => {
                 <ShoppingBag className="w-5 h-5" />
               </div>
               <div>
-                <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+                <span className="block text-xs font-minecraft font-bold text-[#ffb4c2] tracking-wider uppercase">
                   INSTANT DISPATCH
                 </span>
-                <h3 className="font-minecraft text-lg sm:text-xl font-black text-white tracking-wide">
+                <h3 className="font-minecraft text-xl sm:text-2xl font-black text-white tracking-wide">
                   GUEST CHECKOUT
                 </h3>
               </div>
@@ -147,7 +147,7 @@ export const GuestCheckoutModal: React.FC = () => {
 
           {/* Minecraft Username with live skin avatar preview */}
           <div>
-            <label className="block text-[11px] uppercase font-minecraft font-bold tracking-wider text-[#131d24] mb-1.5">
+            <label className="block text-xs uppercase font-bold tracking-wider text-[#131d24] mb-1.5">
               Minecraft Username <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center space-x-3">
@@ -172,10 +172,10 @@ export const GuestCheckoutModal: React.FC = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value.trim())}
                   maxLength={16}
-                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2 text-xs sm:text-sm text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                   required
                 />
-                <span className="text-[10px] text-[#485963] mt-1 block font-medium">
+                <span className="text-xs text-[#485963] mt-1 block font-medium">
                   Ranks and items are delivered in-game to this exact player username.
                 </span>
               </div>
@@ -184,7 +184,7 @@ export const GuestCheckoutModal: React.FC = () => {
 
           {/* Customer Email */}
           <div>
-            <label className="block text-[11px] uppercase font-minecraft font-bold tracking-wider text-[#131d24] mb-1.5">
+            <label className="block text-xs uppercase font-bold tracking-wider text-[#131d24] mb-1.5">
               Customer Email Address <span className="text-red-500">*</span>
             </label>
             <div className="relative flex items-center">
@@ -194,18 +194,18 @@ export const GuestCheckoutModal: React.FC = () => {
                 placeholder="your.email@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl pl-10 pr-3.5 py-2 text-xs sm:text-sm text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl pl-10 pr-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                 required
               />
             </div>
-            <span className="text-[10px] text-[#485963] mt-1 block font-medium">
+            <span className="text-xs text-[#485963] mt-1 block font-medium">
               We send your Order Receipt and secret verification key to this email.
             </span>
           </div>
 
           {/* Payment Method Selector */}
           <div>
-            <label className="block text-[11px] uppercase font-minecraft font-bold tracking-wider text-[#131d24] mb-2">
+            <label className="block text-xs uppercase font-bold tracking-wider text-[#131d24] mb-2">
               Select Payment Method <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -235,7 +235,7 @@ export const GuestCheckoutModal: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-xs sm:text-sm font-minecraft font-bold text-[#131d24]">KHQR (Bakong)</h4>
-                  <p className="text-[10px] text-[#485963] mt-0.5 font-medium">
+                  <p className="text-xs text-[#485963] mt-0.5 font-medium">
                     Scan with ABA, Wing, Acleda, or any bank app
                   </p>
                 </div>
@@ -267,7 +267,7 @@ export const GuestCheckoutModal: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-xs sm:text-sm font-minecraft font-bold text-[#131d24]">ABA PayWay</h4>
-                  <p className="text-[10px] text-[#485963] mt-0.5 font-medium">
+                  <p className="text-xs text-[#485963] mt-0.5 font-medium">
                     Direct ABA Mobile / credit cards
                   </p>
                 </div>
@@ -284,7 +284,7 @@ export const GuestCheckoutModal: React.FC = () => {
                 onChange={(e) => setAgreeTerms(e.target.checked)}
                 className="mt-0.5 rounded border-2 border-[#89b1ba] text-[#485963] focus:ring-0"
               />
-              <span className="text-[11px] text-[#485963] leading-relaxed">
+              <span className="text-xs text-[#485963] leading-relaxed">
                 I understand perks are digital in-game entitlements. I agree to the{' '}
                 <a href="/terms" target="_blank" className="text-[#131d24] font-bold underline">
                   Terms of Service

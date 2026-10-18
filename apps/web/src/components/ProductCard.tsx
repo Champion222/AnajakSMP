@@ -60,13 +60,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelectProdu
       {(product.is_featured || isSale) && (
         <div className="absolute top-6 left-6 z-20 flex flex-col gap-1 pointer-events-none">
           {product.is_featured && (
-            <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-[#FFE600] text-[#121216] shadow-sm">
-              <Flame className="w-3 h-3 text-[#121216] fill-[#121216]" />
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-black uppercase tracking-wider bg-[#FFE600] text-[#121216] shadow-sm">
+              <Flame className="w-3.5 h-3.5 text-[#121216] fill-[#121216]" />
               <span>Popular</span>
             </span>
           )}
           {isSale && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-status-error text-white shadow-sm">
+            <span className="inline-flex items-center px-2.5 py-1 rounded text-xs font-black uppercase tracking-wider bg-status-error text-white shadow-sm">
               Sale
             </span>
           )}
@@ -107,7 +107,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelectProdu
 
           {/* Category Pill */}
           <div className="mt-1">
-            <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ebf5fc] text-[#4a6b82] border border-[#cbe4f6]">
+            <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold bg-[#ebf5fc] text-[#4a6b82] border border-[#cbe4f6]">
               {categoryLabel}
             </span>
           </div>
@@ -144,7 +144,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelectProdu
               )}
             </div>
             {product.rank_duration && (
-              <span className="text-[10px] text-[#6b7c8c] uppercase font-semibold">
+              <span className="text-xs text-[#6b7c8c] uppercase font-bold">
                 {product.rank_duration}
               </span>
             )}
@@ -153,7 +153,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelectProdu
           {/* Full-width Buy Now button */}
           <button
             onClick={handleBuyNow}
-            className="w-full py-2.5 px-4 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-center space-x-2 bg-[#FFE600] hover:bg-[#fad800] text-[#121216] shadow-sm hover:shadow-[0_4px_12px_rgba(255,230,0,0.4)] active:scale-[0.98]"
+            className="w-full py-2.5 px-4 rounded-xl font-extrabold text-xs sm:text-sm tracking-wider uppercase transition-all duration-200 flex items-center justify-center space-x-2 bg-[#FFE600] hover:bg-[#fad800] text-[#121216] shadow-sm hover:shadow-[0_4px_12px_rgba(255,230,0,0.4)] active:scale-[0.98]"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Buy Now</span>

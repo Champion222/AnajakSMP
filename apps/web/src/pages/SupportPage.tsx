@@ -149,15 +149,15 @@ export const SupportPage: React.FC = () => {
   return (
     <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8 select-none">
       {/* Mazer Style Header Banner */}
-      <div className="bg-[#1e1319] border-2 border-[#3b202d] rounded-2xl px-5 py-3.5 flex items-center space-x-3.5 shadow-md">
+      <div className="bg-[#1e1319] border-2 border-[#3b202d] rounded-2xl px-5 py-4 flex items-center space-x-3.5 shadow-md">
         <div className="w-10 h-10 rounded-xl bg-[#e93b67] flex items-center justify-center shrink-0 shadow-inner">
           <HelpCircle className="w-5 h-5 text-white" />
         </div>
         <div>
-          <span className="block text-[10px] font-minecraft text-[#ffb4c2] tracking-wider uppercase">
+          <span className="block text-xs font-minecraft font-bold text-[#ffb4c2] tracking-wider uppercase">
             24/7 PLAYER ASSISTANCE
           </span>
-          <h1 className="text-lg sm:text-2xl font-minecraft font-black text-white tracking-wide uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-minecraft font-black text-white tracking-wide uppercase">
             HELP & SUPPORT CENTER
           </h1>
         </div>
@@ -172,7 +172,7 @@ export const SupportPage: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-[#485963] text-[#FFE600] flex items-center justify-center shadow-inner">
                 <Server className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-minecraft font-bold bg-[#9ec4cd] text-[#131d24] px-2.5 py-1 rounded-full uppercase">
+              <span className="text-xs font-minecraft font-bold bg-[#9ec4cd] text-[#131d24] px-2.5 py-1 rounded-full uppercase">
                 Port 25565
               </span>
             </div>
@@ -180,7 +180,7 @@ export const SupportPage: React.FC = () => {
               <h3 className="font-minecraft text-base sm:text-lg font-bold text-[#131d24]">
                 JAVA EDITION
               </h3>
-              <p className="text-xs text-[#485963] mt-1 font-mono font-medium">
+              <p className="text-sm text-[#485963] mt-1 font-mono font-medium">
                 {serverIp}
               </p>
             </div>
@@ -188,7 +188,7 @@ export const SupportPage: React.FC = () => {
 
           <button
             onClick={handleCopyJava}
-            className="mt-4 w-full bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
+            className="mt-4 w-full bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs sm:text-sm font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
           >
             {copiedJava ? (
               <>
@@ -211,7 +211,7 @@ export const SupportPage: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-[#485963] text-[#48bfe3] flex items-center justify-center shadow-inner">
                 <Smartphone className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-minecraft font-bold bg-[#9ec4cd] text-[#131d24] px-2.5 py-1 rounded-full uppercase">
+              <span className="text-xs font-minecraft font-bold bg-[#9ec4cd] text-[#131d24] px-2.5 py-1 rounded-full uppercase">
                 Port 19132
               </span>
             </div>
@@ -219,7 +219,7 @@ export const SupportPage: React.FC = () => {
               <h3 className="font-minecraft text-base sm:text-lg font-bold text-[#131d24]">
                 BEDROCK EDITION
               </h3>
-              <p className="text-xs text-[#485963] mt-1 font-mono font-medium">
+              <p className="text-sm text-[#485963] mt-1 font-mono font-medium">
                 {bedrockIp}
               </p>
             </div>
@@ -227,7 +227,7 @@ export const SupportPage: React.FC = () => {
 
           <button
             onClick={handleCopyBedrock}
-            className="mt-4 w-full bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
+            className="mt-4 w-full bg-[#485963] hover:bg-[#3b4952] active:scale-95 text-white font-minecraft text-xs sm:text-sm font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
           >
             {copiedBedrock ? (
               <>
@@ -250,7 +250,7 @@ export const SupportPage: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-[#5865F2] text-white flex items-center justify-center shadow-inner">
                 <MessageSquare className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-minecraft font-bold bg-[#5865F2]/20 text-[#5865F2] px-2.5 py-1 rounded-full uppercase">
+              <span className="text-xs font-minecraft font-bold bg-[#5865F2]/20 text-[#5865F2] px-2.5 py-1 rounded-full uppercase">
                 Active 24/7
               </span>
             </div>
@@ -258,7 +258,7 @@ export const SupportPage: React.FC = () => {
               <h3 className="font-minecraft text-base sm:text-lg font-bold text-[#131d24]">
                 DISCORD DESK
               </h3>
-              <p className="text-xs text-[#485963] mt-1">
+              <p className="text-xs sm:text-sm text-[#485963] mt-1 font-medium">
                 Fastest support! Get 1-on-1 assistance with active staff members.
               </p>
             </div>
@@ -269,7 +269,7 @@ export const SupportPage: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={playMinecraftClick}
-            className="mt-4 w-full bg-[#5865F2] hover:bg-[#4752c4] active:scale-95 text-white font-minecraft text-xs py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
+            className="mt-4 w-full bg-[#5865F2] hover:bg-[#4752c4] active:scale-95 text-white font-minecraft text-xs sm:text-sm font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-sm"
           >
             <span>JOIN DISCORD GUILD</span>
             <ExternalLink className="w-3.5 h-3.5 ml-1" />
@@ -370,11 +370,11 @@ export const SupportPage: React.FC = () => {
             )}
 
             {/* Ticket Form */}
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            <form onSubmit={handleSubmit} className="space-y-4 text-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Username Input with Live Avatar */}
                 <div>
-                  <label className="block uppercase font-bold text-[#131d24] mb-1.5 font-minecraft text-[11px]">
+                  <label className="block uppercase font-bold text-[#131d24] mb-1.5 text-xs tracking-wider">
                     Minecraft Username <span className="text-red-500">*</span>
                   </label>
                   <div className="relative flex items-center">
@@ -383,7 +383,7 @@ export const SupportPage: React.FC = () => {
                       placeholder="e.g. _T_Z"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                      className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                       required
                     />
                     {username.trim() && (
@@ -403,7 +403,7 @@ export const SupportPage: React.FC = () => {
 
                 {/* Email Address */}
                 <div>
-                  <label className="block uppercase font-bold text-[#131d24] mb-1.5 font-minecraft text-[11px]">
+                  <label className="block uppercase font-bold text-[#131d24] mb-1.5 text-xs tracking-wider">
                     Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -411,7 +411,7 @@ export const SupportPage: React.FC = () => {
                     placeholder="your.email@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                    className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                     required
                   />
                 </div>
@@ -419,7 +419,7 @@ export const SupportPage: React.FC = () => {
 
               {/* Order Number (Optional) */}
               <div>
-                <label className="block uppercase font-bold text-[#131d24] mb-1.5 font-minecraft text-[11px]">
+                <label className="block uppercase font-bold text-[#131d24] mb-1.5 text-xs tracking-wider">
                   Order Number (Optional)
                 </label>
                 <input
@@ -427,24 +427,24 @@ export const SupportPage: React.FC = () => {
                   placeholder="e.g. ASMP-2026-X8F4K"
                   value={orderNumber}
                   onChange={(e) => setOrderNumber(e.target.value)}
-                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] uppercase transition-colors"
+                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] uppercase transition-colors"
                 />
               </div>
 
               {/* Quick Subject Suggestions */}
               <div>
-                <label className="block uppercase font-bold text-[#131d24] mb-1.5 font-minecraft text-[11px]">
+                <label className="block uppercase font-bold text-[#131d24] mb-1.5 text-xs tracking-wider">
                   Subject <span className="text-red-500">*</span>
                 </label>
-                <div className="flex flex-wrap gap-1.5 mb-2">
+                <div className="flex flex-wrap gap-2 mb-2">
                   {quickTopics.map((topic) => (
                     <button
                       type="button"
                       key={topic}
                       onClick={() => selectQuickTopic(topic)}
-                      className={`text-[10px] font-minecraft px-2.5 py-1 rounded-lg border transition-all ${
+                      className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all ${
                         subject === topic
-                          ? 'bg-[#485963] text-white border-[#485963]'
+                          ? 'bg-[#485963] text-white border-[#485963] shadow-sm'
                           : 'bg-[#9ec4cd] hover:bg-[#8eb8c2] text-[#131d24] border-[#89b1ba]'
                       }`}
                     >
@@ -457,14 +457,14 @@ export const SupportPage: React.FC = () => {
                   placeholder="Brief summary of your inquiry"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
+                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
                   required
                 />
               </div>
 
               {/* Detailed Message */}
               <div>
-                <label className="block uppercase font-bold text-[#131d24] mb-1.5 font-minecraft text-[11px]">
+                <label className="block uppercase font-bold text-[#131d24] mb-1.5 text-xs tracking-wider">
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -472,7 +472,7 @@ export const SupportPage: React.FC = () => {
                   placeholder="Explain the problem in detail (e.g. transaction receipt, what perk was missing, screenshot link, etc.)..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors resize-y"
+                  className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-4 py-2.5 text-sm font-medium text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors resize-y"
                   required
                 />
               </div>
@@ -481,7 +481,7 @@ export const SupportPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#FFE600] hover:bg-[#ffd700] active:scale-[0.99] text-[#131d24] font-minecraft font-black py-3 rounded-2xl shadow-md flex items-center justify-center space-x-2 transition-all disabled:opacity-50 text-xs sm:text-sm mt-2"
+                className="w-full bg-[#FFE600] hover:bg-[#ffd700] active:scale-[0.99] text-[#131d24] font-minecraft font-black py-3.5 px-6 rounded-2xl shadow-md flex items-center justify-center space-x-2 transition-all disabled:opacity-50 text-xs sm:text-sm mt-2"
               >
                 {isSubmitting ? (
                   <>

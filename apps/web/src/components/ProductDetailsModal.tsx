@@ -179,17 +179,17 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
 
             <div className="flex-1 text-center sm:text-left space-y-1">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider ${rankTheme.badgeBg} ${rankTheme.badgeText} font-minecraft shadow-sm`}>
+                <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider ${rankTheme.badgeBg} ${rankTheme.badgeText} font-minecraft shadow-sm`}>
                   {product.category?.name || 'PERMANENT RANK'}
                 </span>
                 {isSale && (
-                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-status-error text-white shadow-sm">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-status-error text-white shadow-sm">
                     🔥 SALE
                   </span>
                 )}
                 {product.rank_duration && (
-                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-lg bg-black/30 border border-white/20 text-white text-[10px] font-bold">
-                    <Clock className="w-3 h-3 text-[#FFE600]" />
+                  <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-black/30 border border-white/20 text-white text-xs font-bold">
+                    <Clock className="w-3.5 h-3.5 text-[#FFE600]" />
                     <span>{product.rank_duration}</span>
                   </span>
                 )}
@@ -212,11 +212,11 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
           {isRank && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#5a7184] flex items-center gap-1.5">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-[#5a7184] flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#d99a16]" />
                   <span>In-Game Chat Prefix Preview</span>
                 </span>
-                <span className="text-[10px] text-[#7a8a98] font-mono">Real-time preview</span>
+                <span className="text-xs text-[#7a8a98] font-mono">Real-time preview</span>
               </div>
 
               <div className="rounded-2xl bg-[#12121c] border-2 border-[#252538] p-3.5 shadow-inner text-left font-minecraft">
@@ -235,11 +235,11 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
           {product.perks && product.perks.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#1a2530] flex items-center space-x-1.5">
+                <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#1a2530] flex items-center space-x-1.5">
                   <ShieldCheck className="w-4 h-4 text-[#d99a16]" />
                   <span>Unlocked Perks & Privileges</span>
                 </h4>
-                <span className="text-[11px] text-[#5a7184] font-medium">
+                <span className="text-xs text-[#5a7184] font-medium">
                   {product.perks.length} Benefits Included
                 </span>
               </div>
@@ -265,8 +265,8 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
             <div className="flex items-start space-x-3 p-3.5 rounded-xl bg-white border border-[#cbe4f6] shadow-sm">
               <Zap className="w-5 h-5 text-[#d99a16] shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-bold text-[#1a2530]">Instant Automated Delivery</p>
-                <p className="text-[11px] text-[#5a7184] mt-0.5">
+                <p className="text-xs sm:text-sm font-bold text-[#1a2530]">Instant Automated Delivery</p>
+                <p className="text-xs text-[#5a7184] mt-0.5">
                   Applied via Minecraft RCON in 30-60 seconds after payment confirmation.
                 </p>
               </div>
@@ -275,8 +275,8 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
             <div className="flex items-start space-x-3 p-3.5 rounded-xl bg-white border border-[#cbe4f6] shadow-sm">
               <ShieldCheck className="w-5 h-5 text-[#48b354] shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-bold text-[#1a2530]">Lifetime Purchase Guarantee</p>
-                <p className="text-[11px] text-[#5a7184] mt-0.5">
+                <p className="text-xs sm:text-sm font-bold text-[#1a2530]">Lifetime Purchase Guarantee</p>
+                <p className="text-xs text-[#5a7184] mt-0.5">
                   Permanent survival access. Zero monthly renewals or recurring fees.
                 </p>
               </div>
@@ -318,7 +318,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
           {/* Pricing & Add to Cart Button */}
           <div className="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end">
             <div className="text-right">
-              <span className="text-[10px] text-[#7a8a98] uppercase font-bold block">Total Price</span>
+              <span className="text-xs text-[#7a8a98] uppercase font-bold block">Total Price</span>
               <div className="flex items-baseline space-x-2">
                 <span className="text-2xl font-black text-[#1a2530] tracking-tight">{formattedPrice}</span>
                 {originalPriceFormatted && (
@@ -329,7 +329,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ produc
 
             <button
               onClick={handleAddToCart}
-              className={`py-3.5 px-6 rounded-xl font-minecraft text-xs font-black tracking-wider uppercase transition-all duration-200 flex items-center space-x-2 shadow-md active:scale-95 ${
+              className={`py-3.5 px-6 rounded-xl font-minecraft text-xs sm:text-sm font-black tracking-wider uppercase transition-all duration-200 flex items-center space-x-2 shadow-md active:scale-95 ${
                 added
                   ? 'bg-status-success text-white'
                   : 'bg-[#FFE600] hover:bg-[#fad800] text-[#121216] shadow-[0_4px_14px_rgba(255,230,0,0.5)]'
