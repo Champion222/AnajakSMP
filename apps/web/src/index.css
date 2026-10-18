@@ -111,3 +111,16 @@ h1, h2, h3, h4, h5, h6 {
   background-image: radial-gradient(rgba(245, 197, 66, 0.08) 1px, transparent 1px);
   background-size: 32px 32px;
 }
+
+@keyframes navbarShimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  50%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.animate-navbar-shimmer {
+  animation: navbarShimmer 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

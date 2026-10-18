@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext.js';
 import { useSettings } from '../context/SettingsContext.js';
@@ -33,6 +33,15 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedBedrock, setCopiedBedrock] = useState(false);
   const location = useLocation();
+
+  // Sliding pill position state for desktop active nav item
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const navItemRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
   // Navigation order matching Mazer reference: HOME, VOTE, HELP, TEAM, RANK, KEYS
   const navLinks: NavItem[] = [
@@ -74,6 +83,35 @@ export const Navbar: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
+  // Update sliding pill indicator position whenever route or window size changes
+  const updatePillPosition = () => {
+    const activeItem = navLinks.find((item) => isActive(item.path));
+    if (activeItem && navContainerRef.current) {
+      const el = navItemRefs.current.get(activeItem.label);
+      if (el) {
+        const containerRect = navContainerRef.current.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        setPillStyle({
+          left: elRect.left - containerRect.left,
+          width: elRect.width,
+          opacity: 1,
+        });
+        return;
+      }
+    }
+    setPillStyle((prev) => ({ ...prev, opacity: 0 }));
+  };
+
+  useEffect(() => {
+    updatePillPosition();
+    const timer = setTimeout(updatePillPosition, 60);
+    window.addEventListener('resize', updatePillPosition);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updatePillPosition);
+    };
+  }, [location.pathname]);
+
   return (
     <div className="relative w-full select-none">
       {/* 1. Fixed Navigation Bar (Follows on scroll permanently) */}
@@ -104,8 +142,27 @@ export const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* Desktop Centered Mazer-style Nav Bar */}
-            <div className="hidden lg:flex items-center justify-center flex-1 space-x-1 xl:space-x-2 font-minecraft">
+            {/* Desktop Centered Mazer-style Nav Bar with Sliding Pill Animation */}
+            <div
+              ref={navContainerRef}
+              className="hidden lg:flex items-center justify-center flex-1 space-x-1 xl:space-x-2 font-minecraft relative py-1"
+            >
+              {/* Sliding Active Pill Indicator with Glowing Shimmer */}
+              <div
+                className="absolute top-1 bottom-1 rounded-xl bg-[#FFE600] shadow-[0_0_24px_rgba(255,230,0,0.75)] pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] z-0"
+                style={{
+                  left: `${pillStyle.left}px`,
+                  width: `${pillStyle.width}px`,
+                  opacity: pillStyle.opacity,
+                  transform: pillStyle.opacity ? 'scale(1)' : 'scale(0.95)',
+                }}
+              >
+                {/* Shimmer Light Sweep across the pill */}
+                <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                  <div className="w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-navbar-shimmer" />
+                </div>
+              </div>
+
               {navLinks.map((item) => {
                 const active = isActive(item.path);
                 const Icon = item.icon;
@@ -113,14 +170,22 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={item.label}
                     to={item.path}
+                    ref={(el) => {
+                      if (el) navItemRefs.current.set(item.label, el);
+                      else navItemRefs.current.delete(item.label);
+                    }}
                     onClick={playMinecraftClick}
-                    className={`px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-[13px] font-black tracking-wider transition-all duration-200 flex items-center space-x-2 whitespace-nowrap select-none ${
+                    className={`relative z-10 px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-[13px] font-black tracking-wider transition-colors duration-200 flex items-center space-x-2 whitespace-nowrap select-none ${
                       active
-                        ? 'bg-[#FFE600] text-[#121216] shadow-[0_0_20px_rgba(255,230,0,0.65)] scale-105'
-                        : 'text-white/90 hover:text-[#FFE600] hover:bg-black/20 active:scale-95'
+                        ? 'text-[#121216]'
+                        : 'text-white/90 hover:text-white hover:bg-black/20 active:scale-95'
                     }`}
                   >
-                    <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 ${active ? 'text-[#121216]' : 'text-white/80'}`} />
+                    <Icon
+                      className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 transition-colors duration-200 ${
+                        active ? 'text-[#121216]' : 'text-white/80'
+                      }`}
+                    />
                     <span>{item.label}</span>
                   </Link>
                 );
