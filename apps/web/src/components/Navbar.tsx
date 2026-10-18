@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext.js';
 import { useSettings } from '../context/SettingsContext.js';
@@ -16,6 +16,8 @@ import {
   X,
   Play,
   MessageSquare,
+  Server,
+  Smartphone,
 } from 'lucide-react';
 import { playMinecraftClick } from '../utils/minecraft-sounds.js';
 
@@ -29,9 +31,10 @@ export const Navbar: React.FC = () => {
   const { itemCount } = useCart();
   const { settings, serverStatus, copiedIp, copyServerIp, currency, setCurrency } = useSettings();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [copiedBedrock, setCopiedBedrock] = useState(false);
   const location = useLocation();
 
-  // Navigation order: HOME, RANK, KEYS, VOTE, TEAM, HELP
+  // Navigation order for desktop: HOME, RANK, KEYS, VOTE, TEAM, HELP
   const navLinks: NavItem[] = [
     { label: 'HOME', path: '/', icon: Home },
     { label: 'RANK', path: '/ranks', icon: Crown },
@@ -41,8 +44,30 @@ export const Navbar: React.FC = () => {
     { label: 'HELP', path: '/support', icon: HelpCircle },
   ];
 
+  // Mobile drawer items matching Mazer reference layout: Home, Vote, Help, Rank, Team, Keys
+  const mobileNavLinks: NavItem[] = [
+    { label: 'Home', path: '/', icon: Home },
+    { label: 'Vote', path: '/socials', icon: CheckSquare },
+    { label: 'Help', path: '/support', icon: HelpCircle },
+    { label: 'Rank', path: '/ranks', icon: Crown },
+    { label: 'Team', path: '/team', icon: Users },
+    { label: 'Keys', path: '/crate-keys', icon: Key },
+  ];
+
   const serverIp = settings?.server_ip || 'play.anajaksmp.xyz';
   const onlinePlayers = serverStatus?.players?.online ?? 42;
+
+  // Prevent background scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
@@ -72,20 +97,17 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Top Navigation Row */}
           <div className="flex items-center justify-between h-16 sm:h-20 border-b border-white/10 gap-2">
-            {/* Mobile Brand / Toggle */}
-            <div className="flex items-center lg:hidden space-x-2">
-              <button
-                onClick={() => {
-                  playMinecraftClick();
-                  setMobileMenuOpen(!mobileMenuOpen);
-                }}
-                className="p-2 rounded-xl bg-black/30 border border-white/20 text-white hover:text-[#FFE600]"
-                aria-label="Toggle navigation menu"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 text-[#FFE600]" />}
-              </button>
-              <Link to="/" onClick={playMinecraftClick} className="font-minecraft text-sm font-black text-white">
-                ANAJAK<span className="text-[#FFE600]">SMP</span>
+            {/* Mobile Brand */}
+            <div className="flex items-center lg:hidden">
+              <Link to="/" onClick={playMinecraftClick} className="flex items-center space-x-2.5">
+                <img
+                  src="/assets/anajak_logo.png"
+                  alt="AnajakSMP"
+                  className="h-9 w-auto object-contain drop-shadow"
+                />
+                <span className="font-minecraft text-sm font-black text-white tracking-wider">
+                  ANAJAK<span className="text-[#FFE600]">SMP</span>
+                </span>
               </Link>
             </div>
 
@@ -112,9 +134,9 @@ export const Navbar: React.FC = () => {
               })}
             </nav>
 
-            {/* Top Right Utilities: Currency & Cart */}
+            {/* Top Right Utilities: Currency, Cart & Mobile Menu Button */}
             <div className="flex items-center space-x-2 shrink-0 font-minecraft">
-              {/* Currency Selector */}
+              {/* Currency Selector (Desktop) */}
               <div className="hidden sm:flex items-center bg-black/30 rounded-xl border border-white/15 p-0.5 text-xs font-minecraft">
                 <button
                   onClick={() => {
@@ -148,14 +170,25 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/cart"
                 onClick={playMinecraftClick}
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-black/30 border border-white/20 hover:border-[#FFE600] text-white transition-all group"
-                aria-label="View shopping cart"
+                className="flex items-center space-x-2 bg-black/30 hover:bg-black/50 border border-white/15 hover:border-[#FFE600]/60 rounded-xl px-3 py-2 text-white transition-all shadow-md group select-none"
               >
                 <ShoppingBag className="w-4 h-4 text-[#FFE600] group-hover:scale-110 transition-transform" />
-                <span className="px-1.5 py-0.2 rounded-md bg-[#FFE600] text-[#121216] text-xs font-black min-w-[20px] text-center font-minecraft">
+                <span className="bg-[#FFE600] text-[#121216] font-black text-[11px] px-1.5 py-0.2 rounded-md font-mono">
                   {itemCount}
                 </span>
               </Link>
+
+              {/* Mobile Hamburger Menu Toggle Button */}
+              <button
+                onClick={() => {
+                  playMinecraftClick();
+                  setMobileMenuOpen(true);
+                }}
+                className="lg:hidden p-2 rounded-xl bg-black/30 hover:bg-black/50 border border-white/20 text-white hover:text-[#FFE600] active:scale-90 transition-all shadow-md"
+                aria-label="Open mobile menu"
+              >
+                <Menu className="w-5 h-5 text-[#FFE600]" />
+              </button>
             </div>
           </div>
 
@@ -235,77 +268,6 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Drawer Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#570217] border-t border-white/10 px-4 pt-3 pb-6 space-y-3 font-minecraft relative z-30">
-            <nav className="flex flex-col space-y-1.5">
-              {navLinks.map((item) => {
-                const active = isActive(item.path);
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.label}
-                    to={item.path}
-                    onClick={() => {
-                      playMinecraftClick();
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`px-3.5 py-2.5 rounded-xl text-xs font-black tracking-wider transition-colors flex items-center space-x-2.5 ${
-                      active
-                        ? 'bg-[#FFE600] text-[#121216] shadow-[0_0_15px_rgba(255,230,0,0.5)]'
-                        : 'text-white/90 hover:bg-black/20 hover:text-[#FFE600]'
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 ${active ? 'text-[#121216]' : 'text-white/70'}`} />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-xs font-minecraft">
-                <button
-                  onClick={() => {
-                    playMinecraftClick();
-                    setCurrency('USD');
-                  }}
-                  className={`px-2.5 py-1.5 rounded-lg font-bold ${
-                    currency === 'USD' ? 'bg-[#FFE600] text-[#121216]' : 'text-white/70'
-                  }`}
-                >
-                  USD ($)
-                </button>
-                <button
-                  onClick={() => {
-                    playMinecraftClick();
-                    setCurrency('KHR');
-                  }}
-                  className={`px-2.5 py-1.5 rounded-lg font-bold ${
-                    currency === 'KHR' ? 'bg-[#FFE600] text-[#121216]' : 'text-white/70'
-                  }`}
-                >
-                  KHR (៛)
-                </button>
-              </div>
-
-              <button
-                onClick={copyServerIp}
-                className="px-3 py-1.5 rounded-lg bg-black/30 border border-white/20 text-xs font-mono text-white flex items-center space-x-1"
-              >
-                {copiedIp ? (
-                  <span className="text-[#FFE600] font-bold font-minecraft text-[11px]">Copied!</span>
-                ) : (
-                  <>
-                    <span className="w-2 h-2 rounded-full bg-status-success" />
-                    <span>{serverIp}</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* 3. Minecraft Pixel Sawtooth Divider along bottom edge */}
         <div className="w-full overflow-hidden leading-none relative z-10 pointer-events-none -mb-px">
           <svg
@@ -322,6 +284,221 @@ export const Navbar: React.FC = () => {
           </svg>
         </div>
       </header>
+
+      {/* 4. Mobile Slide-Out Drawer (Matching Mazer Club Reference) */}
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => {
+          playMinecraftClick();
+          setMobileMenuOpen(false);
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Drawer Panel */}
+      <aside
+        className={`fixed top-0 right-0 bottom-0 z-[100] w-[86%] max-w-[340px] sm:max-w-[380px] bg-gradient-to-b from-[#6e031e] via-[#5c0319] to-[#450212] text-white shadow-[-12px_0_40px_rgba(0,0,0,0.7)] flex flex-col justify-between p-5 overflow-y-auto transition-transform duration-300 ease-out lg:hidden rounded-l-3xl border-l border-white/15 ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="space-y-4">
+          {/* Drawer Header: Logo + Close Button */}
+          <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
+            <Link
+              to="/"
+              onClick={() => {
+                playMinecraftClick();
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center space-x-2"
+            >
+              <img
+                src="/assets/anajak_logo.png"
+                alt="AnajakSMP"
+                className="h-10 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]"
+              />
+            </Link>
+
+            <button
+              onClick={() => {
+                playMinecraftClick();
+                setMobileMenuOpen(false);
+              }}
+              className="w-10 h-10 rounded-2xl bg-[#871131] hover:bg-[#9d173c] active:scale-90 text-white flex items-center justify-center transition-all border border-white/15 shadow-sm"
+              aria-label="Close navigation menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col space-y-1.5 py-1">
+            {mobileNavLinks.map((item) => {
+              const active = isActive(item.path);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  onClick={() => {
+                    playMinecraftClick();
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`px-4 py-3 rounded-2xl text-[15px] font-bold tracking-wide transition-all duration-150 flex items-center space-x-3.5 select-none ${
+                    active
+                      ? 'bg-[#FFE600] text-[#121216] font-black shadow-[0_4px_20px_rgba(255,230,0,0.45)] scale-[1.02]'
+                      : 'text-white/85 hover:text-white hover:bg-white/10 active:scale-[0.98]'
+                  }`}
+                >
+                  <Icon
+                    className={`w-5 h-5 shrink-0 ${
+                      active ? 'text-[#121216]' : 'text-white/80'
+                    }`}
+                  />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Drawer Bottom Cards */}
+        <div className="space-y-2.5 pt-4 border-t border-white/10 shrink-0 mt-4">
+          {/* Card 1: Server IP */}
+          <button
+            onClick={() => {
+              playMinecraftClick();
+              copyServerIp();
+            }}
+            className="w-full bg-[#3d0210]/70 hover:bg-[#4a0214] active:scale-[0.98] border border-white/10 rounded-2xl p-3 flex items-center justify-between text-left transition-all"
+          >
+            <div className="flex items-center space-x-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white shrink-0">
+                <Server className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-white truncate tracking-wide">
+                  {serverIp.replace('play.', '')}
+                </p>
+                <p className="text-[11px] text-white/60">
+                  {copiedIp ? (
+                    <span className="text-[#FFE600] font-bold">Copied to clipboard!</span>
+                  ) : (
+                    'tap to copy IP'
+                  )}
+                </p>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 rounded-xl bg-[#2b020c] border border-white/10 text-xs font-bold text-[#FFE600] font-mono shrink-0">
+              {onlinePlayers || 1033}
+            </span>
+          </button>
+
+          {/* Card 2: Discord */}
+          <a
+            href={settings?.discord_url || 'https://discord.gg/anajaksmp'}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={playMinecraftClick}
+            className="w-full bg-[#3d0210]/70 hover:bg-[#4a0214] active:scale-[0.98] border border-white/10 rounded-2xl p-3 flex items-center justify-between text-left transition-all block"
+          >
+            <div className="flex items-center space-x-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#5865F2] shrink-0">
+                <MessageSquare className="w-5 h-5 fill-current" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-white truncate tracking-wide">
+                  dc.anajaksmp.xyz
+                </p>
+                <p className="text-[11px] text-white/60">join Discord</p>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 rounded-xl bg-[#2b020c] border border-white/10 text-xs font-bold text-white/90 font-mono shrink-0">
+              1657
+            </span>
+          </a>
+
+          {/* Card 3: Bedrock Edition */}
+          <div className="w-full bg-[#3d0210]/90 border border-white/10 rounded-2xl p-3.5 space-y-2.5">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-xl bg-[#FFE600]/20 flex items-center justify-center text-[#FFE600] shrink-0 mt-0.5">
+                <Smartphone className="w-4 h-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-white">Bedrock Edition</p>
+                <p className="text-xs font-bold text-[#FFE600] font-mono truncate">
+                  bedrock.anajaksmp.xyz : 19132
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-0.5">
+              <a
+                href="minecraft://?addExternalServer=AnajakSMP|bedrock.anajaksmp.xyz:19132"
+                onClick={playMinecraftClick}
+                className="bg-[#d99a16] hover:bg-[#f0ac1d] active:scale-95 text-[#121216] font-black text-xs py-2 px-2.5 rounded-xl flex items-center justify-center space-x-1 transition-all shadow-sm"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>Click to Play</span>
+              </a>
+              <button
+                onClick={() => {
+                  playMinecraftClick();
+                  navigator.clipboard.writeText('bedrock.anajaksmp.xyz:19132');
+                  setCopiedBedrock(true);
+                  setTimeout(() => setCopiedBedrock(false), 2000);
+                }}
+                className="bg-black/30 hover:bg-black/50 active:scale-95 text-white font-bold text-xs py-2 px-2.5 rounded-xl flex items-center justify-center space-x-1 transition-all border border-white/10"
+              >
+                {copiedBedrock ? (
+                  <span className="text-[#FFE600]">Copied!</span>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy IP</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Currency Switcher */}
+          <div className="flex items-center justify-between pt-1 text-xs">
+            <span className="text-white/60 font-medium">Currency</span>
+            <div className="flex items-center bg-black/30 rounded-xl border border-white/10 p-0.5">
+              <button
+                onClick={() => {
+                  playMinecraftClick();
+                  setCurrency('USD');
+                }}
+                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                  currency === 'USD'
+                    ? 'bg-[#FFE600] text-[#121216]'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                USD ($)
+              </button>
+              <button
+                onClick={() => {
+                  playMinecraftClick();
+                  setCurrency('KHR');
+                }}
+                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                  currency === 'KHR'
+                    ? 'bg-[#FFE600] text-[#121216]'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                KHR (៛)
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   );
 };

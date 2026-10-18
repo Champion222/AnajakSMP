@@ -6,7 +6,6 @@ import { Navbar } from './components/Navbar.js';
 import { AnnouncementBanner } from './components/AnnouncementBanner.js';
 import { Footer } from './components/Footer.js';
 import { GuestCheckoutModal } from './components/GuestCheckoutModal.js';
-import { MobileBottomNav } from './components/MobileBottomNav.js';
 
 // Public Pages
 import { HomePage } from './pages/HomePage.js';
@@ -34,13 +33,12 @@ import { AdminUser } from '@anajaksmp/shared';
 
 // Public Layout Wrapper
 const StorefrontLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="min-h-screen flex flex-col bg-[#E8F6FE] text-[#1e293b] pb-16 md:pb-0">
+  <div className="min-h-screen flex flex-col bg-[#E8F6FE] text-[#1e293b]">
     <AnnouncementBanner />
     <Navbar />
     <main className="flex-1">{children}</main>
     <Footer />
     <GuestCheckoutModal />
-    <MobileBottomNav />
   </div>
 );
 
