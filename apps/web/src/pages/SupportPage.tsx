@@ -380,7 +380,7 @@ export const SupportPage: React.FC = () => {
                   <div className="relative flex items-center">
                     <input
                       type="text"
-                      placeholder="e.g. Xing_Mazer"
+                      placeholder="e.g. _T_Z"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
@@ -408,7 +408,7 @@ export const SupportPage: React.FC = () => {
                   </label>
                   <input
                     type="email"
-                    placeholder="your.email@example.com"
+                    placeholder="your.email@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-[#f2f9fb] border-2 border-[#89b1ba] rounded-xl px-3.5 py-2.5 text-[#131d24] placeholder-[#7d9da7] focus:outline-none focus:border-[#485963] transition-colors"
